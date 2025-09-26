@@ -1,0 +1,469 @@
+[
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+  "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg Ethereum Token",
+  "symbol": "ETH",
+  "logoURI": "https://assets.coincap.io/assets/icons/eth@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657addd1a8857da5630e0ef7"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x55d398326f99059ff775485246999027b3197955",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg BSC-USD",
+  "symbol": "BSC-USD",
+  "logoURI": "https://assets.coingecko.com/coins/images/325/thumb/Tether.png?1696501661",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657addd1a8857da5630e0ef7"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x1D2F0da169ceB9fC7B3144628dB156f3F6c60dBE",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg XRP Token",
+  "symbol": "XRP",
+  "logoURI": "https://assets.coincap.io/assets/icons/xrp@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xba2ae424d960c26247dd6c32edc70b295c744c43",
+  "decimal":"8",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance Peg Dogecoin",
+  "symbol": "DOGE",
+  "logoURI": "https://assets.coingecko.com/coins/images/15768/thumb/dogecoin.png?1696515392",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x3EE2200Efb3400fAbB9AacF31297cBdD1d435D47",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg Cardano",
+  "symbol": "ADA",
+  "logoURI": "https://assets.coincap.io/assets/icons/ada@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x4338665CBB7B2485A8855A139b75D5e34AB0DB94",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg Litecoin",
+  "symbol": "LTC",
+  "logoURI": "https://bscscan.com/token/images/litecoin_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xF8A0BF9cF54Bb92F17374d9e9A321E6a111a51bD",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg ChainLink",
+  "symbol": "LINK",
+  "logoURI": "https://assets.coincap.io/assets/icons/link@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x76A797A59Ba2C17726896976B7B3747BfD1d220f",
+  "decimal":"9",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Wrapped TON Coin",
+  "symbol": "TONCOIN",
+  "logoURI": "https://assets.coincap.io/assets/icons/toncoin@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x43C934A845205F0b514417d757d7235B8f53f1B9",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Stellar",
+  "symbol": "XLM",
+  "logoURI": "https://bscscan.com/token/images/stellar_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x1Fa4a73a3F0133f0025378af00236f3aBDEE5D63",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg NEAR Protocol",
+  "symbol": "NEAR",
+  "logoURI": "https://bscscan.com/token/images/near_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x2859e4544C4bB03966803b044A93563Bd2D0DD4D",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg SHIBA INU",
+  "symbol": "SHIB",
+  "logoURI": "https://bscscan.com/token/images/shibatoken_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg Polkadot",
+  "symbol": "DOT",
+  "logoURI": "https://bscscan.com/token/images/polkadot_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xBf5140A22578168FD562DCcF235E5D43A02ce9B1",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg Uniswap",
+  "symbol": "UNI",
+  "logoURI": "https://bscscan.com/token/images/uniswap_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x25d887Ce7a35172C62FeBFD67a1856F20FaEbB00",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "Pepe",
+  "symbol": "PEPE",
+  "logoURI": "https://bscscan.com/token/images/pepe_32.png?v=2",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x6FDcdfef7c496407cCb0cEC90f9C5Aaa1Cc8D888",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "VeChain",
+  "symbol": "VET",
+  "logoURI": "https://bscscan.com/token/images/vechain_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xfb5B838b6cfEEdC2873aB27866079AC55363D37E",
+  "decimal":"9",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "FLOKI",
+  "symbol": "FLOKI",
+  "logoURI": "https://bscscan.com/token/images/floki_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add5fa8857da5630dfabb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xeA998D307ACA04D4f0A3B3036Aba84AE2E409C0A",
+  "decimal":"18",
+  "network":"Binance",
+  "explorerURL":"https://bscscan.com/",
+  "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+  "gasPriceSymbol":"BNB",
+  "name": "JUST",
+  "symbol": "JST",
+  "logoURI": "https://bscscan.com/token/images/just_32.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657add64a8857da5630dfb8f"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xe02df9e3e622debdd69fb838bb799e3f168902c5",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "BakerySwap",
+  "symbol": "BAKE",
+  "logoURI": "https://assets.coingecko.com/coins/images/12588/thumb/bakerytoken_logo.jpg?1696512398",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657add64a8857da5630dfb93"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xc748673057861a797275cd8a068abb95a902e8de",
+   "decimal":"9",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Baby Doge Coin",
+  "symbol": "BABYDOGE",
+  "logoURI": "https://assets.coingecko.com/coins/images/16125/thumb/babydoge.jpg?1696515731",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657add66a8857da5630dfbe9"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xd40bedb44c081d2935eeba6ef5a3c8a31a1bbe13",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Metahero",
+  "symbol": "HERO",
+  "logoURI": "https://assets.coingecko.com/coins/images/16911/thumb/AVATAR2.png?1696516482",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657add66a8857da5630dfbeb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x5ca09af27b8a4f1d636380909087536bc7e2d94d",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Alitas",
+  "symbol": "ALT",
+  "logoURI": "https://assets.coingecko.com/coins/images/16330/thumb/ALT.png?1696515931",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657add78a8857da5630dff0f"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Wrapped BNB",
+  "symbol": "WBNB",
+  "logoURI": "https://assets.coingecko.com/coins/images/12591/thumb/binance-coin-logo.png?1696512401",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657add7ea8857da5630e0021"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Binance Bitcoin",
+  "symbol": "BTCB",
+  "logoURI": "https://assets.coingecko.com/coins/images/14108/thumb/Binance-bitcoin.png?1696513829",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657adda1a8857da5630e0655"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x23396cf899ca06c4472205fc903bdb4de249d6fc",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Wrapped USTC",
+  "symbol": "USTC",
+  "logoURI": "https://assets.coingecko.com/coins/images/15462/thumb/ust.png?1696515108",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657addd2a8857da5630e0f3d"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg USD Coin",
+  "symbol": "USDC",
+  "logoURI": "https://assets.coingecko.com/coins/images/6319/thumb/usdc.png?1696506694",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657addd2a8857da5630e0f45"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Binance-Peg Dai Token",
+  "symbol": "DAI",
+  "logoURI": "https://assets.coingecko.com/coins/images/9956/thumb/Badge_Dai.png?1696509996",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657addd5a8857da5630e0fbb"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xf78d2e7936f5fe18308a3b2951a93b6c4a41f5e2",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "MANTRA",
+  "symbol": "OM",
+  "logoURI": "https://assets.coingecko.com/coins/images/12151/thumb/OM_Token.png?1696511991",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657adde2a8857da5630e1245"
+  },
+   "rpcurl":"https://binance.llamarpc.com/",
+  "chainId": 56,
+  "address": "0xfb6115445bff7b52feb98650c87f44907e58f802",
+   "decimal":"18",
+    "network":"Binance",
+    "explorerURL":"https://bscscan.com/",
+    "networkimage":"https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+    "gasPriceSymbol":"BNB",
+  "name": "Aave",
+  "symbol": "AAVE",
+  "logoURI": "https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1696512452",
+  "__v": 0
+}
+
+]

@@ -1,0 +1,98 @@
+[
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0x6d935050ddda25e77bd33263a6032733e0504787",
+  "decimal":"18",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Uniswap Token",
+  "symbol": "UNI",
+  "logoURI": "https://assets.coincap.io/assets/icons/uni@2x.png"
+},
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0x25a52e1e568b988bc80f5e4ab054bbf334eaedd7",
+  "decimal":"18",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Flamingo Finance Token",
+  "symbol": "FLM",
+  "logoURI": "https://s2.coinmarketcap.com/static/img/coins/200x200/7150.png"
+},
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0x1db7a84339179d06fffa5f4276cbd0d72d2a1bba",
+  "decimal":"8",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Neo Token",
+  "symbol": "NEO",
+  "logoURI": "https://s2.coinmarketcap.com/static/img/coins/200x200/1376.png"
+},
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0xd85e30c5d372942810c86c4ac9d7b3bb24cc1965",
+  "decimal":"6",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Celer-Pegged Tether USD",
+  "symbol": "celrUSDT",
+  "logoURI": "https://assets.coincap.io/assets/icons/usdt@2x.png"
+},
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0xc6bc09a723f2314ad22642b6e33ad2ed6bba3c9c",
+  "decimal":"18",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Celer-Pegged Ether Token",
+  "symbol": "celrETH",
+  "logoURI": "https://assets.coincap.io/assets/icons/eth@2x.png"
+},
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0x4384d5a9d7354c65ce3aee411337bd40493ad1bc",
+  "decimal":"8",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Celer-Pegged Wrapped BTC",
+  "symbol": "celrWBTC",
+  "logoURI": "https://s2.coinmarketcap.com/static/img/coins/200x200/3717.png"
+},
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0x08f7e8a161652d9f2fbfe200b18709540de5ced1",
+  "decimal":"6",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Celer-Pegged USD Coin",
+  "symbol": "celrUSDC",
+  "logoURI": "https://assets.coincap.io/assets/icons/usdc@2x.png"
+},
+{
+   "rpcurl":"https://dappnode3.ont.io:10339",
+  "address": "0xfcad47c29551c7691398776c8fa73287c8fa8ec0",
+  "decimal":"8",
+  "network":"Ontology",
+  "explorerURL":"https://explorer.ont.io/",
+  "networkimage":"https://w7.pngwing.com/pngs/348/734/png-transparent-ontology-logo-ontology-symbol-ontology-sign-ontology-crypto-ontology-coin-ontology-3d-icon-thumbnail.png",
+  "gasPriceSymbol":"ONT",
+  "name": "Ontology WBTC Token",
+  "symbol": "WBTC",
+  "logoURI": "https://s2.coinmarketcap.com/static/img/coins/200x200/3717.png"
+}
+]

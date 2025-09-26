@@ -1,0 +1,110 @@
+[
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0xBB8e513b2897AC9C1C47eeCFCB42dbd4b77F9275",
+  "decimal":"18",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "PLAYZAP",
+  "symbol": "PZP",
+  "logoURI": "https://framerusercontent.com/images/sf8HAfmDSipoSyLnmbexBJc4sU.png"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0xfA9343C3897324496A05fC75abeD6bAC29f8A40f",
+  "decimal":"6",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "Tether USD",
+  "symbol": "USDT",
+  "logoURI": "https://assets.coincap.io/assets/icons/usdt@2x.png"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0xC026ea130307939e35445D288396d1821C16204a",
+  "decimal":"18",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "pepe",
+  "symbol": "pepe",
+  "logoURI": "https://assets.coincap.io/assets/icons/pepe@2x.png"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0x765277EebeCA2e31912C9946eAe1021199B39C61",
+  "decimal":"6",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "USD Coin",
+  "symbol": "USDC",
+  "logoURI": "https://assets.coincap.io/assets/icons/usdc@2x.png"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0x818ec0A7Fe18Ff94269904fCED6AE3DaE6d6dC0b",
+  "decimal":"18",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "Dai Stablecoin",
+  "symbol": "DAI",
+  "logoURI": "https://s2.coinmarketcap.com/static/img/coins/200x200/4943.png"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0xc5361e3eAad2F86a841Bb42c437F404210781B80",
+  "decimal":"18",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "Shiba lnu",
+  "symbol": "SHIB",
+  "logoURI": "https://assets.coincap.io/assets/icons/shib@2x.png"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0x1294Ff175543F7d81004e1ca1ff9533F6baD4e2E",
+  "decimal":"18",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "TRUMP",
+  "symbol": "TRUMP",
+  "logoURI": "https://i.ebayimg.com/images/g/4Z8AAOSwn-5mJmdy/s-l1200.jpg"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0x0ed7CB6b77395700F19f5250b85A5F354679Bb16",
+  "decimal":"18",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "ApeCoin",
+  "symbol": "APE",
+  "logoURI": "https://lineascan.build/token/images/apecoinlinea_32.png"
+},
+{
+   "rpcurl":"https://api.evm.eosnetwork.com",
+  "address": "0x7388862Cdc1c082E6CA3feC65AcbA3F2426c6545",
+  "decimal":"18",
+  "network":"EOS",
+  "explorerURL":"https://explorer.evm.eosnetwork.com/",
+  "networkimage":"https://cdn4.vectorstock.com/i/1000x1000/91/18/crypto-coin-eos-icon-on-white-vector-20409118.jpg",
+  "gasPriceSymbol":"EOS",
+  "name": "sun",
+  "symbol": "sun",
+  "logoURI": "https://static.tronscan.org/production/logo/TSSMHYeV2uE9qYH95DqyoCuNCzEL1NvU3S.png"
+}
+]

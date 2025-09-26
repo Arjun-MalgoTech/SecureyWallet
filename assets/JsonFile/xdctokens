@@ -1,0 +1,98 @@
+[
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0x05940B2dF33D6371201e7Ae099CeD4C363855dFE",
+  "decimal":"18",
+  "network":"XDC",
+  "explorerURL":"https://xdcscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "Law Block token",
+  "symbol": "LBT",
+  "logoURI": "https://s2.coinmarketcap.com/static/img/coins/200x200/20964.png"
+},
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0x5D5f074837f5d4618B3916ba74De1Bf9662a3fEd",
+  "decimal":"18",
+  "network":"XDC",
+  "explorerURL":"https://cronoscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "STORX",
+  "symbol": "SRX",
+  "logoURI": "https://s3.coinmarketcap.com/static-gravity/image/f90d86d2f9644f1e8de2a57e8330d200.png"
+},
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0x951857744785E80e2De051c32EE7b25f9c458C42",
+  "decimal":"18",
+  "network":"XDC",
+  "explorerURL":"https://cronoscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "Wrapped XDC",
+  "symbol": "WXDC",
+  "logoURI": "https://assets.coincap.io/assets/icons/xdc@2x.png"
+},
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0xFf7412Ea7C8445C46a8254dFB557Ac1E48094391",
+  "decimal":"18",
+  "network":"XDC",
+  "explorerURL":"https://cronoscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "Plugin",
+  "symbol": "PLI",
+  "logoURI": "https://xdcscan.com/token/images/plugin_32.png"
+},
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0x8f9920283470F52128bF11B0c14E798bE704fD15",
+  "decimal":"18",
+  "network":"XDC",
+  "explorerURL":"https://cronoscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "Comtech Gold",
+  "symbol": "CGO",
+  "logoURI": "https://xdcscan.com/token/images/comtechgold_32.png"
+},
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0x1eBb2C8a71A9ec59bF558886a8Adf8F4a565814F",
+  "decimal":"2",
+  "network":"XDC",
+  "explorerURL":"https://cronoscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "STASIS EURO",
+  "symbol": "EURS",
+  "logoURI": "https://assets.coincap.io/assets/icons/eurs@2x.png"
+},
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0x0E11710AAd67E7427CfbC12c353284C2e335F62c",
+  "decimal":"18",
+  "network":"XDC",
+  "explorerURL":"https://cronoscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "PrimeNumbers",
+  "symbol": "PRNT",
+  "logoURI": "https://xdcscan.com/token/images/primenumberslabs_32.png"
+},
+{
+   "rpcurl":"https://erpc.xdcrpc.com",
+  "address": "0x2A8E898b6242355c290E1f4Fc966b8788729A4D4",
+  "decimal":"6",
+  "network":"XDC",
+  "explorerURL":"https://xdcscan.com/",
+  "networkimage":"https://s2.coinmarketcap.com/static/img/coins/200x200/2634.png",
+  "gasPriceSymbol":"XDC",
+  "name": "Bridged USDC(XDC)",
+  "symbol": "USDC.e",
+  "logoURI": "https://assets.coincap.io/assets/icons/usdc@2x.png"
+}
+]

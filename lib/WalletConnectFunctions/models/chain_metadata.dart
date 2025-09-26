@@ -1,0 +1,17 @@
+class ChainMetadata {
+  final String chainId;
+  final String name;
+  final String symbol;
+  final String logo;
+  final List<String> rpc;
+
+  const ChainMetadata({
+    required this.chainId,
+    required this.name,
+    required this.symbol,
+    required this.logo,
+    required this.rpc,
+  });
+}
+
+typedef ChainData = Map<String, ChainMetadata>;

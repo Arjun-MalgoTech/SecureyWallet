@@ -1,0 +1,15 @@
+[
+{
+   "rpcurl":"https://palm-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "chainId": 11297108109,
+   "address": "0xa0a2E18784633eB47DbAfe7c36C4594B3eDaAeF6",
+   "decimal":"9",
+   "network":"PaLM AI",
+   "explorerURL":"https://etherscan.io/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/28567.png",
+   "gasPriceSymbol":"PALM",
+   "name": "PaLM AI",
+   "symbol": "PALM",
+   "logoURI": "https://etherscan.io/images/main/empty-token.png"
+}
+]

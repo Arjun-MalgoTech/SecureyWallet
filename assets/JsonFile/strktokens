@@ -1,0 +1,110 @@
+[
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+   "decimal":"18",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "ETH",
+   "symbol": "ETH",
+   "logoURI": "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+   "decimal":"6",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "USDC",
+   "symbol": "USDC",
+   "logoURI": "https://optimistic.etherscan.io/token/images/usdc_32.png"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+   "decimal":"18",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "STRK",
+   "symbol": "STRK",
+   "logoURI": "https://pbs.twimg.com/profile_images/1834202903189618688/N4J8emeY_400x400.png"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
+   "decimal":"6",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "USDT",
+   "symbol": "USDT",
+   "logoURI": "https://assets.coincap.io/assets/icons/usdt@2x.png"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+   "decimal":"18",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "DAI",
+   "symbol": "DAI",
+   "logoURI": "https://optimistic.etherscan.io/token/images/MCDDai_32.png"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
+   "decimal":"8",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "wBTC",
+   "symbol": "wBTC",
+   "logoURI": "https://optimistic.etherscan.io/token/images/wbtc_28.png?v=1"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x049210ffc442172463f3177147c1aeaa36c51d152c1b0630f2364c300d4f48ee",
+   "decimal":"18",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "UNI",
+   "symbol": "UNI",
+   "logoURI": "https://polygonscan.com/token/images/uniswap_32.png"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x02449bcab87574bd3cc7461377c5348b75d15c4ace312a24b539e29c4e81e8de",
+   "decimal":"18",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "Pepe on Starknet",
+   "symbol": "PEPE",
+   "logoURI": "https://bscscan.com/token/images/pepe_32.png?v=2"
+},
+{
+   "rpcurl":"https://starknet-mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "address": "0x03c5ad50167f21a51e07d26db7353cfbd8eae77754542e7c8a306b010fe82ffa",
+   "decimal":"18",
+   "network":"Starknet",
+   "explorerURL":"https://starknet.nftscan.com/",
+   "networkimage":"https://s2.coinmarketcap.com/static/img/coins/64x64/22691.png",
+   "gasPriceSymbol":"STRK",
+   "name": "TRUMP",
+   "symbol": "TRUMP",
+   "logoURI": "https://i.ebayimg.com/images/g/4Z8AAOSwn-5mJmdy/s-l1200.jpg"
+}
+]

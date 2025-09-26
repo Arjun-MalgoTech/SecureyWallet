@@ -1,0 +1,564 @@
+[
+
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fef"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+  "decimal":"6",
+  "network":"Ethereum",
+  "explorerURL":"https://etherscan.io",
+  "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+  "gasPriceSymbol":"ETH",
+  "name": "Tether USD",
+  "symbol": "USDT",
+  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png",
+
+  "__v": 0
+},
+{
+    "_id": {
+      "$oid": "657aef9fd73aa747192da009"
+    },
+    "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+    "chainId": 1,
+    "address": "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
+    "decimal":"18",
+      "network":"Ethereum",
+      "explorerURL":"https://etherscan.io",
+      "gasPriceSymbol":"ETH",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "name": "BNB",
+    "symbol": "BNB",
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xB8c77482e45F1F44dE1745F52C74426C631bDD52/logo.png",
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "657aef9fd73aa747192d9fed"
+    },
+    "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+    "chainId": 1,
+    "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    "decimal":"6",
+      "network":"Ethereum",
+      "explorerURL":"https://etherscan.io",
+      "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+      "gasPriceSymbol":"ETH",
+    "name": "USDCoin",
+    "symbol": "USDC",
+    "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png",
+    "__v": 0
+  },
+  {
+      "_id": {
+        "$oid": "657aef9fd73aa747192d9fed"
+      },
+      "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+      "chainId": 1,
+      "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+      "decimal":"18",
+        "network":"Ethereum",
+        "explorerURL":"https://etherscan.io",
+        "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+        "gasPriceSymbol":"ETH",
+      "name": "stETH",
+      "symbol": "stETH",
+      "logoURI": "https://assets.coincap.io/assets/icons/steth@2x.png",
+      "__v": 0
+    },
+    {
+      "_id": {
+        "$oid": "657aef9fd73aa747192d9ff5"
+      },
+      "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+      "chainId": 1,
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599",
+      "decimal":"8",
+        "network":"Ethereum",
+        "explorerURL":"https://etherscan.io",
+        "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+        "gasPriceSymbol":"ETH",
+      "name": "Wrapped BTC",
+      "symbol": "WBTC",
+      "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599/logo.png",
+      "__v": 0
+    },
+ {
+   "_id": {
+     "$oid": "657aef9ad73aa747192d9f13"
+   },
+   "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "chainId": 1,
+   "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA",
+   "decimal":"18",
+     "network":"Ethereum",
+     "explorerURL":"https://etherscan.io",
+     "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+     "gasPriceSymbol":"ETH",
+   "name": "ChainLink Token",
+   "symbol": "LINK",
+   "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo.png",
+   "__v": 0
+ },
+  {
+    "_id": {
+      "$oid": "657aef9ad73aa747192d9f13"
+    },
+    "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+    "chainId": 1,
+    "address": "0xcf0C122c6b73ff809C693DB761e7BaeBe62b6a2E",
+    "decimal":"9",
+      "network":"Ethereum",
+      "explorerURL":"https://etherscan.io",
+      "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+      "gasPriceSymbol":"ETH",
+    "name": "FLOKI",
+    "symbol": "FLOKI",
+    "logoURI": "https://assets.coincap.io/assets/icons/floki@2x.png",
+    "__v": 0
+  },
+    {
+      "_id": {
+        "$oid": "657aef9ad73aa747192d9f13"
+      },
+      "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+      "chainId": 1,
+      "address": "0x3845badAde8e6dFF049820680d1F14bD3903a5d0",
+      "decimal":"18",
+        "network":"Ethereum",
+        "explorerURL":"https://etherscan.io",
+        "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+        "gasPriceSymbol":"ETH",
+      "name": "SAND",
+      "symbol": "SAND",
+      "logoURI": "https://assets.coincap.io/assets/icons/sand@2x.png",
+      "__v": 0
+    },
+        {
+          "_id": {
+            "$oid": "657aef9ad73aa747192d9f13"
+          },
+          "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+          "chainId": 1,
+          "address": "0x152649eA73beAb28c5b49B26eb48f7EAD6d4c898",
+          "decimal":"18",
+            "network":"Ethereum",
+            "explorerURL":"https://etherscan.io",
+            "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+            "gasPriceSymbol":"ETH",
+          "name": "PancakeSwap Token",
+          "symbol": "Cake",
+          "logoURI": "https://assets.coincap.io/assets/icons/cake@2x.png",
+          "__v": 0
+        },
+ {
+    "_id": {
+      "$oid": "657aef9ad73aa747192d9f13"
+    },
+    "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+    "chainId": 1,
+    "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+    "decimal":"18",
+      "network":"Ethereum",
+      "explorerURL":"https://etherscan.io",
+      "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+      "gasPriceSymbol":"ETH",
+    "name": "Wrapped liquid staked Ether 2.0",
+    "symbol": "wstETH",
+    "logoURI": "https://etherscan.io/token/images/wsteth3_32.png",
+    "__v": 0
+  },
+ {
+   "_id": {
+     "$oid": "657aef9dd73aa747192d9fa7"
+   },
+   "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+   "chainId": 1,
+   "address": "0x95aD61b0a150d79219dCF64E1E6Cc01f0B64C4cE",
+   "decimal":"18",
+     "network":"Ethereum",
+     "explorerURL":"https://etherscan.io",
+     "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+     "gasPriceSymbol":"ETH",
+   "name": "Shiba Inu",
+   "symbol": "SHIB",
+   "logoURI": "https://assets.coingecko.com/coins/images/11939/thumb/shiba.png?1622619446",
+   "__v": 0
+ },
+{
+  "_id": {
+    "$oid": "657aef98d73aa747192d9e9d"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Dai Stablecoin",
+  "symbol": "DAI",
+  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x6B175474E89094C44Da98b954EedeAC495271d0F/logo.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Uniswap",
+  "symbol": "UNI",
+  "logoURI": "https://assets.coincap.io/assets/icons/uni@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x21c2c96Dbfa137E23946143c71AC8330F9B44001",
+  "decimal":"10",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Polkadot (IBC)",
+  "symbol": "DOT",
+  "logoURI": "https://cdn5.vectorstock.com/i/1000x1000/84/14/polkadot-coin-dot-cryptocurrency-line-icon-vector-40868414.jpg",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xe28b3B32B6c345A34Ff64674606124Dd5Aceca30",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Injective Token",
+  "symbol": "INJ",
+  "logoURI": "https://assets.coincap.io/assets/icons/inj@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x4a220E6096B25EADb88358cb44068A3248254675",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Quant",
+  "symbol": "QNT",
+  "logoURI": "https://assets.coincap.io/assets/icons/qnt@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xA0b73E1Ff0B80914AB6fe0444E65848C4C34450b",
+  "decimal":"8",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Cronos Coin",
+  "symbol": "CRO",
+  "logoURI": "https://assets.coincap.io/assets/icons/cro@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x886c869cDc619214138C87f1DB0ADa522b16Dfa3",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "dogwifhat",
+  "symbol": "WIF",
+  "logoURI": "https://assets.coincap.io/assets/icons/wif@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xf34960d9d60be18cC1D5Afc1A6F012A723a28811",
+  "decimal":"6",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "KuCoin Token",
+  "symbol": "KCS",
+  "logoURI": "https://assets.coincap.io/assets/icons/kcs@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x3c3a81e81dc49A522A592e7622A7E711c06bf354",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Mantle",
+  "symbol": "MNT",
+  "logoURI": "https://assets.coincap.io/assets/icons/mnt@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9fd73aa747192d9fe9"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xA9E8aCf069C58aEc8825542845Fd754e41a9489A",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "pepeCoin",
+  "symbol": "pepeCoin",
+  "logoURI": "https://assets.coincap.io/assets/icons/pepe@2x.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef95d73aa747192d9e1f"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x111111111117dC0aa78b770fA6A738034120C302",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "1inch",
+  "symbol": "1INCH",
+  "logoURI": "https://assets.coingecko.com/coins/images/13469/thumb/1inch-token.png?1608803028",
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "657aef95d73aa747192d9e21"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Aave",
+  "symbol": "AAVE",
+  "logoURI": "https://assets.coingecko.com/coins/images/12645/thumb/AAVE.png?1601374110",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9ed73aa747192d9fc5"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x6B3595068778DD592e39A122f4f5a5cF09C90fE2",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Sushi",
+  "symbol": "SUSHI",
+  "logoURI": "https://assets.coingecko.com/coins/images/12271/thumb/512x512_Logo_no_chop.png?1606986688",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef98d73aa747192d9e85"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xc00e94Cb662C3520282E6f5717214004A7f26888",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Compound",
+  "symbol": "COMP",
+  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xc00e94Cb662C3520282E6f5717214004A7f26888/logo.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9bd73aa747192d9f35"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Maker",
+  "symbol": "MKR",
+  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2/logo.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9bd73aa747192d9f1d"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "LoopringCoin V2",
+  "symbol": "LRC",
+  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xBBbbCA6A901c926F240b89EacB641d8Aec7AEafD/logo.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9dd73aa747192d9fb1"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Synthetix Network Token",
+  "symbol": "SNX",
+  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0xC011a73ee8576Fb46F5E1c5751cA3B9Fe0af2a6F/logo.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef99d73aa747192d9ee3"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xc944E90C64B2c07662A292be6244BDf05Cda44a7",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "The Graph",
+  "symbol": "GRT",
+  "logoURI": "https://assets.coingecko.com/coins/images/13397/thumb/Graph_Token.png?1608145566",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef99d73aa747192d9eb7"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xF629cBd94d3791C9250152BD8dfBDF380E2a3B9c",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Enjin Coin",
+  "symbol": "ENJ",
+  "logoURI": "https://assets.coingecko.com/coins/images/1102/thumb/enjin-coin-logo.png?1547035078",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef97d73aa747192d9e61"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Basic Attention Token",
+  "symbol": "BAT",
+  "logoURI": "https://assets.coingecko.com/coins/images/677/thumb/basic-attention-token.png?1547034427",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9dd73aa747192d9f91"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0x408e41876cCCDC0F92210600ef50372656052a38",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "Republic Token",
+  "symbol": "REN",
+  "logoURI": "https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/0x408e41876cCCDC0F92210600ef50372656052a38/logo.png",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "657aef9cd73aa747192d9f57"
+  },
+  "rpcurl":"https://mainnet.infura.io/v3/602876aff7964a1c9e3a09b9fa05eb63",
+  "chainId": 1,
+  "address": "0xd26114cd6EE289AccF82350c8d8487fedB8A0C07",
+  "decimal":"18",
+    "network":"Ethereum",
+    "explorerURL":"https://etherscan.io",
+    "networkimage":"https://assets.coingecko.com/coins/images/279/large/ethereum.png?1696501628",
+    "gasPriceSymbol":"ETH",
+  "name": "OMG Network",
+  "symbol": "OMG",
+  "logoURI": "https://assets.coingecko.com/coins/images/776/thumb/OMG_Network.jpg?1591167168",
+  "__v": 0
+}
+]
