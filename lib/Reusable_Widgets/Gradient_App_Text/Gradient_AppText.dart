@@ -21,10 +21,10 @@ class GradientAppText extends StatelessWidget {
           end: Alignment.bottomRight,
           stops: [0.0, 0.2174, 0.5403, 0.8528],
           colors: [
-            Color(0xFF912ECA),
-            Color(0xFF912ECA),
-            Color(0xFF793CDE),
-            Color(0xFF793CDE),
+            Color(0xFF6b9dfe),
+            Color(0xFF7e5ef8),
+            Color(0xFF893cf5),
+            Color(0xFFf962c9),
           ],
         ).createShader(bounds);
       },
@@ -33,7 +33,7 @@ class GradientAppText extends StatelessWidget {
         style: TextStyle(
           fontSize: fontSize,
           color: Colors.white,
-          fontFamily: 'LexendDeca',
+          fontFamily: 'BricolageGrotesque',
           fontWeight: fontWeight ?? FontWeight.w300,
         ),
       ),

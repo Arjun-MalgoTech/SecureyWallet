@@ -1,4 +1,3 @@
-
 import 'package:securywallet/Api_Service/Apikey_Service.dart';
 import 'package:securywallet/Screens/Previous_Home_Screen/Model/Asset_Model/Asset_Model.dart';
 
@@ -7,22 +6,6 @@ class CoinListConfig {
   static const int cryptoDecimal = 18;
 
   static List<Map<String, dynamic>> rawCoinList = [
-    {
-      "rpcURL": "https://www.nvxoscan.com/",
-      "explorerURL": "https://nvxoexplorer.com/",
-      "coinSymbol": "NVXO",
-      "coinName": "NVXO Chain",
-      "imageUrl":
-          "https://firebasestorage.googleapis.com/v0/b/nvwallet-5ec7e.appspot.com/o/images%2FAsset%2064x.png?alt=media&token=1e803128-1a39-4bc0-8f32-abf2bca83263",
-      "balanceFetchAPI": "",
-      "sendAmountAPI": "",
-      "address": "",
-      "coinType": "1",
-      "tokenAddress": "",
-      "tokenDecimal": "",
-      "network": "NVXO Chain",
-      "gasPriceSymbol": "NVXO",
-    },
     {
       "rpcURL": "",
       "explorerURL": "https://live.blockcypher.com/btc/",

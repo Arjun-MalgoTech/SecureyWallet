@@ -57,20 +57,21 @@ class _LaunchScreenState extends State<LaunchScreen> {
           context,
           MaterialPageRoute(
             builder: (context) {
-              return isPasscodeSet && localStorageService.activeWalletData != null
+              return isPasscodeSet &&
+                      localStorageService.activeWalletData != null
                   ? PasscodeScreen(
-                name: '',
-                data: localStorageService.activeWalletData!,
-                splash: true,
-              )
+                      name: '',
+                      data: localStorageService.activeWalletData!,
+                      splash: true,
+                    )
                   : Onboard();
             },
           ),
         );
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          NotificationPermissionService.checkAndRequestNotificationPermission();
-        });
+        // WidgetsBinding.instance.addPostFrameCallback((_) {
+        //   NotificationPermissionService.checkAndRequestNotificationPermission();
+        // });
       });
     }
   }
@@ -91,23 +92,11 @@ class _LaunchScreenState extends State<LaunchScreen> {
       body: Center(
         child: _controller.value.isInitialized
             ? AspectRatio(
-          aspectRatio: _controller.value.aspectRatio,
-          child: VideoPlayer(_controller),
-        )
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              )
             : const CircularProgressIndicator(),
       ),
     );
-  }
-}
-
-class NotificationPermissionService {
-  static Future<void> checkAndRequestNotificationPermission() async {
-    var status = await Permission.notification.status;
-
-    if (status.isDenied || status.isPermanentlyDenied) {
-      if (await Permission.notification.request().isGranted) {
-        print("✅ Notification permission granted");
-      }
-    }
   }
 }

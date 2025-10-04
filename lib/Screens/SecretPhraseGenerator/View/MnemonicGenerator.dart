@@ -2,10 +2,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
 import 'package:securywallet/Screens/SecretPhraseGenerator/View/ChooseMnemonic.dart';
-
 
 class MnemonicGenerator extends StatefulWidget {
   const MnemonicGenerator({super.key});
@@ -38,9 +38,7 @@ class _MnemonicGeneratorState extends State<MnemonicGenerator> {
   void onContinue() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => ChooseMnemonic(mnemonicPhrase),
-      ),
+      MaterialPageRoute(builder: (context) => ChooseMnemonic(mnemonicPhrase)),
     );
   }
 
@@ -57,8 +55,9 @@ class _MnemonicGeneratorState extends State<MnemonicGenerator> {
           const SizedBox(height: 30),
           _buildCopyButton(),
           const Spacer(),
-          _buildSecurityNote(),
+          // _buildSecurityNote(),
           _buildContinueButton(context),
+          const SizedBox(height: 20),
         ],
       ),
     );
@@ -103,8 +102,18 @@ class _MnemonicGeneratorState extends State<MnemonicGenerator> {
             Container(
               width: 130,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.white30.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(14),
+                border: GradientBoxBorder(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.white.withOpacity(0.3),
+                      Colors.white.withOpacity(0.05),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  width: 0.5,
+                ),
               ),
               child: FilterChip(
                 side: BorderSide.none,
@@ -132,9 +141,9 @@ class _MnemonicGeneratorState extends State<MnemonicGenerator> {
       child: const Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.file_copy_outlined, color: Color(0xFFB982FF)),
+          Icon(Icons.file_copy_outlined, color: Color(0xFFB4B1B2)),
           SizedBox(width: 10),
-          Text('Copy', style: TextStyle(color: Color(0xFFB982FF))),
+          Text('Copy', style: TextStyle(color: Color(0xFFB4B1B2))),
         ],
       ),
     );

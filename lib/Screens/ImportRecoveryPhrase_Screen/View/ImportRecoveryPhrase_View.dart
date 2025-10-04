@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
 import 'package:securywallet/Api_Service/Apikey_Service.dart';
 import 'package:securywallet/QRView/QRView_Android.dart';
@@ -15,7 +16,8 @@ import 'package:hex/hex.dart';
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
 
-import '../MnemonicSecretPhrase/MnemonicSecretWords.dart' show mnemonicSecretWords;
+import '../MnemonicSecretPhrase/MnemonicSecretWords.dart'
+    show mnemonicSecretWords;
 
 class RestoreWalletFromPhrase extends StatefulWidget {
   const RestoreWalletFromPhrase({super.key});
@@ -34,6 +36,21 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
   String privateKeyHex = '';
   String walletAddress = '';
   List<String> suggestions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen to text changes
+    nameController.addListener(() {
+      setState(() {}); // rebuilds to update suffixIcon
+    });
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,34 +96,50 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
   Widget _buildLabel(String text) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [AppText(text, color: Color(0xFFB7B7B7))],
-      ),
+      child: Row(children: [AppText(text, color: Color(0xFFB7B7B7))]),
     );
   }
 
   Widget _buildWalletNameInput(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: TextField(
-        controller: nameController,
-        style: TextStyle(
-          color: Theme.of(context).colorScheme.surfaceBright,
-          fontSize: 13,
-          fontWeight: FontWeight.w300,
-        ),
-        decoration: InputDecoration(
-          hintText: "Wallet 1 (Main)",
-          hintStyle: TextStyle(color: Colors.grey),
-          filled: true,
-          fillColor: Colors.white24.withOpacity(0.1),
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: Theme.of(context).colorScheme.surfaceBright,
-              width: 0.3,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Color(0XFF0a0d11),
+          borderRadius: BorderRadius.circular(14),
+          border: GradientBoxBorder(
+            gradient: LinearGradient(
+              colors: [
+                Colors.white.withOpacity(0.3),
+                Colors.white.withOpacity(0.05),
+              ],
             ),
+            width: 0.5,
           ),
-          border: OutlineInputBorder(),
+        ),
+        child: TextField(
+          controller: nameController,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+          decoration: InputDecoration(
+            hintText: 'Main Wallet 1',
+            hintStyle: TextStyle(
+              color: Colors.grey,
+              fontSize: 16,
+              fontWeight: FontWeight.w600,
+            ),
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+            suffixIcon: nameController.text.isNotEmpty
+                ? GestureDetector(
+                    onTap: () => nameController.clear(),
+                    child: Icon(Icons.close, color: Colors.white),
+                  )
+                : null,
+          ),
         ),
       ),
     );
@@ -117,38 +150,47 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: [
-          TextFormField(
-            controller: mnemonicController,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: _validateMnemonic,
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.surfaceBright,
-              fontSize: 13,
-              fontWeight: FontWeight.w300,
+          Container(
+            decoration: BoxDecoration(
+              color: Color(0XFF0a0d11),
+              borderRadius: BorderRadius.circular(14),
+              border: GradientBoxBorder(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.3),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                ),
+                width: 0.5,
+              ),
             ),
-            maxLines: 4,
-            onChanged: _updateSuggestions,
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Colors.white24.withOpacity(0.1),
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: 45, horizontal: 10),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.surfaceBright,
-                  width: 0.3,
+            child: TextFormField(
+              controller: mnemonicController,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              validator: _validateMnemonic,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.surfaceBright,
+                fontSize: 13,
+                fontWeight: FontWeight.w300,
+              ),
+              maxLines: 6,
+              onChanged: _updateSuggestions,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 45,
+                  horizontal: 10,
+                ),
+                border: InputBorder.none,
+                suffixIcon: TextButton(
+                  onPressed: _pasteFromClipboard,
+                  child: AppText(
+                    "PASTE",
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFB982FF),
+                  ),
                 ),
               ),
-              suffixIcon: TextButton(
-                onPressed: _pasteFromClipboard,
-                child: AppText(
-                  "PASTE",
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFB982FF),
-                ),
-              ),
-              border: OutlineInputBorder(),
             ),
           ),
           if (suggestions.isNotEmpty) _buildSuggestionsList(),
@@ -176,7 +218,8 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Center(
-                  child: AppText(suggestions[index], color: Colors.black)),
+                child: AppText(suggestions[index], color: Colors.black),
+              ),
             ),
           ),
         ),
@@ -189,16 +232,19 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: AppText(
-          "Usually 12 words, but sometimes 18 or 24, each\nseparated by a single space.",
+          "Typically 12 (sometimes 18,24) words separated by\nsingle spaces.",
           fontSize: 13,
           color: Color(0xFFB7B7B7),
+          textAlign: TextAlign.center,
         ),
       ),
     );
   }
 
   Widget _buildRecoverWalletButton(
-      BuildContext context, LocalStorageService fetchVM) {
+    BuildContext context,
+    LocalStorageService fetchVM,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: GestureDetector(
@@ -210,7 +256,7 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
         child: ReuseElevatedButton(
           width: MediaQuery.of(context).size.width,
           height: 45,
-          text: 'Recover Wallet',
+          text: 'Restore Wallet',
           textcolor: Colors.black,
           gradientColors: [Color(0XFF42E695), Color(0XFF3BB2BB)],
         ),
@@ -223,7 +269,8 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
       return 'Secret Phrases is required';
     final words = value.trim().split(' ');
     if ((words.length == 12 || words.length == 18 || words.length == 24) &&
-        value.endsWith(' ')) return 'Mnemonic should not end with a space';
+        value.endsWith(' '))
+      return 'Mnemonic should not end with a space';
     if (!(words.length == 12 || words.length == 18 || words.length == 24)) {
       return 'Mnemonic should be 12, 18, or 24 words';
     }
@@ -260,9 +307,9 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
     mnemonicController.clear();
     FocusScope.of(context).unfocus();
 
-    final result = await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => QRView(),
-    ));
+    final result = await Navigator.of(
+      context,
+    ).push(MaterialPageRoute(builder: (_) => QRView()));
 
     if (result != null && result['barcode'] != null) {
       mnemonicController.text = result['barcode'];
@@ -270,12 +317,15 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
   }
 
   Future<void> _generateKeysAndSave(
-      BuildContext context, LocalStorageService fetchVM) async {
+    BuildContext context,
+    LocalStorageService fetchVM,
+  ) async {
     final mnemonic = mnemonicController.text.trim();
 
     if (!bip39.validateMnemonic(mnemonic)) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Invalid Mnemonic')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Invalid Mnemonic')));
       return;
     }
 
@@ -285,7 +335,9 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
     final privateKey = HEX.encode(child.privateKey!);
 
     final ethClient = Web3Client(
-        'https://mainnet.infura.io/v3/your_infura_project_id', Client());
+      'https://mainnet.infura.io/v3/your_infura_project_id',
+      Client(),
+    );
     final credentials = await ethClient.credentialsFromPrivateKey(privateKey);
     final address = await credentials.extractAddress();
 
@@ -299,11 +351,16 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
     );
 
     await vaultStorageService.addWalletToList(
-        ApiKeyService.nvWalletList, wallet.toJson());
+      ApiKeyService.nvWalletList,
+      wallet.toJson(),
+    );
     fetchVM.creatingNewWallet = true;
     fetchVM.getData();
 
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (_) => AppBottomNav()), (route) => false);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (_) => AppBottomNav()),
+      (route) => false,
+    );
   }
 }

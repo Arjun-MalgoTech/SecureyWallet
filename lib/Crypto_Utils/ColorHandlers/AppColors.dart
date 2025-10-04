@@ -62,7 +62,7 @@ class AppColors {
     900: Color(0xFF4FB9D1),
   };
   final Color SwapArrowRoundDark = Color(0XFF202832);
-  final Color appPrimartColorDark = Color(0xFF271952);
+  final Color appPrimartColorDark = Color(0xFF090b0f);
   final Color createWalletTextDark1 = const Color(0xFFB7B7B7);
   final Color appBodyColorDark1 = const Color(0xFF262737);
   final Color appBodyColorDark2 = const Color(0xFF66c6ed);

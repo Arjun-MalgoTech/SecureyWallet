@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:securywallet/Asset_Functions/Asset_Transaction/transaction_types/btc_transaction.dart';
 import 'package:securywallet/Asset_Functions/Asset_Transaction/transaction_types/evm_token_transaction.dart';
@@ -10,17 +12,21 @@ import 'package:securywallet/Asset_Functions/Asset_Transaction/transaction_types
 import 'package:securywallet/Screens/Previous_Home_Screen/Model/Asset_Model/Asset_Model.dart';
 import 'package:securywallet/UserWalletData/UserWalletData.dart';
 
-
 class TransactionProcessor {
   dynamic xPub;
-  void processTransaction(BuildContext context,
-      {required AssetModel coinData,
-      required String enterAmount,
-      required String toAddress,
-      required UserWalletDataModel userWallet,
-      required String privateKeyHex,
-      required String contractAddress,
-      required String rpcUrl}) async {
+
+  void processTransaction(
+    BuildContext context, {
+    required AssetModel coinData,
+    required String enterAmount,
+    required String toAddress,
+    required UserWalletDataModel userWallet,
+    required String privateKeyHex,
+    required String contractAddress,
+    required String rpcUrl,
+  }) async {
+    print("svsdv");
+
     // if (coinData.coinSymbol == 'tVET' && coinData.coinType == '3') {
     //   VechainTransaction().sendTestnet(context,
     //       coinData: coinData,
@@ -37,19 +43,23 @@ class TransactionProcessor {
     // }
     if (coinData.coinType == "2") {
       if (coinData.rpcURL != "") {
-        await EvmTokenTransaction().send(context,
-            coinData: coinData,
-            enterAmount: enterAmount,
-            toAddress: toAddress,
-            userWallet: userWallet);
+        await EvmTokenTransaction().send(
+          context,
+          coinData: coinData,
+          enterAmount: enterAmount,
+          toAddress: toAddress,
+          userWallet: userWallet,
+        );
       } else if (coinData.coinType == "2" &&
           (coinData.gasPriceSymbol == "SOL" ||
               coinData.gasPriceSymbol == "tSOL")) {
-        await SolTokenTransaction().send(context,
-            coinData: coinData,
-            enterAmount: num.parse(enterAmount),
-            toAddress: toAddress,
-            userWallet: userWallet);
+        await SolTokenTransaction().send(
+          context,
+          coinData: coinData,
+          enterAmount: num.parse(enterAmount),
+          toAddress: toAddress,
+          userWallet: userWallet,
+        );
       }
       // else if (coinData.coinType == "2" &&
       //     (coinData.gasPriceSymbol == "TRX" ||
@@ -67,18 +77,22 @@ class TransactionProcessor {
     } else {
       switch (coinData.coinSymbol) {
         case 'tBTC':
-          await BtcTransaction().sendTestnet(context,
-              coinData: coinData,
-              enterAmount: enterAmount,
-              toAddress: toAddress,
-              userWallet: userWallet);
+          await BtcTransaction().sendTestnet(
+            context,
+            coinData: coinData,
+            enterAmount: enterAmount,
+            toAddress: toAddress,
+            userWallet: userWallet,
+          );
           break;
         case 'BTC':
-          await BtcTransaction().sendMainnet(context,
-              coinData: coinData,
-              enterAmount: enterAmount,
-              toAddress: toAddress,
-              userWallet: userWallet);
+          await BtcTransaction().sendMainnet(
+            context,
+            coinData: coinData,
+            enterAmount: enterAmount,
+            toAddress: toAddress,
+            userWallet: userWallet,
+          );
           break;
         // case 'tTRX':
         //   await TrxTransaction().sendTestnet(context,
@@ -109,18 +123,22 @@ class TransactionProcessor {
         //       userWallet: userWallet);
         //   break;
         case 'XRP' || 'tXRP':
-          await XrpTransaction().send(context,
-              coinData: coinData,
-              enterAmount: enterAmount,
-              toAddress: toAddress,
-              userWallet: userWallet);
+          await XrpTransaction().send(
+            context,
+            coinData: coinData,
+            enterAmount: enterAmount,
+            toAddress: toAddress,
+            userWallet: userWallet,
+          );
           break;
         default:
-          await EvmTransaction().send(context,
-              coinData: coinData,
-              enterAmount: enterAmount,
-              toAddress: toAddress,
-              userWallet: userWallet);
+          await EvmTransaction().send(
+            context,
+            coinData: coinData,
+            enterAmount: enterAmount,
+            toAddress: toAddress,
+            userWallet: userWallet,
+          );
           break;
       }
     }

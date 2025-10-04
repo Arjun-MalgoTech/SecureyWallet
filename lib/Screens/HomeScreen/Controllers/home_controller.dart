@@ -7,6 +7,7 @@ import 'package:securywallet/Screens/HomeScreen/Carousel_Slider/CarouselSlider.d
 import 'package:securywallet/Screens/Receive_Asset_View/View/ReceiveAssetView.dart';
 import 'package:securywallet/Screens/Send_Asset_View/View/SendAssetView.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'dart:ui';
 
 Widget iconRow(context) {
   return Padding(
@@ -26,29 +27,19 @@ Widget iconRow(context) {
                   ),
                 );
               },
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF262737)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SvgPicture.asset(
-                    ConstantImage.imgArrowRightLightBlueA200,
-                    color: Color(0XFFB982FF),
-                  ),
-                ),
+              child: // Required for ImageFilter
+              SvgPicture.asset(
+                ConstantImage.arrowup,
               ),
             ),
-            SizedBox(
-              height: SizeConfig.height(context, 2),
-            ),
+            SizedBox(height: SizeConfig.height(context, 1)),
             AppText(
               "Send",
               fontFamily: 'LexendDeca',
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w400,
               color: Theme.of(context).colorScheme.surfaceBright,
-              fontSize: 12,
-            )
+              fontSize: 14,
+            ),
           ],
         ),
         GestureDetector(
@@ -61,122 +52,52 @@ Widget iconRow(context) {
           },
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF262737)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SvgPicture.asset(
-                    ConstantImage.downarrow,
-                    color: Color(0XFFB982FF),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: SizeConfig.height(context, 2),
-              ),
+              SvgPicture.asset(ConstantImage.arrowdown),
+
+              SizedBox(height: SizeConfig.height(context, 1)),
               AppText(
                 "Receive",
                 fontFamily: 'LexendDeca',
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.surfaceBright,
-                fontSize: 12,
+                fontSize: 14,
               ),
             ],
           ),
         ),
         GestureDetector(
-          onTap: () {
-            launch('https://www.bitnevex.com/');
-          },
+          onTap: () {},
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF262737)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SvgPicture.asset(
-                    ConstantImage.buy,
-                    color: Color(0XFFB982FF),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: SizeConfig.height(context, 2),
-              ),
+              SvgPicture.asset(ConstantImage.crevon),
+
+              SizedBox(height: SizeConfig.height(context, 1)),
               AppText(
-                "Buy",
+                "Fund",
                 fontFamily: 'LexendDeca',
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.surfaceBright,
-                fontSize: 12,
-              )
+                fontSize: 14,
+              ),
             ],
           ),
         ),
         GestureDetector(
-          onTap: () {
-            launch('https://www.bitnevex.com/');
-          },
+          onTap: () {},
           child: Column(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Color(0xFF262737)),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: SvgPicture.asset(
-                    ConstantImage.earn,
-                    color: Color(0XFFB982FF),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: SizeConfig.height(context, 2),
-              ),
+              SvgPicture.asset(ConstantImage.Dollar),
+
+              SizedBox(height: SizeConfig.height(context, 1)),
               AppText(
-                "Earn",
+                "Sell",
                 fontFamily: 'LexendDeca',
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.surfaceBright,
-                fontSize: 12,
+                fontSize: 14,
               ),
             ],
           ),
-        ),
-      ],
-    ),
-  );
-}
-
-Widget boyImage() {
-  return Image.asset(
-    "assets/Images/boy.png",
-  );
-}
-
-Widget bannerImage(context) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-    child: CarouselAdSlider(
-      [
-        GestureDetector(
-          onTap: () {
-            launch('https://www.bitnevex.com/');
-          },
-          child: Image.asset('assets/Images/newban2.jpg',
-              width: SizeConfig.width(context, 100), fit: BoxFit.fill),
-        ),
-        GestureDetector(
-          onTap: () {
-            launch('https://nvxowallet.com/');
-          },
-          child: Image.asset('assets/Images/newnavban.png',
-              width: SizeConfig.width(context, 100), fit: BoxFit.fill),
         ),
       ],
     ),

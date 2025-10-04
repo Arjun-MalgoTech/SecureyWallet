@@ -38,8 +38,10 @@ class PasscodeEntryView extends StatefulWidget {
 }
 
 class _PasscodeEntryViewState extends State<PasscodeEntryView> {
-  List<String> enteredPasscodeDigits =
-      List.filled(6, ''); // List to store each digit of the passcode
+  List<String> enteredPasscodeDigits = List.filled(
+    6,
+    '',
+  ); // List to store each digit of the passcode
   String passcode = '';
   bool isPasscodeEntered = false;
   LocalStorageService localStorageService = LocalStorageService();
@@ -176,15 +178,15 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
   }
 
   VaultStorageService vaultStorageService = VaultStorageService();
+
   void navHomeScreen() async {
     final prefs = await SharedPreferences.getInstance();
     if (widget.click == 'wallet_backup') {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => MnemonicBackup(
-                  userWallet: widget.data,
-                )),
+          builder: (context) => MnemonicBackup(userWallet: widget.data),
+        ),
       );
     } else if (widget.click == 'send') {
       Navigator.pop(context);
@@ -197,9 +199,10 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
       Navigator.pop(context);
     } else {
       Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (builder) => AppBottomNav()),
-          (route) => false);
+        context,
+        MaterialPageRoute(builder: (builder) => AppBottomNav()),
+        (route) => false,
+      );
     }
   }
 
@@ -224,24 +227,28 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
     localStorageService = context.watch<LocalStorageService>();
     List<Widget> passcodeDigitBoxes = [];
     bool isPasscodeCorrect = passcode == widget.savedPasscode;
-    List<Color> boxColors = List.filled(6,
-        Theme.of(context).primaryColor); // Initially set all box colors to gray
+    List<Color> boxColors = List.filled(
+      6,
+      Theme.of(context).primaryColor,
+    ); // Initially set all box colors to gray
     if (isPasscodeEntered) {
       if (isPasscodeCorrect) {
-        boxColors = List.filled(6, Color(0xFFB982FF));
+        boxColors = List.filled(6, Color(0xFF3d3c40));
       } else if (passcode.length != 6) {
-        boxColors = List.filled(6, Colors.transparent);
+        boxColors = List.filled(6, Color(0xFF3d3c40));
       } else {
         boxColors = List.filled(6, Colors.red);
       }
     }
     for (int i = 0; i < 6; i++) {
-      passcodeDigitBoxes.add(PasscodeBoxUi(
-        digit: i < passcode.length ? '*' : '',
-        boxColor: boxColors[i],
-        isCorrect: false,
-        colorCheck: false,
-      ));
+      passcodeDigitBoxes.add(
+        PasscodeBoxUi(
+          digit: i < passcode.length ? '*' : '',
+          boxColor: boxColors[i],
+          isCorrect: false,
+          colorCheck: false,
+        ),
+      );
     }
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -253,8 +260,11 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(Icons.arrow_back,
-                    color: Theme.of(context).indicatorColor)),
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Theme.of(context).indicatorColor,
+                ),
+              ),
       ),
       body: Center(
         child: Column(
@@ -263,13 +273,12 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
             Text(
               'Enter Passcode',
               style: TextStyle(
-                  fontSize: 20,
-                  color: Theme.of(context).colorScheme.surfaceBright,
-                  fontWeight: FontWeight.w500),
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.surfaceBright,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: passcodeDigitBoxes,
@@ -306,17 +315,19 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
                   labelColor: Theme.of(context).colorScheme.surfaceBright,
                 ),
                 PasscodeButton(
-                    label: '2',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('2'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '2',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('2'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
                 PasscodeButton(
-                    label: '3',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('3'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '3',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('3'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
               ],
             ),
             SizedBox(height: 10),
@@ -324,23 +335,26 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 PasscodeButton(
-                    label: '4',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('4'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '4',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('4'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
                 PasscodeButton(
-                    label: '5',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('5'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '5',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('5'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
                 PasscodeButton(
-                    label: '6',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('6'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '6',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('6'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
               ],
             ),
             SizedBox(height: 10),
@@ -348,23 +362,26 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 PasscodeButton(
-                    label: '7',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('7'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '7',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('7'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
                 PasscodeButton(
-                    label: '8',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('8'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '8',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('8'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
                 PasscodeButton(
-                    label: '9',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('9'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '9',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('9'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
               ],
             ),
             SizedBox(height: 10),
@@ -381,11 +398,12 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
                   isFingerPrintButton: true,
                 ),
                 PasscodeButton(
-                    label: '0',
-                    onPressed: () =>
-                        isDelayActive ? null : _handleButtonPress('0'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright),
+                  label: '0',
+                  onPressed: () =>
+                      isDelayActive ? null : _handleButtonPress('0'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
                 PasscodeButton(
                   label: 'D',
                   onPressed: _handleDelete,
@@ -395,15 +413,16 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
                 ),
               ],
             ),
-            SizedBox(
-              height: SizeConfig.height(context, 2),
-            ),
+            SizedBox(height: SizeConfig.height(context, 2)),
             widget.click == 'send1' ||
                     widget.click == '123' ||
                     widget.click == 'wallet_backup'
                 ? Padding(
                     padding: EdgeInsets.only(
-                        left: 20.0, right: 20, bottom: Platform.isIOS ? 16 : 0),
+                      left: 20.0,
+                      right: 20,
+                      bottom: Platform.isIOS ? 16 : 0,
+                    ),
                     child: ReuseElevatedButton(
                       onTap: () => isDelayActive ? null : handleDone(context),
                       width: MediaQuery.sizeOf(context).width,
@@ -411,10 +430,14 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
                       text: 'Confirm',
                       textcolor: Colors.black,
                       gradientColors: [Color(0XFF70A2FF), Color(0XFF54F0D1)],
-                    ))
+                    ),
+                  )
                 : Padding(
                     padding: EdgeInsets.only(
-                        left: 20.0, right: 20, bottom: Platform.isIOS ? 16 : 0),
+                      left: 20.0,
+                      right: 20,
+                      bottom: Platform.isIOS ? 16 : 0,
+                    ),
                     child: ReuseElevatedButton(
                       onTap: () => isDelayActive ? null : handleDone(context),
                       width: MediaQuery.sizeOf(context).width,
@@ -438,18 +461,19 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
       if (availableBiometrics!.contains(BiometricType.strong) ||
           availableBiometrics!.contains(BiometricType.fingerprint)) {
         final bool didAuthenticate = await auth.authenticate(
-            localizedReason: 'NVXO WALLET',
-            options: const AuthenticationOptions(
-                biometricOnly: true, stickyAuth: true),
-            authMessages: const <AuthMessages>[
-              IOSAuthMessages(
-                cancelButton: 'Pin',
-              ),
-              AndroidAuthMessages(
-                signInTitle: 'Authentication required',
-                cancelButton: 'Pin',
-              ),
-            ]);
+          localizedReason: 'NVXO WALLET',
+          options: const AuthenticationOptions(
+            biometricOnly: true,
+            stickyAuth: true,
+          ),
+          authMessages: const <AuthMessages>[
+            IOSAuthMessages(cancelButton: 'Pin'),
+            AndroidAuthMessages(
+              signInTitle: 'Authentication required',
+              cancelButton: 'Pin',
+            ),
+          ],
+        );
         if (!didAuthenticate) {
           // exit(0);
         } else if (didAuthenticate) {
@@ -458,18 +482,17 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
       } else if (availableBiometrics!.contains(BiometricType.weak) ||
           availableBiometrics!.contains(BiometricType.face)) {
         final bool didAuthenticate = await auth.authenticate(
-            localizedReason:
-                'Unlock your screen with PIN, pattern, password, face, or fingerprint',
-            options: const AuthenticationOptions(stickyAuth: true),
-            authMessages: const <AuthMessages>[
-              AndroidAuthMessages(
-                signInTitle: 'Unlock Ideal Group',
-                cancelButton: 'No thanks',
-              ),
-              IOSAuthMessages(
-                cancelButton: 'No thanks',
-              ),
-            ]);
+          localizedReason:
+              'Unlock your screen with PIN, pattern, password, face, or fingerprint',
+          options: const AuthenticationOptions(stickyAuth: true),
+          authMessages: const <AuthMessages>[
+            AndroidAuthMessages(
+              signInTitle: 'Unlock Ideal Group',
+              cancelButton: 'No thanks',
+            ),
+            IOSAuthMessages(cancelButton: 'No thanks'),
+          ],
+        );
         if (!didAuthenticate) {
           // exit(0);
         } else if (didAuthenticate) {

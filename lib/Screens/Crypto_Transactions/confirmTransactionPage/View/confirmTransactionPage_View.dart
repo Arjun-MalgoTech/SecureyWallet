@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
@@ -7,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:securywallet/Asset_Functions/Asset_Transaction/transaction_processor.dart';
 import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
+import 'package:securywallet/Reusable_Widgets/Gradient_App_Text/Gradient_AppText.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
 import 'package:securywallet/Screens/PasscodeScreen/View/PasscodeEntryView.dart';
 import 'package:securywallet/Screens/Previous_Home_Screen/Model/Asset_Model/Asset_Model.dart';
@@ -24,6 +26,7 @@ class ConfirmTransactionPage extends StatefulWidget {
   final String estimatedGas;
   final String amount;
   final UserWalletDataModel userWallet;
+
   const ConfirmTransactionPage({
     Key? key,
     required this.toAddress,
@@ -43,11 +46,16 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
   String networkSymbol = '';
   AsyncSnapshot<List<String>>? snapshotData;
 
-  String maskEthAddress(String address,
-      {int prefixLength = 10, int suffixLength = 10, String maskChar = '*'}) {
+  String maskEthAddress(
+    String address, {
+    int prefixLength = 10,
+    int suffixLength = 10,
+    String maskChar = '*',
+  }) {
     if (address.length < prefixLength + suffixLength) {
       throw ArgumentError(
-          'Address length is shorter than prefixLength + suffixLength');
+        'Address length is shorter than prefixLength + suffixLength',
+      );
     }
 
     String prefix = address.substring(0, prefixLength);
@@ -111,8 +119,10 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
     if (formattedBalance.contains('.')) {
       formattedBalance = formattedBalance.replaceAll(RegExp(r'0*$'), '');
       if (formattedBalance.endsWith('.')) {
-        formattedBalance =
-            formattedBalance.substring(0, formattedBalance.length - 1);
+        formattedBalance = formattedBalance.substring(
+          0,
+          formattedBalance.length - 1,
+        );
       }
     }
 
@@ -130,81 +140,114 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
     walletConnectionRequest = context.watch<WalletConnectionRequest>();
     walletConnectionRequest.initializeContext(context);
     return Scaffold(
+      backgroundColor: Color(0XFF131720),
       appBar: AppBar(
+        backgroundColor: Color(0XFF131720),
         centerTitle: true,
         title: AppText(
-          "Transfer",
+          "Confirm Send",
           fontFamily: 'LexendDeca',
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),
         leading: InkWell(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back,
-                color: Theme.of(context).indicatorColor)),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).indicatorColor,
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(28.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: AppText(
-                "-${formatBalance(widget.amount)} ${widget.coinData.coinSymbol}",
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            SizedBox(
-              height: SizeConfig.height(context, 2),
-            ),
             Container(
               decoration: BoxDecoration(
-                  color: Theme.of(context)
-                      .colorScheme
-                      .surfaceBright
-                      .withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10)),
-              height: SizeConfig.height(context, 20),
+                color: Color(0XFF191e2a),
+                borderRadius: BorderRadius.circular(20),
+              ),
+
               width: SizeConfig.width(context, 100),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        AppText(
-                          "Asset",
-                          fontSize: 14,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surfaceBright
-                              .withOpacity(0.5),
-                        ),
-                        AppText(
-                          widget.coinData.coinName!,
-                          fontSize: 14,
-                        ),
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Image.network(
+                            widget.coinData.imageUrl! ?? "",
+                            height: 40,
+                            width: 40,
+                          ),
+                          SizedBox(width: 15),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              AppText(
+                                "${formatBalance(widget.amount)}",
+                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                              ),
+                              AppText(
+                                "${widget.coinData.coinSymbol}",
+                                color: Color(0XFF858585),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: SizeConfig.height(context, 2)),
+            Container(
+              decoration: BoxDecoration(
+                color: Color(0XFF191e2a),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              height: SizeConfig.height(context, 20),
+              width: SizeConfig.width(context, 100),
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         AppText(
                           "From",
                           fontSize: 14,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surfaceBright
-                              .withOpacity(0.5),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceBright.withOpacity(0.5),
                         ),
-                        AppText(
-                          maskEthAddress(widget.fromAddress),
-                          fontSize: 14,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            AppText(
+                              (widget.userWallet.walletName),
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            AppText(
+                              maskEthAddress(widget.fromAddress),
+                              fontSize: 14,
+                              color: Color(0XFF858585),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -214,103 +257,173 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
                         AppText(
                           "To",
                           fontSize: 14,
-                          color: Theme.of(context)
-                              .colorScheme
-                              .surfaceBright
-                              .withOpacity(0.5),
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceBright.withOpacity(0.5),
                         ),
-                        AppText(
-                          maskEthAddress(widget.toAddress),
-                          fontSize: 14,
-                        )
+                        AppText(maskEthAddress(widget.toAddress), fontSize: 14),
                       ],
-                    )
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        AppText(
+                          "Network",
+                          fontSize: 14,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.surfaceBright.withOpacity(0.5),
+                        ),
+                        AppText(widget.coinData.coinName!, fontSize: 14),
+                      ],
+                    ),
                   ],
                 ),
               ),
             ),
-            SizedBox(
-              height: SizeConfig.height(context, 2),
-            ),
+            SizedBox(height: SizeConfig.height(context, 2)),
             widget.coinData.rpcURL == ""
                 ? Container(
                     decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceBright
-                            .withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10)),
-                    height: SizeConfig.height(context, 7),
+                      color: Color(0XFF191e2a),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+
                     width: SizeConfig.width(context, 100),
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 32.0),
+                            child: Row(
+                              children: [
+                                GradientAppText(
+                                  text: "Pay this fee with FlexGas",
+                                  fontSize: 14,
+                                ),
+                              ],
+                            ),
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppText(
-                                "Estimated Gas:",
-                                fontSize: 14,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceBright
-                                    .withOpacity(0.5),
+                              Row(
+                                children: [
+                                  AppText(
+                                    "Estimated Fee",
+                                    fontSize: 14,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceBright
+                                        .withOpacity(0.5),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(Icons.info_outline, color: Colors.white),
+                                ],
                               ),
                               AppText(
                                 "${widget.estimatedGas.length > 9 ? widget.estimatedGas.substring(0, 9) : widget.estimatedGas} ${widget.coinData.gasPriceSymbol}",
                                 fontSize: 14,
-                              )
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
                   )
                 : Container(
                     decoration: BoxDecoration(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .surfaceBright
-                            .withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(10)),
-                    height: SizeConfig.height(context, 7),
+                      color: Color(0XFF191e2a),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+
                     width: SizeConfig.width(context, 100),
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(20.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 32.0),
+                            child: Row(
+                              children: [
+                                GradientAppText(
+                                  text: "Pay this fee with FlexGas",
+                                  fontSize: 14,
+                                ),
+                              ],
+                            ),
+                          ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              AppText(
-                                "Estimated Gas:",
-                                fontSize: 14,
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceBright
-                                    .withOpacity(0.5),
+                              Row(
+                                children: [
+                                  AppText(
+                                    "Estimated Fee",
+                                    fontSize: 14,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .surfaceBright
+                                        .withOpacity(0.5),
+                                  ),
+                                  SizedBox(width: 10),
+                                  Icon(Icons.info_outline, color: Colors.white),
+                                ],
                               ),
                               AppText(
-                                "${widget.estimatedGas.length > 10 ? widget.estimatedGas.substring(0, widget.estimatedGas.length > 12 ? 12 : widget.estimatedGas.length) : widget.estimatedGas} ${widget.coinData.coinSymbol == 'tBNB' ? 'tBNB' : widget.coinData.coinSymbol == 'MATIC' ? "Polygon" : widget.coinData.gasPriceSymbol}",
+                                "${widget.estimatedGas.length > 10 ? widget.estimatedGas.substring(0, widget.estimatedGas.length > 12 ? 12 : widget.estimatedGas.length) : widget.estimatedGas} ${widget.coinData.coinSymbol == 'tBNB'
+                                    ? 'tBNB'
+                                    : widget.coinData.coinSymbol == 'MATIC'
+                                    ? "Polygon"
+                                    : widget.coinData.gasPriceSymbol}",
                                 fontSize: 14,
-                              )
+                              ),
                             ],
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ),
             Expanded(child: SizedBox()),
+            Container(
+              decoration: BoxDecoration(
+                color: Color(0XFF191e2a),
+                borderRadius: BorderRadius.circular(20),
+              ),
+
+              width: SizeConfig.width(context, 100),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppText("Total Cost", color: Color(0XFF858585)),
+
+                      AppText(
+                        "${formatBalance(widget.amount) + widget.estimatedGas}",
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
             Padding(
-              padding: EdgeInsets.only(bottom: Platform.isIOS ? 16 : 0),
+              padding: EdgeInsets.only(bottom: Platform.isIOS ? 16 : 8),
               child: isLoading
                   ? Center(
                       child: CircularProgressIndicator(
-                      color: Colors.purpleAccent[100],
-                    ))
+                        color: Colors.purpleAccent[100],
+                      ),
+                    )
                   : ReuseElevatedButton(
                       onTap: () async {
                         setState(() {
@@ -411,11 +524,12 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
                       textcolor: Colors.black,
                       gradientColors: [],
                     ),
-            )
+            ),
           ],
         ),
       ),
     );
   }
 }
+
 // / ImageConstant.imgSearchGray70002

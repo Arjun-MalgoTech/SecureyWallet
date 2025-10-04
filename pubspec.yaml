@@ -67,7 +67,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   path_provider: ^2.1.2
-#  qr_code_scanner: ^1.0.1
+  #  qr_code_scanner: ^1.0.1
   #  web_browser: ^0.7.4
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
@@ -136,6 +136,7 @@ dependencies:
   permission_handler: ^11.1.0
   video_player: ^2.10.0
   chewie: ^1.13.0
+  gradient_borders: ^1.0.2
 #  on_chain: ^7.0.0
 
 
@@ -206,25 +207,21 @@ flutter:
     #       - asset: fonts/TrajanPro_Bold.ttf
     #         weight: 700
     #
-    - family: LexendDeca
+    - family: BricolageGrotesque
       fonts:
-        - asset: assets/AppFonts/LexendDeca-Black.ttf
-          weight: 400
-        - asset: assets/AppFonts/LexendDeca-Bold.ttf
+        - asset: assets/AppFonts/BricolageGrotesque-Bold.ttf
           weight: 100
-        - asset: assets/AppFonts/LexendDeca-ExtraBold.ttf
+        - asset: assets/AppFonts/BricolageGrotesque-ExtraBold.ttf
           weight: 500
-        - asset: assets/AppFonts/LexendDeca-ExtraLight.ttf
+        - asset: assets/AppFonts/BricolageGrotesque-ExtraLight.ttf
           weight: 600
-        - asset: assets/AppFonts/LexendDeca-Light.ttf
+        - asset: assets/AppFonts/BricolageGrotesque-Light.ttf
           weight: 700
-        - asset: assets/AppFonts/LexendDeca-Medium.ttf
+        - asset: assets/AppFonts/BricolageGrotesque-Medium.ttf
           weight: 300
-        - asset: assets/AppFonts/LexendDeca-Regular.ttf
+        - asset: assets/AppFonts/BricolageGrotesque-Regular.ttf
           weight: 200
-        - asset: assets/AppFonts/LexendDeca-Thin.ttf
-          weight: 800
-        - asset: assets/AppFonts/LexendDeca-SemiBold.ttf
+        - asset: assets/AppFonts/BricolageGrotesque-SemiBold.ttf
           weight: 900
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

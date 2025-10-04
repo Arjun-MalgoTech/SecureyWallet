@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:securywallet/Asset_Functions/Asset_Transaction/transaction_types/Hex_Bytes.dart';
@@ -119,7 +121,7 @@ class _TransactionReceiptPageState extends State<TransactionReceiptPage> {
     return Scaffold(
       backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
-        title: AppText("Transfer"),
+        title: AppText("${widget.coinData.coinSymbol} Sent"),
         centerTitle: true,
         leading: BackButton(color: theme.indicatorColor),
         actions: [
@@ -128,15 +130,17 @@ class _TransactionReceiptPageState extends State<TransactionReceiptPage> {
             onPressed: () async {
               await Share.share(_buildExplorerUrl());
             },
-          )
+          ),
         ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
+          Center(child: Image.asset("assets/Images/send.png")),
+
           Center(
             child: AppText(
-              "$formattedAmount ${coin.coinSymbol}",
+              "-$formattedAmount ${coin.coinSymbol}",
               fontSize: 20,
               color: theme.colorScheme.surfaceBright,
             ),
@@ -145,26 +149,30 @@ class _TransactionReceiptPageState extends State<TransactionReceiptPage> {
           _buildInfoCard(
             children: [
               _buildInfoRow(
-                  "Date",
-                  CommonCalculationFunctions.formatDateTimeGMTIndia(
-                      DateTime.fromMillisecondsSinceEpoch(hash.time!)
-                          .toString())),
+                "Date",
+                CommonCalculationFunctions.formatDateTimeGMTIndia(
+                  DateTime.fromMillisecondsSinceEpoch(hash.time!).toString(),
+                ),
+              ),
               _buildInfoRow(
-                  "Status",
-                  widget.transactiondata == null
-                      ? "Completed"
-                      : widget.transactiondata!.blockNumber.isPending
-                          ? "Pending"
-                          : "Completed",
-                  color: widget.transactiondata == null
-                      ? theme.colorScheme.surfaceBright
-                      : widget.transactiondata!.blockNumber.isPending
-                          ? Colors.orangeAccent
-                          : Colors.green),
+                "Status",
+                widget.transactiondata == null
+                    ? "Completed"
+                    : widget.transactiondata!.blockNumber.isPending
+                    ? "Pending"
+                    : "Completed",
+                color: widget.transactiondata == null
+                    ? theme.colorScheme.surfaceBright
+                    : widget.transactiondata!.blockNumber.isPending
+                    ? Colors.orangeAccent
+                    : Colors.green,
+              ),
               _buildInfoRow(
-                  "Recipient",
-                  CommonCalculationFunctions.maskWalletAddress(
-                      hash.toAddress.toString())),
+                "Recipient",
+                CommonCalculationFunctions.maskWalletAddress(
+                  hash.toAddress.toString(),
+                ),
+              ),
             ],
           ),
           if (widget.transactiondata != null)
@@ -176,23 +184,22 @@ class _TransactionReceiptPageState extends State<TransactionReceiptPage> {
                       ? ""
                       : "${hexBytes.etherWeiToValue(transactionReceipt!.gasUsed! * widget.transactiondata!.gasPrice.getInWei).toStringAsFixed(8)} ${coin.coinSymbol == 'tBNB' ? 'tBNB' : coin.gasPriceSymbol}",
                 ),
+                _buildInfoRow("Confirmation", "-"),
                 _buildInfoRow("Nonce", "${widget.transactiondata!.nonce}"),
               ],
             ),
           GestureDetector(
             onTap: _handleTap,
-            child: _buildInfoCard(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText("More Details",
-                        color: theme.colorScheme.surfaceBright),
-                    Icon(Icons.arrow_forward_ios,
-                        color: theme.colorScheme.surfaceBright),
-                  ],
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: AppText(
+                  "View on block explorer",
+                  color: theme.colorScheme.surfaceBright,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
                 ),
-              ],
+              ),
             ),
           ),
         ],
@@ -206,21 +213,58 @@ class _TransactionReceiptPageState extends State<TransactionReceiptPage> {
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Theme.of(context).primaryColorLight,
+        color: Color(0XFF131720),
       ),
       child: Column(children: children),
     );
   }
 
   Widget _buildInfoRow(String title, String value, {Color? color}) {
+    final isStatusRow = title == "Status";
+    final isNetworkFee = title == "Network fee";
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppText(title, color: Theme.of(context).indicatorColor),
-          AppText(value,
-              color: color ?? Theme.of(context).colorScheme.surfaceBright),
+          isNetworkFee
+              ? Row(
+                  children: [
+                    AppText(title, color: Theme.of(context).indicatorColor),
+                    SizedBox(width: 5),
+                    Icon(Icons.info_outline, color: Colors.white, size: 20),
+                  ],
+                )
+              : AppText(title, color: Theme.of(context).indicatorColor),
+
+          // ✅ For Status row — use colored container
+          isStatusRow
+              ? Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: value == "Completed"
+                        ? Color(0XFF003309)
+                        : Color(0XFF331e00),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: AppText(
+                    value,
+                    color: value == "Completed"
+                        ? Color(0XFF8cffb0)
+                        : Color(0XFFffca7f),
+                    fontWeight: FontWeight.w500,
+                  ),
+                )
+              : AppText(
+                  value,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: color ?? Theme.of(context).colorScheme.surfaceBright,
+                ),
         ],
       ),
     );

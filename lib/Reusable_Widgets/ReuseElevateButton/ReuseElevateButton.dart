@@ -53,20 +53,8 @@ class ReuseElevatedButton extends StatelessWidget {
             color: Theme.of(context).canvasColor,
             width: borderWidth ?? 0,
           ),
-          borderRadius: borderRadius ?? BorderRadius.circular(20),
-          gradient: gradientColors != null
-              ? LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.0, 0.2174, 0.5403, 0.8528],
-                  colors: [
-                    Color(0xFF912ECA),
-                    Color(0xFF912ECA),
-                    Color(0xFF793CDE),
-                    Color(0xFF793CDE),
-                  ],
-                )
-              : null,
+          borderRadius: borderRadius ?? BorderRadius.circular(40),
+       color: Colors.white
         ),
         child: Center(
           child: AppText(

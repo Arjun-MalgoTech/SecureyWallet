@@ -1,24 +1,23 @@
-
-
 import 'package:securywallet/Api_Service/Apikey_Service.dart';
 
 List<Map<String, String>> mandatoryCoinList = [
   {
-    "rpcURL": "https://www.nvxoscan.com/",
-    "explorerURL": "https://nvxoexplorer.com/",
-    "coinSymbol": "NVXO",
-    "coinName": "NVXO Chain",
+    "rpcURL": "",
+    "explorerURL": "https://live.blockcypher.com/btc/",
+    "coinSymbol": "BTC",
+    "coinName": "Bitcoin",
     "imageUrl":
-        "https://firebasestorage.googleapis.com/v0/b/nvwallet-5ec7e.appspot.com/o/images%2FAsset%2064x.png?alt=media&token=1e803128-1a39-4bc0-8f32-abf2bca83263",
-    "balanceFetchAPI": "",
-    "sendAmountAPI": "",
+        "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
+    "balanceFetchAPI": "https://api.blockcypher.com/v1/btc/main/addrs/",
+    "sendAmountAPI": "https://api.blockcypher.com/v1/btc/main/txs/new",
     "address": "",
-    "coinType": "1",
+    "coinType": "3",
     "tokenAddress": "",
     "tokenDecimal": "",
-    "network": "NVXO Chain",
-    "gasPriceSymbol": "NVXO",
+    "network": "Bitcoin",
+    "gasPriceSymbol": "BTC",
   },
+
   {
     "rpcURL": "https://binance.llamarpc.com/",
     "explorerURL": "https://bscscan.com/",

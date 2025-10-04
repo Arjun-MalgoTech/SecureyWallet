@@ -4,7 +4,6 @@ import 'package:securywallet/Api_Service/Apikey_Service.dart';
 import 'package:securywallet/UserWalletData/UserWalletData.dart';
 import 'package:securywallet/Wallet_Api_Service/Firebase_Service/User_Handler/UserViewModel.dart';
 
-
 class VaultStorageService {
   static final VaultStorageService _instance = VaultStorageService._internal();
   late Box _box;
@@ -50,10 +49,10 @@ class VaultStorageService {
   Future<void> addWalletToList(String key, dynamic map) async {
     List list = getWalletList();
     if (!isAddressAlreadyExists(list, map["privateKey"])) {
-      if (map["walletName"] != "Wallet 1 (Main)") {
+      if (map["walletName"] != "Main Wallet 1") {
         list.add(map);
       } else {
-        map["walletName"] = "Wallet ${list.length + 1} (Main)";
+        map["walletName"] = "Main Wallet ${list.length + 1}";
         list.add(map);
       }
       selectedWallet(map);

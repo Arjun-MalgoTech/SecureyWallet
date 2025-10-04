@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
+import 'package:securywallet/Screens/NotificationScreen/notificationView.dart';
 import 'package:securywallet/Screens/app_bottom_nav/View/App_Bottom_nav_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,55 +17,92 @@ class _OnboardState extends State<Onboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: [
-          SizedBox(
-            height: SizeConfig.height(context, 5),
-          ),
-          Image.asset(
-            "assets/Images/launch.png",
-          ),
-          SizedBox(
-            height: SizeConfig.height(context, 5),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: ShaderMask(
-              shaderCallback: (Rect bounds) {
-                return LinearGradient(
-                  colors: [
-                    Color(0xFF912ECA),
-                    Color(0xFF912ECA),
-                    Color(0xFF793CDE),
-                    Color(0xFF793CDE),
-                  ], // Default (no gradient)
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ).createShader(bounds);
-              },
-              blendMode:
-                  BlendMode.srcIn, // Ensures the gradient applies correctly
-              child: Row(
-                children: [
-                  AppText(
-                    "YOUR ONE-STOP \n WEB3 WALLET",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 24,
-                  ),
-                ],
-              ),
+          /// Background image
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Image.asset(
+              "assets/Images/back.png",
+              fit: BoxFit.cover,
+              width: double.infinity,
             ),
           ),
-          GestureDetector(
-              onTap: () {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return AppBottomNav();
-                }));
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(left: 32.0, right: 32),
+
+          /// Main content
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: SizeConfig.height(context, 13)),
+                Image.asset("assets/Images/secury.png"),
+
+                SizedBox(height: SizeConfig.height(context, 3)),
+
+                AppText(
+                  "Welcome to \nSecury Wallet!",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 32,
+                ),
+
+                SizedBox(height: SizeConfig.height(context, 2)),
+
+                AppText(
+                  "By Tapping “Get Started” You Agree And Consent To Our",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 12,
+                ),
+
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AppText(
+                          "Term Of Service",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                          color: Color(0xFF912ECA),
+                        ),
+                      ),
+                    ),
+                    AppText(" And ", fontWeight: FontWeight.w700, fontSize: 12),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AppText(
+                          "Privacy Policy",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 12,
+                          color: Color(0xFF912ECA),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          /// Button fixed at bottom
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 32, right: 32, bottom: 30),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) {
+                        return NotificationScreen();
+                      },
+                    ),
+                  );
+                },
                 child: ReuseElevatedButton(
                   height: SizeConfig.height(context, 7),
                   width: SizeConfig.width(context, 100),
@@ -72,52 +110,8 @@ class _OnboardState extends State<Onboard> {
                   textcolor: Colors.black,
                   gradientColors: [],
                 ),
-              )),
-          SizedBox(
-            height: SizeConfig.height(context, 5),
-          ),
-          AppText(
-            "By Tapping “Get Started” You Agree And Consent To Our",
-            fontWeight: FontWeight.w700,
-            fontSize: 12,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              GestureDetector(
-                onTap: () {
-                  launch('https://nvxowallet.com/terms');
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AppText(
-                    "Term Of Service",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                    color: Color(0xFF912ECA),
-                  ),
-                ),
               ),
-              AppText(
-                " And ",
-                fontWeight: FontWeight.w700,
-                fontSize: 12,
-              ),
-              GestureDetector(
-                onTap: () {
-                  launch('https://nvxowallet.com/privacy-policy');
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: AppText(
-                    "Privacy Policy",
-                    fontWeight: FontWeight.w700,
-                    fontSize: 12,
-                    color: Color(0xFF912ECA),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),

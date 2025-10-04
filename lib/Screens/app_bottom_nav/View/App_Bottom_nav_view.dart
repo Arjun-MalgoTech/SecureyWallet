@@ -11,6 +11,7 @@ import 'package:securywallet/Screens/SwapScreen/View/SwapScreen.dart';
 import 'package:securywallet/Screens/User_Chat/View/UserChatSearchView.dart';
 import 'package:securywallet/Screens/app_bottom_nav/View/Icon_Ui.dart';
 import 'package:securywallet/Screens/smart_web_screen/smart_web_view.dart';
+import 'package:securywallet/TrendingScreen/trendingView.dart';
 import 'package:securywallet/VaultStorageService/LocalDataServiceVM.dart';
 
 class AppBottomNav extends StatefulWidget {
@@ -48,43 +49,45 @@ class _AppBottomNavState extends State<AppBottomNav> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFF271952),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: _getCurrentScreen(_currentTabIndex, localStorage),
-        bottomNavigationBar: _buildBlurredNavBar(),
+        bottomNavigationBar: _buildNavBar(),
       ),
     );
   }
 
-  Widget _buildBlurredNavBar() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 6, vertical: 10),
-      padding: EdgeInsets.only(
-        bottom: Platform.isIOS ? 15 : 10,
-        top: Platform.isIOS ? 15 : 10,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(40),
-        border: Border.all(
-          color: Colors.white.withOpacity(0.1),
-          width: 0.5,
+  Widget _buildNavBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: const Color(0xFF0D0D1A),
+      // dark background like your image
+      selectedItemColor: Colors.pinkAccent,
+      // active item (like Home in your image)
+      unselectedItemColor: Colors.white,
+      // inactive icons
+      currentIndex: _currentTabIndex,
+      onTap: (index) {
+        setState(() {
+          _currentTabIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home_outlined),
+          activeIcon: Icon(Icons.home, color: Colors.pinkAccent),
+          label: "Home",
         ),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(40),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildTabItem('assets/Images/home_icon.svg', 'Home', 0),
-              _buildTabItem('assets/Images/chat.svg', 'Chat', 1),
-              _buildTabItem('assets/Images/swap.svg', 'Swap', 2),
-              _buildTabItem('assets/Images/browser.svg', 'Browser', 3),
-            ],
-          ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.trending_up),
+          label: "Trending",
         ),
-      ),
+        BottomNavigationBarItem(icon: Icon(Icons.swap_horiz), label: "Swap"),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.chat_bubble_outline),
+          label: "Chat",
+        ),
+        BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Discover"),
+      ],
     );
   }
 
@@ -98,7 +101,9 @@ class _AppBottomNavState extends State<AppBottomNav> {
           AnimatedContainer(
             duration: Duration(milliseconds: 300),
             padding: EdgeInsets.symmetric(
-                horizontal: isSelected ? 16 : 4, vertical: isSelected ? 6 : 4),
+              horizontal: isSelected ? 16 : 4,
+              vertical: isSelected ? 6 : 4,
+            ),
             decoration: BoxDecoration(
               color: isSelected ? Colors.white30 : Colors.transparent,
               borderRadius: BorderRadius.circular(20),
@@ -121,10 +126,12 @@ class _AppBottomNavState extends State<AppBottomNav> {
             ? HomeView(privateKey: _privateKey, dollar: "")
             : PreHome();
       case 1:
-        return isLoggedIn ? UserChat() : _buildLoginPrompt();
+        return isLoggedIn ? TrendingTokens() : _buildLoginPrompt();
       case 2:
         return isLoggedIn ? SwapScreen() : _buildLoginPrompt();
       case 3:
+        return isLoggedIn ? UserChat() : _buildLoginPrompt();
+      case 4:
         return SmartWebView();
       default:
         return HomeView(privateKey: _privateKey, dollar: "");

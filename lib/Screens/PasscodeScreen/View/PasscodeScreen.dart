@@ -27,6 +27,7 @@ class PasscodeScreen extends StatefulWidget {
     required this.data,
     this.splash = false,
   });
+
   @override
   _PasscodeScreenState createState() => _PasscodeScreenState();
 }
@@ -55,12 +56,13 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => PasscodeEntryView(
-                  savedPasscode: savedPasscode,
-                  click: widget.name,
-                  data: widget.data,
-                  splash: widget.splash,
-                )),
+          builder: (context) => PasscodeEntryView(
+            savedPasscode: savedPasscode,
+            click: widget.name,
+            data: widget.data,
+            splash: widget.splash,
+          ),
+        ),
       );
     }
   }
@@ -87,8 +89,10 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
         }
       } else {
         if (confirmPasscode.isNotEmpty) {
-          confirmPasscode =
-              confirmPasscode.substring(0, confirmPasscode.length - 1);
+          confirmPasscode = confirmPasscode.substring(
+            0,
+            confirmPasscode.length - 1,
+          );
         }
       }
     });
@@ -106,13 +110,15 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: Theme.of(context).bottomAppBarTheme.color ??
+              backgroundColor:
+                  Theme.of(context).bottomAppBarTheme.color ??
                   Color(0xFFD4D4D4),
               contentPadding: EdgeInsets.zero,
               content: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width *
+                  width:
+                      MediaQuery.of(context).size.width *
                       0.8, // Adjust the width as needed
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -134,13 +140,15 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                           children: [
                             AppText(
                               'Please enter both passcode',
-                              color:
-                                  Theme.of(context).colorScheme.surfaceBright,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceBright,
                             ),
                             AppText(
                               'and confirm passcode.',
-                              color:
-                                  Theme.of(context).colorScheme.surfaceBright,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceBright,
                             ),
                           ],
                         ),
@@ -152,18 +160,20 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                             Navigator.pop(context);
                           },
                           child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: Color(0XFF55F0D1),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Color(0XFF55F0D1),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 18.0,
+                                right: 18.0,
+                                top: 4,
+                                bottom: 4,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 18.0, right: 18.0, top: 4, bottom: 4),
-                                child: AppText(
-                                  "OK",
-                                  color: Colors.black,
-                                ),
-                              )),
+                              child: AppText("OK", color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -190,87 +200,92 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
             confirmPasscode = '';
           });
 
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return AppBottomNav();
-          }));
-          // print('wdvjhkjnmmmklmd');
-          showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context) {
-              return Container(
-                color: Theme.of(context).bottomAppBarTheme.color ??
-                    Color(0xFFD4D4D4),
-                height: 400,
-                padding: EdgeInsets.all(20.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Icon(
-                            Icons.clear,
-                            color: Theme.of(context).colorScheme.surfaceBright,
-                          )
-                        ],
-                      ),
-                    ),
-                    Image.asset(
-                      'assets/Images/correct.png',
-                      height: 100,
-                      width: 100,
-                    ),
-                    AppText(
-                      'Welcome! Let’s get started!',
-                      fontSize: 23.0,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.surfaceBright,
-                    ),
-                    SizedBox(height: 10.0),
-                    AppText(
-                      'Your wallet is ready! Jump in and start your journey.',
-                      fontSize: 13.0,
-                      color: Theme.of(context).colorScheme.surfaceBright,
-                    ),
-                    SizedBox(height: 10.0),
-                    AppText(
-                      'Stay safe on your crypto journey!',
-                      fontSize: 13.0,
-                      color: Theme.of(context).colorScheme.surfaceBright,
-                    ),
-                    SizedBox(height: 50.0),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Container(
-                        height: 44.0,
-                        width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(colors: [
-                              Color(0xFF912ECA),
-                              Color(0xFF912ECA),
-                              Color(0xFF793CDE),
-                              Color(0xFF793CDE),
-                            ])),
-                        child: Center(
-                            child: AppText(
-                          'Get Started with NVXO Wallet',
-                          color: Colors.black,
-                        )),
-                      ),
-                    )
-                  ],
-                ),
-              );
-            },
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) {
+                return AppBottomNav();
+              },
+            ),
           );
+          // print('wdvjhkjnmmmklmd');
+          // showModalBottomSheet(
+          //   context: context,
+          //   builder: (BuildContext context) {
+          //     return Container(
+          //       color: Theme.of(context).bottomAppBarTheme.color ??
+          //           Color(0xFFD4D4D4),
+          //       height: 400,
+          //       padding: EdgeInsets.all(20.0),
+          //       child: Column(
+          //         mainAxisSize: MainAxisSize.min,
+          //         crossAxisAlignment: CrossAxisAlignment.center,
+          //         children: <Widget>[
+          //           GestureDetector(
+          //             onTap: () {
+          //               Navigator.pop(context);
+          //             },
+          //             child: Row(
+          //               mainAxisAlignment: MainAxisAlignment.end,
+          //               children: [
+          //                 Icon(
+          //                   Icons.clear,
+          //                   color: Theme.of(context).colorScheme.surfaceBright,
+          //                 )
+          //               ],
+          //             ),
+          //           ),
+          //           Image.asset(
+          //             'assets/Images/correct.png',
+          //             height: 100,
+          //             width: 100,
+          //           ),
+          //           AppText(
+          //             'Welcome! Let’s get started!',
+          //             fontSize: 23.0,
+          //             fontWeight: FontWeight.bold,
+          //             color: Theme.of(context).colorScheme.surfaceBright,
+          //           ),
+          //           SizedBox(height: 10.0),
+          //           AppText(
+          //             'Your wallet is ready! Jump in and start your journey.',
+          //             fontSize: 13.0,
+          //             color: Theme.of(context).colorScheme.surfaceBright,
+          //           ),
+          //           SizedBox(height: 10.0),
+          //           AppText(
+          //             'Stay safe on your crypto journey!',
+          //             fontSize: 13.0,
+          //             color: Theme.of(context).colorScheme.surfaceBright,
+          //           ),
+          //           SizedBox(height: 50.0),
+          //           GestureDetector(
+          //             onTap: () {
+          //               Navigator.pop(context);
+          //             },
+          //             child: Container(
+          //               height: 44.0,
+          //               width: MediaQuery.of(context).size.width,
+          //               decoration: BoxDecoration(
+          //                   borderRadius: BorderRadius.circular(20),
+          //                   gradient: LinearGradient(colors: [
+          //                     Color(0xFF912ECA),
+          //                     Color(0xFF912ECA),
+          //                     Color(0xFF793CDE),
+          //                     Color(0xFF793CDE),
+          //                   ])),
+          //               child: Center(
+          //                   child: AppText(
+          //                 'Get Started with NVXO Wallet',
+          //                 color: Colors.black,
+          //               )),
+          //             ),
+          //           )
+          //         ],
+          //       ),
+          //     );
+          //   },
+          // );
         } else {
           // Show an alert if passcode saving fails
           showDialog(
@@ -279,7 +294,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
               return AlertDialog(
                 title: Text('Failed to Save Passcode'),
                 content: Text(
-                    'There was an issue saving the passcode. Please try again.'),
+                  'There was an issue saving the passcode. Please try again.',
+                ),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -298,13 +314,15 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              backgroundColor: Theme.of(context).bottomAppBarTheme.color ??
+              backgroundColor:
+                  Theme.of(context).bottomAppBarTheme.color ??
                   Color(0xFFD4D4D4),
               contentPadding: EdgeInsets.zero,
               content: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
-                  width: MediaQuery.of(context).size.width *
+                  width:
+                      MediaQuery.of(context).size.width *
                       0.8, // Adjust the width as needed
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -326,13 +344,15 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                           children: [
                             AppText(
                               'The passcode do not match.',
-                              color:
-                                  Theme.of(context).colorScheme.surfaceBright,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceBright,
                             ),
                             AppText(
                               'Please try again.',
-                              color:
-                                  Theme.of(context).colorScheme.surfaceBright,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceBright,
                             ),
                           ],
                         ),
@@ -344,18 +364,20 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                             Navigator.pop(context);
                           },
                           child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16),
-                                color: Color(0xFFB982FF),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Color(0xFFB982FF),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 18.0,
+                                right: 18.0,
+                                top: 4,
+                                bottom: 4,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 18.0, right: 18.0, top: 4, bottom: 4),
-                                child: AppText(
-                                  "OK",
-                                  color: Colors.black,
-                                ),
-                              )),
+                              child: AppText("OK", color: Colors.black),
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -374,184 +396,186 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
   LocalAuthentication? auth;
 
   DateTime? lastPressed;
+
   @override
   Widget build(BuildContext context) {
     List<Widget> passcodeDigitBoxes = [];
 
     for (int i = 0; i < 6; i++) {
-      passcodeDigitBoxes.add(PasscodeBoxUi(
-        digit: isSettingPasscode
-            ? (i < passcode.length ? '*' : '')
-            : (i < confirmPasscode.length ? '*' : ''),
-        isCorrect: isSettingPasscode,
-        boxColor: null,
-        colorCheck: false,
-      ));
+      passcodeDigitBoxes.add(
+        PasscodeBoxUi(
+          digit: isSettingPasscode
+              ? (i < passcode.length ? '*' : '')
+              : (i < confirmPasscode.length ? '*' : ''),
+          isCorrect: isSettingPasscode,
+          boxColor: Colors.grey,
+          colorCheck: false,
+        ),
+      );
     }
 
     return WillPopScope(
-        onWillPop: () async {
-          DateTime now = DateTime.now();
+      onWillPop: () async {
+        DateTime now = DateTime.now();
 
-          // Reset to "Create Passcode" screen if pressed back
-          if (lastPressed == null ||
-              now.difference(lastPressed!) > const Duration(seconds: 2)) {
-            lastPressed = now;
-            if (!isSettingPasscode) {
-              // If currently in the confirmation phase, navigate back to the create passcode phase
-              setState(() {
-                isSettingPasscode = true;
-                passcode = '';
-                confirmPasscode = '';
-              });
-              return false; // Prevent default back behavior
-            }
+        // Reset to "Create Passcode" screen if pressed back
+        if (lastPressed == null ||
+            now.difference(lastPressed!) > const Duration(seconds: 2)) {
+          lastPressed = now;
+          if (!isSettingPasscode) {
+            // If currently in the confirmation phase, navigate back to the create passcode phase
+            setState(() {
+              isSettingPasscode = true;
+              passcode = '';
+              confirmPasscode = '';
+            });
+            return false; // Prevent default back behavior
           }
-          return false; // Allow back action if not in the confirmation step
-        },
-        child: Scaffold(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar: AppBar(
-            title: Text(
-              '',
+        }
+        return false; // Allow back action if not in the confirmation step
+      },
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        appBar: AppBar(
+          title: Text(''),
+          // leading: Icon(Icons.arrow_back,color: Color(0xFF363738),),
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text(
+              isSettingPasscode ? 'Create Passcode' : 'Confirm Passcode',
+              style: TextStyle(
+                fontSize: 24,
+                color: Theme.of(context).colorScheme.surfaceBright,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            // leading: Icon(Icons.arrow_back,color: Color(0xFF363738),),
-            automaticallyImplyLeading: false,
-          ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(
-                isSettingPasscode ? 'Create Passcode' : 'Confirm Passcode',
-                style: TextStyle(
-                    fontSize: 24,
-                    color: Theme.of(context).colorScheme.surfaceBright,
-                    fontWeight: FontWeight.w500),
-              ),
-              SizedBox(height: 60),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: passcodeDigitBoxes,
-              ),
-              SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  PasscodeButton(
-                    label: '1',
-                    onPressed: () => _handleButtonPress('1'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                  PasscodeButton(
-                    label: '2',
-                    onPressed: () => _handleButtonPress('2'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                  PasscodeButton(
-                    label: '3',
-                    onPressed: () => _handleButtonPress('3'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  PasscodeButton(
-                    label: '4',
-                    onPressed: () => _handleButtonPress('4'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                  PasscodeButton(
-                    label: '5',
-                    onPressed: () => _handleButtonPress('5'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                  PasscodeButton(
-                    label: '6',
-                    onPressed: () => _handleButtonPress('6'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  PasscodeButton(
-                    label: '7',
-                    onPressed: () => _handleButtonPress('7'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                  PasscodeButton(
-                    label: '8',
-                    onPressed: () => _handleButtonPress('8'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                  PasscodeButton(
-                    label: '9',
-                    onPressed: () => _handleButtonPress('9'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  Platform.isIOS
-                      ? PasscodeButton(
-                          label: '',
-                          backgroundColor: Colors.transparent,
-                          labelColor:
-                              Theme.of(context).colorScheme.surfaceBright,
-                        )
-                      : GestureDetector(
-                          onTap: () {
-                            // _authenticateWithBiometrics();
-                          },
-                          child: Icon(
-                            Icons.fingerprint,
-                            size: 50.0,
-                            color: Theme.of(context).colorScheme.surfaceBright,
-                          ),
-                        ),
-                  PasscodeButton(
-                    label: '0',
-                    onPressed: () => _handleButtonPress('0'),
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                  ),
-                  PasscodeButton(
-                    label: '00',
-                    onPressed: _handleDelete,
-                    backgroundColor: Colors.transparent,
-                    labelColor: Theme.of(context).colorScheme.surfaceBright,
-                    isDeleteButton: true,
-                  ),
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20),
-                child: ReuseElevatedButton(
-                  onTap: _handleDone,
-                  width: MediaQuery.sizeOf(context).width,
-                  height: 45,
-                  text: 'Next',
-                  textcolor: Colors.black,
-                  gradientColors: [Color(0XFF70A2FF), Color(0XFF54F0D1)],
+            SizedBox(height: 60),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: passcodeDigitBoxes,
+            ),
+            SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                PasscodeButton(
+                  label: '1',
+                  onPressed: () => _handleButtonPress('1'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
                 ),
+                PasscodeButton(
+                  label: '2',
+                  onPressed: () => _handleButtonPress('2'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+                PasscodeButton(
+                  label: '3',
+                  onPressed: () => _handleButtonPress('3'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                PasscodeButton(
+                  label: '4',
+                  onPressed: () => _handleButtonPress('4'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+                PasscodeButton(
+                  label: '5',
+                  onPressed: () => _handleButtonPress('5'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+                PasscodeButton(
+                  label: '6',
+                  onPressed: () => _handleButtonPress('6'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                PasscodeButton(
+                  label: '7',
+                  onPressed: () => _handleButtonPress('7'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+                PasscodeButton(
+                  label: '8',
+                  onPressed: () => _handleButtonPress('8'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+                PasscodeButton(
+                  label: '9',
+                  onPressed: () => _handleButtonPress('9'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Platform.isIOS
+                    ? PasscodeButton(
+                        label: '',
+                        backgroundColor: Colors.transparent,
+                        labelColor: Theme.of(context).colorScheme.surfaceBright,
+                      )
+                    : GestureDetector(
+                        onTap: () {
+                          // _authenticateWithBiometrics();
+                        },
+                        child: Icon(
+                          Icons.fingerprint,
+                          size: 50.0,
+                          color: Theme.of(context).colorScheme.surfaceBright,
+                        ),
+                      ),
+                PasscodeButton(
+                  label: '0',
+                  onPressed: () => _handleButtonPress('0'),
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                ),
+                PasscodeButton(
+                  label: '00',
+                  onPressed: _handleDelete,
+                  backgroundColor: Colors.transparent,
+                  labelColor: Theme.of(context).colorScheme.surfaceBright,
+                  isDeleteButton: true,
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: ReuseElevatedButton(
+                onTap: _handleDone,
+                width: MediaQuery.sizeOf(context).width,
+                height: 45,
+                text: 'Next',
+                textcolor: Colors.black,
+                gradientColors: [Color(0XFF70A2FF), Color(0XFF54F0D1)],
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   void deviceCapability() async {

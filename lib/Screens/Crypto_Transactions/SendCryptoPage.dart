@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:securywallet/Asset_Functions/Asset_Balance/AssetBalanceFunction.dart';
@@ -26,12 +27,14 @@ class SendCryptoPage extends StatefulWidget {
   final UserWalletDataModel walletData;
   String balance;
   String? ethAddress;
-  SendCryptoPage(
-      {super.key,
-      this.ethAddress,
-      required this.assetData,
-      required this.walletData,
-      required this.balance});
+
+  SendCryptoPage({
+    super.key,
+    this.ethAddress,
+    required this.assetData,
+    required this.walletData,
+    required this.balance,
+  });
 
   @override
   State<SendCryptoPage> createState() => _SendCryptoPageState();
@@ -53,6 +56,7 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
   bool isLoading = false;
 
   late Web3Client client;
+
   Future<num> fetchBitcoinFee() async {
     String blockCypherApi = widget.assetData.coinSymbol == "BTC"
         ? 'https://api.blockcypher.com/v1/btc/main'
@@ -141,7 +145,8 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
         }
       } else {
         throw Exception(
-            'Failed to fetch account data, Status Code: ${response.statusCode}');
+          'Failed to fetch account data, Status Code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       print('Error occurred: $e');
@@ -183,7 +188,8 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
         }
       } else {
         throw Exception(
-            'Failed to fetch server info, Status Code: ${response.statusCode}');
+          'Failed to fetch server info, Status Code: ${response.statusCode}',
+        );
       }
     } catch (e) {
       print('Error occurred: $e');
@@ -232,14 +238,16 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
+    print("${widget.walletData.walletAddress}");
     if (widget.assetData.coinSymbol!.toUpperCase().contains("BTC")) {
       fetchBitcoinFee();
     }
     if (widget.ethAddress != null && widget.ethAddress!.contains("0x")) {
       Future.delayed(Duration(), () async {
         var bal = await assetBalanceFunction.ethBalance(
-            widget.assetData, localStorageService.activeWalletData!.privateKey);
+          widget.assetData,
+          localStorageService.activeWalletData!.privateKey,
+        );
         setState(() {
           widget.balance = bal;
         });
@@ -253,18 +261,20 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
 
     if (widget.assetData.coinType == "2") {
       setState(() {
-        gasFeeFunction = widget.assetData.gasPriceSymbol!
-                .toUpperCase()
-                .contains("SOL")
+        gasFeeFunction =
+            widget.assetData.gasPriceSymbol!.toUpperCase().contains("SOL")
             ? assetBalanceFunction.getSolBalance(
-                widget.assetData, widget.walletData)
+                widget.assetData,
+                widget.walletData,
+              )
             : widget.assetData.gasPriceSymbol == "TRX"
-                ? assetBalanceFunction.getTrxBalance(widget.assetData.address!)
-                : widget.assetData.gasPriceSymbol == "tTRX"
-                    ? assetBalanceFunction
-                        .trxTestnetBalance(widget.assetData.address!)
-                    : assetBalanceFunction.ethBalance(
-                        widget.assetData, widget.walletData.privateKey);
+            ? assetBalanceFunction.getTrxBalance(widget.assetData.address!)
+            : widget.assetData.gasPriceSymbol == "tTRX"
+            ? assetBalanceFunction.trxTestnetBalance(widget.assetData.address!)
+            : assetBalanceFunction.ethBalance(
+                widget.assetData,
+                widget.walletData.privateKey,
+              );
       });
     }
     if (widget.ethAddress == null) {
@@ -293,8 +303,9 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
     walletConnectionRequest = context.watch<WalletConnectionRequest>();
     walletConnectionRequest.initializeContext(context);
     return Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      backgroundColor: Color(0XFF131720),
       appBar: AppBar(
+        backgroundColor: Color(0XFF131720),
         centerTitle: true,
         title: AppText(
           "Send ${widget.assetData.coinSymbol}",
@@ -303,134 +314,317 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
           fontSize: 18,
         ),
         leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back,
-                color: Theme.of(context).indicatorColor)),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).indicatorColor,
+          ),
+        ),
       ),
       body: Form(
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.all(15.0),
-          child: Stack(alignment: Alignment.bottomCenter, children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                AppText(
-                  "To Address",
-                  fontSize: 14,
-                ),
-                TextFormField(
-                  controller: addressCtrl,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (v) {
-                    print(widget.assetData.toJson());
-                    if (v!.isEmpty) {
-                      return "Please enter ${widget.assetData.coinSymbol} address";
-                    } else if (!isValidCryptoAddress(
-                        v, widget.assetData.gasPriceSymbol.toString())) {
-                      return "Please enter valid ${widget.assetData.coinSymbol} address";
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    suffixIcon: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextButton(
-                          onPressed: () async {
-                            ClipboardData? data =
-                                await Clipboard.getData(Clipboard.kTextPlain);
-                            if (data != null) {
-                              setState(() {
-                                addressCtrl.text = data.text ?? '';
-                              });
+          child: Stack(
+            alignment: Alignment.bottomCenter,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0, left: 8),
+                    child: AppText(
+                      "Address or Domain name",
+                      fontSize: 15,
+                      color: Color(0XFF858585),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width * 0.75,
+                        child: TextFormField(
+                          controller: addressCtrl,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          validator: (v) {
+                            print(widget.assetData.toJson());
+                            if (v!.isEmpty) {
+                              return "Please enter ${widget.assetData.coinSymbol} address";
+                            } else if (!isValidCryptoAddress(
+                              v,
+                              widget.assetData.gasPriceSymbol.toString(),
+                            )) {
+                              return "Please enter valid ${widget.assetData.coinSymbol} address";
                             }
+                            return null;
                           },
-                          child: AppText(
-                            "Paste",
-                            fontSize: 14,
+                          decoration: InputDecoration(
+                            suffixIcon: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                TextButton(
+                                  onPressed: () async {
+                                    ClipboardData? data =
+                                        await Clipboard.getData(
+                                          Clipboard.kTextPlain,
+                                        );
+                                    if (data != null) {
+                                      setState(() {
+                                        addressCtrl.text = data.text ?? '';
+                                      });
+                                    }
+                                  },
+                                  child: AppText(
+                                    "Paste",
+                                    fontSize: 14,
+                                    fontFamily: 'LexendDeca',
+                                    color: const Color(0xFFaf77f8),
+                                  ),
+                                ),
+                                // IconButton(
+                                //   icon: Icon(
+                                //     Icons.qr_code,
+                                //     color: Theme.of(context).indicatorColor,
+                                //   ),
+                                //   onPressed: () {
+                                //     addressCtrl.clear();
+                                //     amountCtrl.clear();
+                                //     if (widget.assetData.coinType == "1" ||
+                                //         (widget.assetData.coinType == "2" &&
+                                //             widget.assetData.rpcURL != "")) {
+                                //       FocusScope.of(context).unfocus();
+                                //       Future.delayed(
+                                //         Duration(milliseconds: 500),
+                                //         () {
+                                //           Navigator.of(context)
+                                //               .push(
+                                //                 MaterialPageRoute(
+                                //                   builder: (builder) =>
+                                //                       QRView(back: true),
+                                //                 ),
+                                //               )
+                                //               .then((value) {
+                                //                 if (value == null) {
+                                //                 } else if (value != null &&
+                                //                     value.contains(":")) {
+                                //                   var addres = value
+                                //                       .split(":")
+                                //                       .last;
+                                //                   addres = addres
+                                //                       .split("?")
+                                //                       .first;
+                                //                   setState(() {
+                                //                     addressCtrl.text = addres;
+                                //                     if (value.contains(
+                                //                       "?amount=",
+                                //                     )) {
+                                //                       amountCtrl.text = value
+                                //                           .split("amount=")
+                                //                           .last;
+                                //                     }
+                                //                   });
+                                //                 } else {
+                                //                   setState(() {
+                                //                     addressCtrl.text =
+                                //                         value ?? "";
+                                //                   });
+                                //                 }
+                                //               });
+                                //         },
+                                //       );
+                                //     } else {
+                                //       FocusScope.of(context).unfocus();
+                                //       Future.delayed(
+                                //         Duration(milliseconds: 500),
+                                //         () {
+                                //           Navigator.of(context)
+                                //               .push(
+                                //                 MaterialPageRoute(
+                                //                   builder: (builder) =>
+                                //                       QRView(back: true),
+                                //                 ),
+                                //               )
+                                //               .then((value) {
+                                //                 if (value != null) {
+                                //                   if (value
+                                //                       is Map<String, String>) {
+                                //                     String rawAddress =
+                                //                         value['barcode'] ?? '';
+                                //
+                                //                     String formattedAddress =
+                                //                         rawAddress.contains(':')
+                                //                         ? rawAddress
+                                //                               .split(':')
+                                //                               .last
+                                //                               .split('amount')
+                                //                               .first
+                                //                         : rawAddress
+                                //                               .split('amount')
+                                //                               .first;
+                                //                     String amount =
+                                //                         rawAddress.contains(
+                                //                           'amount=',
+                                //                         )
+                                //                         ? rawAddress
+                                //                               .split('amount=')
+                                //                               .last
+                                //                         : value['value'] != null
+                                //                         ? value['value']!
+                                //                         : '';
+                                //
+                                //                     if (isValidCryptoAddress(
+                                //                       formattedAddress,
+                                //                       widget
+                                //                           .assetData
+                                //                           .gasPriceSymbol!,
+                                //                     )) {
+                                //                       setState(() {
+                                //                         addressCtrl.text =
+                                //                             formattedAddress;
+                                //                         amountCtrl.text =
+                                //                             amount;
+                                //                       });
+                                //                     } else {}
+                                //                   } else if (value != null &&
+                                //                       value.contains(":")) {
+                                //                     var addres = value
+                                //                         .split(":")
+                                //                         .last;
+                                //                     addres = addres
+                                //                         .split("?")
+                                //                         .first;
+                                //                     setState(() {
+                                //                       addressCtrl.text = addres;
+                                //                       if (value.contains(
+                                //                         "?amount=",
+                                //                       )) {
+                                //                         amountCtrl.text = value
+                                //                             .split("amount=")
+                                //                             .last;
+                                //                       }
+                                //                     });
+                                //                   } else if (value is String) {
+                                //                     String formattedAddress =
+                                //                         value.contains(':')
+                                //                         ? value
+                                //                               .split(':')
+                                //                               .last
+                                //                               .split('amount')
+                                //                               .first
+                                //                         : value
+                                //                               .split('amount')
+                                //                               .first;
+                                //                     String amount =
+                                //                         value.contains(
+                                //                           'amount=',
+                                //                         )
+                                //                         ? value
+                                //                               .split('amount=')
+                                //                               .last
+                                //                         : '';
+                                //
+                                //                     if (isValidCryptoAddress(
+                                //                       formattedAddress,
+                                //                       widget
+                                //                           .assetData
+                                //                           .gasPriceSymbol!,
+                                //                     )) {
+                                //                       setState(() {
+                                //                         addressCtrl.text =
+                                //                             formattedAddress;
+                                //                         amountCtrl.text =
+                                //                             amount;
+                                //                       });
+                                //                     } else {}
+                                //                   }
+                                //                 } else if (value == null) {
+                                //                 } else if (value != null &&
+                                //                     value.contains(":")) {
+                                //                   var addres = value
+                                //                       .split(":")
+                                //                       .last;
+                                //                   addres = addres
+                                //                       .split("?")
+                                //                       .first;
+                                //                   setState(() {
+                                //                     addressCtrl.text = addres;
+                                //                     if (value.contains(
+                                //                       "?amount=",
+                                //                     )) {
+                                //                       amountCtrl.text = value
+                                //                           .split("amount=")
+                                //                           .last;
+                                //                     }
+                                //                   });
+                                //                 } else {
+                                //                   setState(() {
+                                //                     addressCtrl.text =
+                                //                         value ?? "";
+                                //                   });
+                                //                 }
+                                //               });
+                                //         },
+                                //       );
+                                //     }
+                                //   },
+                                // ),
+                              ],
+                            ),
+
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.white.withOpacity(
+                                  0.3,
+                                ), // Focus color
+                              ),
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0XFFaf77f8), // Focus color
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            hintText: 'Enter Address',
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.transparent, // Focus color
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          style: TextStyle(
                             fontFamily: 'LexendDeca',
-                            color: const Color(0xFFB982FF),
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).colorScheme.surfaceBright,
+                            fontSize: 18,
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(
-                            Icons.qr_code,
-                            color: Theme.of(context).indicatorColor,
-                          ),
-                          onPressed: () {
-                            addressCtrl.clear();
-                            amountCtrl.clear();
-                            if (widget.assetData.coinType == "1" ||
-                                (widget.assetData.coinType == "2" &&
-                                    widget.assetData.rpcURL != "")) {
-                              FocusScope.of(context).unfocus();
-                              Future.delayed(Duration(milliseconds: 500), () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                        builder: (builder) => QRView(
-                                              back: true,
-                                            )))
-                                    .then((value) {
-                                  if (value == null) {
-                                  } else if (value != null &&
-                                      value.contains(":")) {
-                                    var addres = value.split(":").last;
-                                    addres = addres.split("?").first;
-                                    setState(() {
-                                      addressCtrl.text = addres;
-                                      if (value.contains("?amount=")) {
-                                        amountCtrl.text =
-                                            value.split("amount=").last;
-                                      }
-                                    });
-                                  } else {
-                                    setState(() {
-                                      addressCtrl.text = value ?? "";
-                                    });
-                                  }
-                                });
-                              });
-                            } else {
-                              FocusScope.of(context).unfocus();
-                              Future.delayed(Duration(milliseconds: 500), () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(
-                                        builder: (builder) => QRView(
-                                              back: true,
-                                            )))
-                                    .then((value) {
-                                  if (value != null) {
-                                    if (value is Map<String, String>) {
-                                      String rawAddress =
-                                          value['barcode'] ?? '';
-
-                                      String formattedAddress = rawAddress
-                                              .contains(':')
-                                          ? rawAddress
-                                              .split(':')
-                                              .last
-                                              .split('amount')
-                                              .first
-                                          : rawAddress.split('amount').first;
-                                      String amount =
-                                          rawAddress.contains('amount=')
-                                              ? rawAddress.split('amount=').last
-                                              : value['value'] != null
-                                                  ? value['value']!
-                                                  : '';
-
-                                      if (isValidCryptoAddress(formattedAddress,
-                                          widget.assetData.gasPriceSymbol!)) {
-                                        setState(() {
-                                          addressCtrl.text = formattedAddress;
-                                          amountCtrl.text = amount;
-                                        });
-                                      } else {}
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          addressCtrl.clear();
+                          amountCtrl.clear();
+                          if (widget.assetData.coinType == "1" ||
+                              (widget.assetData.coinType == "2" &&
+                                  widget.assetData.rpcURL != "")) {
+                            FocusScope.of(context).unfocus();
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              Navigator.of(context)
+                                  .push(
+                                    MaterialPageRoute(
+                                      builder: (builder) => QRView(back: true),
+                                    ),
+                                  )
+                                  .then((value) {
+                                    if (value == null) {
                                     } else if (value != null &&
                                         value.contains(":")) {
                                       var addres = value.split(":").last;
@@ -438,227 +632,294 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
                                       setState(() {
                                         addressCtrl.text = addres;
                                         if (value.contains("?amount=")) {
-                                          amountCtrl.text =
-                                              value.split("amount=").last;
+                                          amountCtrl.text = value
+                                              .split("amount=")
+                                              .last;
                                         }
                                       });
-                                    } else if (value is String) {
-                                      String formattedAddress =
-                                          value.contains(':')
-                                              ? value
+                                    } else {
+                                      setState(() {
+                                        addressCtrl.text = value ?? "";
+                                      });
+                                    }
+                                  });
+                            });
+                          } else {
+                            FocusScope.of(context).unfocus();
+                            Future.delayed(Duration(milliseconds: 500), () {
+                              Navigator.of(context)
+                                  .push(
+                                    MaterialPageRoute(
+                                      builder: (builder) => QRView(back: true),
+                                    ),
+                                  )
+                                  .then((value) {
+                                    if (value != null) {
+                                      if (value is Map<String, String>) {
+                                        String rawAddress =
+                                            value['barcode'] ?? '';
+
+                                        String formattedAddress =
+                                            rawAddress.contains(':')
+                                            ? rawAddress
                                                   .split(':')
                                                   .last
                                                   .split('amount')
                                                   .first
-                                              : value.split('amount').first;
-                                      String amount = value.contains('amount=')
-                                          ? value.split('amount=').last
-                                          : '';
+                                            : rawAddress.split('amount').first;
+                                        String amount =
+                                            rawAddress.contains('amount=')
+                                            ? rawAddress.split('amount=').last
+                                            : value['value'] != null
+                                            ? value['value']!
+                                            : '';
 
-                                      if (isValidCryptoAddress(formattedAddress,
-                                          widget.assetData.gasPriceSymbol!)) {
+                                        if (isValidCryptoAddress(
+                                          formattedAddress,
+                                          widget.assetData.gasPriceSymbol!,
+                                        )) {
+                                          setState(() {
+                                            addressCtrl.text = formattedAddress;
+                                            amountCtrl.text = amount;
+                                          });
+                                        } else {}
+                                      } else if (value != null &&
+                                          value.contains(":")) {
+                                        var addres = value.split(":").last;
+                                        addres = addres.split("?").first;
                                         setState(() {
-                                          addressCtrl.text = formattedAddress;
-                                          amountCtrl.text = amount;
+                                          addressCtrl.text = addres;
+                                          if (value.contains("?amount=")) {
+                                            amountCtrl.text = value
+                                                .split("amount=")
+                                                .last;
+                                          }
                                         });
-                                      } else {}
-                                    }
-                                  } else if (value == null) {
-                                  } else if (value != null &&
-                                      value.contains(":")) {
-                                    var addres = value.split(":").last;
-                                    addres = addres.split("?").first;
-                                    setState(() {
-                                      addressCtrl.text = addres;
-                                      if (value.contains("?amount=")) {
-                                        amountCtrl.text =
-                                            value.split("amount=").last;
+                                      } else if (value is String) {
+                                        String formattedAddress =
+                                            value.contains(':')
+                                            ? value
+                                                  .split(':')
+                                                  .last
+                                                  .split('amount')
+                                                  .first
+                                            : value.split('amount').first;
+                                        String amount =
+                                            value.contains('amount=')
+                                            ? value.split('amount=').last
+                                            : '';
+
+                                        if (isValidCryptoAddress(
+                                          formattedAddress,
+                                          widget.assetData.gasPriceSymbol!,
+                                        )) {
+                                          setState(() {
+                                            addressCtrl.text = formattedAddress;
+                                            amountCtrl.text = amount;
+                                          });
+                                        } else {}
                                       }
+                                    } else if (value == null) {
+                                    } else if (value != null &&
+                                        value.contains(":")) {
+                                      var addres = value.split(":").last;
+                                      addres = addres.split("?").first;
+                                      setState(() {
+                                        addressCtrl.text = addres;
+                                        if (value.contains("?amount=")) {
+                                          amountCtrl.text = value
+                                              .split("amount=")
+                                              .last;
+                                        }
+                                      });
+                                    } else {
+                                      setState(() {
+                                        addressCtrl.text = value ?? "";
+                                      });
+                                    }
+                                  });
+                            });
+                          }
+                        },
+                        child: Image.asset(
+                          "assets/Images/Arrow left.png",
+                          height: 50,
+                          width: 50,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: SizeConfig.height(context, 2)),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0, left: 8),
+                    child: AppText(
+                      "Amount",
+                      fontSize: 15,
+                      color: Color(0XFF858585),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0, right: 8),
+                    child: TextFormField(
+                      controller: amountCtrl,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onTap: () {
+                        if (num.parse(widget.balance) ==
+                            num.tryParse(amountCtrl.text)) {
+                          isMaxClicked = true;
+                        } else {
+                          isMaxClicked = false;
+                        }
+                      },
+                      onChanged: (v) {
+                        if (num.parse(widget.balance) == num.tryParse(v)) {
+                          isMaxClicked = true;
+                        } else {
+                          isMaxClicked = false;
+                        }
+                      },
+                      validator: (v) {
+                        if (v!.isEmpty) {
+                          return "Please enter amount";
+                        } else if (v.contains('.')) {
+                          final parts = v.split('.');
+                          if (parts.length > 1 &&
+                              parts[1].length >
+                                  int.parse(
+                                    widget.assetData.tokenDecimal == null ||
+                                            widget.assetData.tokenDecimal == ""
+                                        ? "18"
+                                        : widget.assetData.tokenDecimal ?? "18",
+                                  )) {
+                            return 'Max allowed decimals ${widget.assetData.tokenDecimal ?? "18"}';
+                          }
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
+                      textInputAction: TextInputAction.go,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                          RegExp(r'^(\d+)?\.?\d{0,}$'),
+                        ),
+                      ],
+                      decoration: InputDecoration(
+                        suffixIcon: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.network(
+                              widget.assetData.imageUrl!,
+                              height: 30,
+                              width: 30,
+                            ),
+                            SizedBox(width: 5),
+                            AppText(
+                              "${widget.assetData.coinSymbol}",
+                              color: Color(0XFF696969),
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                            ),
+                            TextButton(
+                              onPressed: () async {
+                                try {
+                                  if (widget.assetData.coinType == "1" ||
+                                      widget.assetData.coinType == "2") {
+                                    double balance = double.parse(
+                                      widget.balance,
+                                    );
+
+                                    bool isToken =
+                                        widget.assetData.coinType == "2";
+                                    print("$isToken");
+                                    setState(() {
+                                      amountCtrl.text = balanceFormat
+                                          .formatBalance(widget.balance);
+                                      isMaxClicked = true;
                                     });
                                   } else {
+                                    bool isBTC =
+                                        widget.assetData.coinType == "3";
+                                    double balance = double.parse(
+                                      balanceFormat.formatBalance(
+                                        widget.balance,
+                                      ),
+                                    );
+
                                     setState(() {
-                                      addressCtrl.text = value ?? "";
+                                      amountCtrl.text = isBTC
+                                          ? balanceFormat.formatBalance(
+                                              widget.balance,
+                                            )
+                                          : '0';
+                                      isMaxClicked = true;
                                     });
                                   }
-                                });
-                              });
-                            }
-                          },
+                                } catch (e) {
+                                  print("An error occurred: $e");
+                                }
+                              },
+                              child: AppText(
+                                "Max",
+                                fontSize: 14,
+                                fontFamily: 'LexendDeca',
+                                color: Color(0xFFB982FF),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    fillColor: Colors.white24, // Set the background color here
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.transparent, // Focus color
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white30, // Focus color
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    hintText: 'Enter Address',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.transparent, // Focus color
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  style: TextStyle(
-                    fontFamily: 'LexendDeca',
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.surfaceBright,
-                    fontSize: 18,
-                  ),
-                ),
-                SizedBox(height: SizeConfig.height(context, 2)),
-                AppText(
-                  "Amount",
-                  fontSize: 14,
-                ),
-                TextFormField(
-                  controller: amountCtrl,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  onTap: () {
-                    if (num.parse(widget.balance) ==
-                        num.tryParse(amountCtrl.text)) {
-                      isMaxClicked = true;
-                    } else {
-                      isMaxClicked = false;
-                    }
-                  },
-                  onChanged: (v) {
-                    if (num.parse(widget.balance) == num.tryParse(v)) {
-                      isMaxClicked = true;
-                    } else {
-                      isMaxClicked = false;
-                    }
-                  },
-                  validator: (v) {
-                    if (v!.isEmpty) {
-                      return "Please enter amount";
-                    } else if (v.contains('.')) {
-                      final parts = v.split('.');
-                      if (parts.length > 1 &&
-                          parts[1].length >
-                              int.parse(widget.assetData.tokenDecimal == null ||
-                                      widget.assetData.tokenDecimal == ""
-                                  ? "18"
-                                  : widget.assetData.tokenDecimal ?? "18")) {
-                        return 'Max allowed decimals ${widget.assetData.tokenDecimal ?? "18"}';
-                      }
-                    }
-                    return null;
-                  },
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  textInputAction: TextInputAction.go,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(
-                        RegExp(r'^(\d+)?\.?\d{0,}$')),
-                  ],
-                  decoration: InputDecoration(
-                    suffixIcon: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        TextButton(
-                          onPressed: () async {
-                            try {
-                              if (widget.assetData.coinType == "1" ||
-                                  widget.assetData.coinType == "2") {
-                                double balance = double.parse(widget.balance);
 
-                                bool isToken = widget.assetData.coinType == "2";
-                                print("$isToken");
-                                setState(() {
-                                  amountCtrl.text = balanceFormat
-                                      .formatBalance(widget.balance);
-                                  isMaxClicked = true;
-                                });
-                              } else {
-                                bool isBTC = widget.assetData.coinType == "3";
-                                double balance = double.parse(balanceFormat
-                                    .formatBalance(widget.balance));
-
-                                setState(() {
-                                  amountCtrl.text = isBTC
-                                      ? balanceFormat
-                                          .formatBalance(widget.balance)
-                                      : '0';
-                                  isMaxClicked = true;
-                                });
-                              }
-                            } catch (e) {
-                              print("An error occurred: $e");
-                            }
-                          },
-                          child: AppText(
-                            "Max",
-                            fontSize: 14,
-                            fontFamily: 'LexendDeca',
-                            color: Color(0xFFB982FF),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.white.withOpacity(0.3), // Focus color
                           ),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Color(0xFFB982FF), // Focus color
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        hintText: '${widget.assetData.coinSymbol} Amount',
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.transparent, // Focus color
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      style: TextStyle(
+                        fontFamily: 'LexendDeca',
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).colorScheme.surfaceBright,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: SizeConfig.height(context, 2)),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Row(
+                      children: [
+                        AppText(
+                          "${balanceFormat.formatBalanceToString(widget.balance)} ${widget.assetData.coinSymbol}",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Color(0XFFBBBBBB),
                         ),
                       ],
                     ),
-                    fillColor: Colors.white24, // Set the background color here
-                    filled: true,
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.transparent, // Focus color
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.white30, // Focus color
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    hintText: '${widget.assetData.coinSymbol} Amount',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Colors.transparent, // Focus color
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
                   ),
-                  style: TextStyle(
-                    fontFamily: 'LexendDeca',
-                    fontWeight: FontWeight.w400,
-                    color: Theme.of(context).colorScheme.surfaceBright,
-                    fontSize: 18,
-                  ),
-                ),
-                SizedBox(
-                  height: SizeConfig.height(context, 2),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppText(
-                      "Balance:",
-                      fontSize: 14,
-                    ),
-                    AppText(
-                      "${balanceFormat.formatBalanceToString(widget.balance)} ${widget.assetData.coinSymbol}",
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    )
-                  ],
-                ),
-                widget.assetData.coinType == "2"
-                    ? Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: FutureBuilder<String>(
+                  widget.assetData.coinType == "2"
+                      ? Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                          child: FutureBuilder<String>(
                             future: gasFeeFunction!,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
@@ -674,423 +935,480 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
                                       "${balanceFormat.formatBalanceToString(snapshot.data!)} ${widget.assetData.gasPriceSymbol}",
                                       fontWeight: FontWeight.w500,
                                       fontSize: 14,
-                                    )
+                                    ),
                                   ],
                                 );
                               }
                               return SizedBox();
-                            }),
-                      )
-                    : SizedBox(),
-                if (widget.assetData.coinSymbol == "XRP" ||
-                    widget.assetData.coinSymbol == "tXRP")
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: Container(
+                            },
+                          ),
+                        )
+                      : SizedBox(),
+                  if (widget.assetData.coinSymbol == "XRP" ||
+                      widget.assetData.coinSymbol == "tXRP")
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                      child: Container(
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Color(0xFF512e5f).withOpacity(0.5)),
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xFF512e5f).withOpacity(0.5),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
-                              child: Row(
-                            children: [
-                              Icon(
-                                Icons.info,
-                                color: Colors.orange[400],
-                                size: 18,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Expanded(
-                                child: AppText(
-                                  "The ${widget.assetData.coinSymbol} network requires a one-time fee of 1 ${widget.assetData.coinSymbol} for account activation",
-                                  fontSize: 12,
-                                  overflow: TextOverflow.visible,
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.info,
+                                  color: Colors.orange[400],
+                                  size: 18,
                                 ),
-                              ),
-                            ],
-                          )),
-                        )),
-                  ),
-                Expanded(child: SizedBox()),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
+                                SizedBox(width: 5),
+                                Expanded(
+                                  child: AppText(
+                                    "The ${widget.assetData.coinSymbol} network requires a one-time fee of 1 ${widget.assetData.coinSymbol} for account activation",
+                                    fontSize: 12,
+                                    overflow: TextOverflow.visible,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  Expanded(child: SizedBox()),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
                   top: 32.0,
-                  bottom: 8.0,
+                  bottom: 16.0,
                   left: 16.0,
-                  right: 16.0), // Add some padding for spacing
-              child: isLoading
-                  ? CircularProgressIndicator(
-                      color: Colors.purpleAccent[100],
-                    )
-                  : ReuseElevatedButton(
-                      onTap: isLoading
-                          ? null
-                          : () async {
-                              FocusScope.of(context).unfocus();
-                              if (_formKey.currentState!.validate() &&
-                                  addressCtrl.text.isNotEmpty &&
-                                  amountCtrl.text.isNotEmpty) {
-                                double enteredAmount =
-                                    double.parse(amountCtrl.text);
-                                double tokenBalance =
-                                    double.parse(widget.balance);
-                                if (enteredAmount > tokenBalance) {
-                                  Utils.snackBarErrorMessage(
-                                      "Insufficient Balance");
-                                } else if (enteredAmount <= 0) {
-                                  Utils.snackBarErrorMessage(
-                                      "Enter Amount Greater Than Zero");
-                                } else {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-                                  if (widget.assetData.rpcURL == "" ||
-                                      widget.assetData.coinSymbol == "DOG1E" ||
-                                      widget.assetData.coinSymbol == "tDOG1E") {
-                                    // if (widget.assetData.gasPriceSymbol!
-                                    //     .contains("SOL")) {
-                                    //   var sol = await SolTransaction()
-                                    //       .solEstGas(context,
-                                    //           coinData: widget.assetData,
-                                    //           enterAmount:
-                                    //               enteredAmount.toString(),
-                                    //           toAddress: addressCtrl.text,
-                                    //           userWallet: localStorageService
-                                    //               .activeWalletData!);
-                                    //   solGas = sol.toDouble();
-                                    // } else
-                                      if (widget.assetData.gasPriceSymbol!
-                                        .contains("TRX")) {
-                                      var trx = await fetchTrxBandwidth();
-                                      tronGas = trx.toDouble();
-                                      if (widget.assetData.coinType == "2") {
-                                        var energy = await fetchTrxEnergy();
-                                        tronEnergy = energy.toDouble();
-                                      }
-                                    }
-
-                                    fetchXrpTnxFee();
-                                    double amountControl =
-                                        double.tryParse(amountCtrl.text) ?? 0.0;
-
-                                    double btcGas1 =
-                                        double.tryParse(btcGas.toString()) ??
-                                            0.0;
-
-                                    double solGas1 =
-                                        double.tryParse(solGas.toString()) ??
-                                            0.0;
-
-                                    double xrpGas1 = double.tryParse(
-                                            1.1.toString()) ??
-                                        0.0; // Handle potential null value for `solgas`
-
-                                    double tronGas1 = double.tryParse(
-                                            tronGas.toString()) ??
-                                        0.0; // Handle potential null value for `solgas`
-                                    double trxEnergy = double.tryParse(
-                                            tronEnergy.toString()) ??
-                                        0.0;
-
-                                    double btcAmount = amountControl - btcGas1;
-                                    double solAmount = amountControl - solGas1;
-                                    double tronAmount =
-                                        widget.assetData.coinType == "3"
-                                            ? (tronGas1 < 0.297
-                                                ? amountControl - 0.297
-                                                : amountControl)
-                                            : (tronGas1 < 0.345
-                                                ? amountControl - 0.345
-                                                : amountControl);
-                                    tronAmount =
-                                        (widget.assetData.coinType == "3" ||
-                                                trxEnergy >= 13540)
-                                            ? tronAmount
-                                            : tronAmount - 2.85;
-                                    double xrpMaxAmount =
-                                        amountControl - xrpGas1;
-                                    if (widget.assetData.coinSymbol == 'tXRP' ||
-                                        widget.assetData.coinSymbol == 'XRP') {
-                                      if (amountControl + xrpGas1 >=
-                                              double.parse(widget.balance) &&
-                                          isMaxClicked == false) {
-                                        Utils.snackBarErrorMessage(
-                                            "Insufficient gas fee");
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        return;
-                                      }
-                                    }
-
-                                    if (widget.assetData.coinSymbol == 'tBTC' ||
-                                        widget.assetData.coinSymbol == 'BTC') {}
-
-                                    num trxEst =
-                                        widget.assetData.coinType == "3"
-                                            ? (tronGas1 < 0.297 ? 0.297 : 0.0)
-                                            : (tronGas1 < 0.345 ? 0.297 : 0.0);
-                                    trxEst =
-                                        (widget.assetData.coinType == "3" ||
-                                                trxEnergy >= 13540)
-                                            ? trxEst
-                                            : trxEst + 2.85;
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (builder) =>
-                                          ConfirmTransactionPage(
-                                        coinData: widget.assetData,
-                                        toAddress: addressCtrl.text,
-                                        estimatedGas: widget
-                                                        .assetData.coinSymbol ==
-                                                    'tXRP' ||
-                                                widget.assetData.coinSymbol ==
-                                                    'XRP'
-                                            ? xrpGas1.toString()
-                                            : widget.assetData.gasPriceSymbol ==
-                                                        'tSOL' ||
-                                                    widget.assetData
-                                                            .gasPriceSymbol ==
-                                                        'SOL'
-                                                ? solGas1.toString()
-                                                : widget.assetData.coinSymbol ==
-                                                            'tBTC' ||
-                                                        widget.assetData
-                                                                .coinSymbol ==
-                                                            'BTC'
-                                                    ? btcGas1.toString()
-                                                    : widget.assetData
-                                                                    .gasPriceSymbol ==
-                                                                'tTRX' ||
-                                                            widget.assetData
-                                                                    .gasPriceSymbol ==
-                                                                'TRX'
-                                                        ? (trxEst.toString())
-                                                        : '',
-                                        amount: isMaxClicked == true
-                                            ? widget.assetData.coinSymbol ==
-                                                        'tXRP' ||
-                                                    widget.assetData
-                                                            .coinSymbol ==
-                                                        'XRP'
-                                                ? xrpMaxAmount.toString()
-                                                : widget.assetData.coinSymbol ==
-                                                            'tSOL' ||
-                                                        widget.assetData
-                                                                .coinSymbol ==
-                                                            'SOL'
-                                                    ? solAmount.toString()
-                                                    : widget.assetData
-                                                                    .coinSymbol ==
-                                                                'TRX' ||
-                                                            widget.assetData
-                                                                    .coinSymbol ==
-                                                                'tTRX'
-                                                        ? tronAmount.toString()
-                                                        : widget.assetData
-                                                                        .coinSymbol ==
-                                                                    'tBTC' ||
-                                                                widget.assetData
-                                                                        .coinSymbol ==
-                                                                    'BTC'
-                                                            ? btcAmount
-                                                                .toString()
-                                                            : amountCtrl.text
-                                            : amountCtrl.text,
-                                        fromAddress: widget.assetData.address!,
-                                        userWallet: widget.walletData,
-                                      ),
-                                    ));
-
-                                    setState(() {
-                                      isLoading = false;
-                                    });
+                  right: 16.0,
+                ), // Add some padding for spacing
+                child: isLoading
+                    ? CircularProgressIndicator(color: Colors.purpleAccent[100])
+                    : ReuseElevatedButton(
+                        onTap: isLoading
+                            ? null
+                            : () async {
+                                FocusScope.of(context).unfocus();
+                                if (_formKey.currentState!.validate() &&
+                                    addressCtrl.text.isNotEmpty &&
+                                    amountCtrl.text.isNotEmpty) {
+                                  double enteredAmount = double.parse(
+                                    amountCtrl.text,
+                                  );
+                                  double tokenBalance = double.parse(
+                                    widget.balance,
+                                  );
+                                  if (enteredAmount > tokenBalance) {
+                                    Utils.snackBarErrorMessage(
+                                      "Insufficient Balance",
+                                    );
+                                  } else if (enteredAmount <= 0) {
+                                    Utils.snackBarErrorMessage(
+                                      "Enter Amount Greater Than Zero",
+                                    );
                                   } else {
                                     setState(() {
                                       isLoading = true;
                                     });
-                                    String rpcUrl = widget.assetData.rpcURL!;
-                                    final client =
-                                        Web3Client(rpcUrl, http.Client());
-                                    final credentials =
-                                        EthPrivateKey.fromHex(privateKey!);
-                                    final address = credentials.address;
-                                    String amountStr = amountCtrl.text;
+                                    if (widget.assetData.rpcURL == "" ||
+                                        widget.assetData.coinSymbol ==
+                                            "DOG1E" ||
+                                        widget.assetData.coinSymbol ==
+                                            "tDOG1E") {
+                                      if (widget.assetData.gasPriceSymbol!
+                                          .contains("TRX")) {
+                                        var trx = await fetchTrxBandwidth();
+                                        tronGas = trx.toDouble();
+                                        if (widget.assetData.coinType == "2") {
+                                          var energy = await fetchTrxEnergy();
+                                          tronEnergy = energy.toDouble();
+                                        }
+                                      }
 
-                                    BigInt weiAmount =
-                                        hexBytes.etherToWei(amountStr);
-                                    final amount = EtherAmount.inWei(weiAmount);
-                                    String myAddress = address.hexEip55;
+                                      fetchXrpTnxFee();
+                                      double amountControl =
+                                          double.tryParse(amountCtrl.text) ??
+                                          0.0;
 
-                                    final chainID = await client.getChainId();
+                                      double btcGas1 =
+                                          double.tryParse(btcGas.toString()) ??
+                                          0.0;
 
-                                    final gas = await client.getGasPrice();
+                                      double solGas1 =
+                                          double.tryParse(solGas.toString()) ??
+                                          0.0;
 
-                                    dynamic vetamountcontroller =
-                                        amountCtrl.text;
-                                    dynamic vetestfee = 0.1;
-                                    if (widget.assetData.coinSymbol == 'tVET' ||
-                                        widget.assetData.coinSymbol == 'VET') {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                        builder: (builder) =>
-                                            ConfirmTransactionPage(
-                                          fromAddress:
-                                              widget.assetData.address!,
-                                          toAddress: addressCtrl.text,
-                                          estimatedGas: 0.10.toString(),
-                                          amount: isMaxClicked == true
-                                              ? ((double.tryParse(
-                                                              vetamountcontroller) ??
-                                                          0) -
-                                                      vetestfee)
-                                                  .toStringAsFixed(6)
-                                              : amountCtrl.text,
-                                          coinData: widget.assetData,
-                                          userWallet: widget.walletData,
+                                      double xrpGas1 =
+                                          double.tryParse(1.1.toString()) ??
+                                          0.0; // Handle potential null value for `solgas`
+
+                                      double tronGas1 =
+                                          double.tryParse(tronGas.toString()) ??
+                                          0.0; // Handle potential null value for `solgas`
+                                      double trxEnergy =
+                                          double.tryParse(
+                                            tronEnergy.toString(),
+                                          ) ??
+                                          0.0;
+
+                                      double btcAmount =
+                                          amountControl - btcGas1;
+                                      double solAmount =
+                                          amountControl - solGas1;
+                                      double tronAmount =
+                                          widget.assetData.coinType == "3"
+                                          ? (tronGas1 < 0.297
+                                                ? amountControl - 0.297
+                                                : amountControl)
+                                          : (tronGas1 < 0.345
+                                                ? amountControl - 0.345
+                                                : amountControl);
+                                      tronAmount =
+                                          (widget.assetData.coinType == "3" ||
+                                              trxEnergy >= 13540)
+                                          ? tronAmount
+                                          : tronAmount - 2.85;
+                                      double xrpMaxAmount =
+                                          amountControl - xrpGas1;
+                                      if (widget.assetData.coinSymbol ==
+                                              'tXRP' ||
+                                          widget.assetData.coinSymbol ==
+                                              'XRP') {
+                                        if (amountControl + xrpGas1 >=
+                                                double.parse(widget.balance) &&
+                                            isMaxClicked == false) {
+                                          Utils.snackBarErrorMessage(
+                                            "Insufficient gas fee",
+                                          );
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          return;
+                                        }
+                                      }
+
+                                      if (widget.assetData.coinSymbol ==
+                                              'tBTC' ||
+                                          widget.assetData.coinSymbol ==
+                                              'BTC') {}
+
+                                      num trxEst =
+                                          widget.assetData.coinType == "3"
+                                          ? (tronGas1 < 0.297 ? 0.297 : 0.0)
+                                          : (tronGas1 < 0.345 ? 0.297 : 0.0);
+                                      trxEst =
+                                          (widget.assetData.coinType == "3" ||
+                                              trxEnergy >= 13540)
+                                          ? trxEst
+                                          : trxEst + 2.85;
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (builder) => ConfirmTransactionPage(
+                                            coinData: widget.assetData,
+                                            toAddress: addressCtrl.text,
+                                            estimatedGas:
+                                                widget.assetData.coinSymbol ==
+                                                        'tXRP' ||
+                                                    widget
+                                                            .assetData
+                                                            .coinSymbol ==
+                                                        'XRP'
+                                                ? xrpGas1.toString()
+                                                : widget
+                                                              .assetData
+                                                              .gasPriceSymbol ==
+                                                          'tSOL' ||
+                                                      widget
+                                                              .assetData
+                                                              .gasPriceSymbol ==
+                                                          'SOL'
+                                                ? solGas1.toString()
+                                                : widget.assetData.coinSymbol ==
+                                                          'tBTC' ||
+                                                      widget
+                                                              .assetData
+                                                              .coinSymbol ==
+                                                          'BTC'
+                                                ? btcGas1.toString()
+                                                : widget
+                                                              .assetData
+                                                              .gasPriceSymbol ==
+                                                          'tTRX' ||
+                                                      widget
+                                                              .assetData
+                                                              .gasPriceSymbol ==
+                                                          'TRX'
+                                                ? (trxEst.toString())
+                                                : '',
+                                            amount: isMaxClicked == true
+                                                ? widget.assetData.coinSymbol ==
+                                                              'tXRP' ||
+                                                          widget
+                                                                  .assetData
+                                                                  .coinSymbol ==
+                                                              'XRP'
+                                                      ? xrpMaxAmount.toString()
+                                                      : widget
+                                                                    .assetData
+                                                                    .coinSymbol ==
+                                                                'tSOL' ||
+                                                            widget
+                                                                    .assetData
+                                                                    .coinSymbol ==
+                                                                'SOL'
+                                                      ? solAmount.toString()
+                                                      : widget
+                                                                    .assetData
+                                                                    .coinSymbol ==
+                                                                'TRX' ||
+                                                            widget
+                                                                    .assetData
+                                                                    .coinSymbol ==
+                                                                'tTRX'
+                                                      ? tronAmount.toString()
+                                                      : widget
+                                                                    .assetData
+                                                                    .coinSymbol ==
+                                                                'tBTC' ||
+                                                            widget
+                                                                    .assetData
+                                                                    .coinSymbol ==
+                                                                'BTC'
+                                                      ? btcAmount.toString()
+                                                      : amountCtrl.text
+                                                : amountCtrl.text,
+                                            fromAddress:
+                                                widget.assetData.address!,
+                                            userWallet: widget.walletData,
+                                          ),
                                         ),
-                                      ));
+                                      );
+
                                       setState(() {
                                         isLoading = false;
                                       });
-                                      return;
-                                    }
-                                    final estGas = await client.estimateGas();
+                                    } else {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      String rpcUrl = widget.assetData.rpcURL!;
+                                      final client = Web3Client(
+                                        rpcUrl,
+                                        http.Client(),
+                                      );
+                                      final credentials = EthPrivateKey.fromHex(
+                                        privateKey!,
+                                      );
+                                      final address = credentials.address;
+                                      String amountStr = amountCtrl.text;
 
-                                    BigInt transactionFeeWei =
-                                        estGas * gas.getInWei;
+                                      BigInt weiAmount = hexBytes.etherToWei(
+                                        amountStr,
+                                      );
+                                      final amount = EtherAmount.inWei(
+                                        weiAmount,
+                                      );
+                                      String myAddress = address.hexEip55;
 
-                                    double networkFeeEther = transactionFeeWei /
-                                        BigInt.from(1000000000000000000);
+                                      final chainID = await client.getChainId();
 
-                                    EtherAmount balance =
-                                        await client.getBalance(address);
+                                      final gas = await client.getGasPrice();
 
-                                    BigInt balanceInWei = balance.getInWei;
-                                    double balanceInEther =
-                                        balanceInWei.toDouble() / 1e18;
-                                    double roundedNetworkFeeEther =
-                                        double.parse(networkFeeEther
-                                            .toStringAsFixed(15));
-                                    double roundedBalanceInEther = double.parse(
-                                        balanceInEther.toStringAsFixed(15));
-                                    print(
-                                        'roundedBalanceInEther:::::::::${roundedBalanceInEther.toStringAsFixed(15)}');
-                                    double amountControl =
-                                        double.tryParse(amountCtrl.text) ?? 0.0;
-                                    double roundedAmountControl = double.parse(
-                                        amountControl.toStringAsFixed(15));
-                                    print(
-                                        'amountControl:::::::::${roundedAmountControl.toStringAsFixed(15)}');
-
-                                    double amountAndGas = roundedAmountControl +
-                                        roundedNetworkFeeEther;
-
-                                    final balminuscontrol =
-                                        roundedBalanceInEther -
-                                            roundedAmountControl;
-
-                                    if (widget.assetData.coinType == '1') {
-                                      if (isMaxClicked == true) {
-                                        roundedAmountControl =
-                                            roundedAmountControl -
-                                                roundedNetworkFeeEther;
-                                      } else if (roundedBalanceInEther ==
-                                          roundedAmountControl) {
-                                        roundedAmountControl =
-                                            roundedAmountControl -
-                                                roundedNetworkFeeEther;
-                                      } else if (balminuscontrol >=
-                                          roundedNetworkFeeEther) {
+                                      dynamic vetamountcontroller =
+                                          amountCtrl.text;
+                                      dynamic vetestfee = 0.1;
+                                      if (widget.assetData.coinSymbol ==
+                                              'tVET' ||
+                                          widget.assetData.coinSymbol ==
+                                              'VET') {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (builder) =>
+                                                ConfirmTransactionPage(
+                                                  fromAddress:
+                                                      widget.assetData.address!,
+                                                  toAddress: addressCtrl.text,
+                                                  estimatedGas: 0.10.toString(),
+                                                  amount: isMaxClicked == true
+                                                      ? ((double.tryParse(
+                                                                      vetamountcontroller,
+                                                                    ) ??
+                                                                    0) -
+                                                                vetestfee)
+                                                            .toStringAsFixed(6)
+                                                      : amountCtrl.text,
+                                                  coinData: widget.assetData,
+                                                  userWallet: widget.walletData,
+                                                ),
+                                          ),
+                                        );
                                         setState(() {
                                           isLoading = false;
                                         });
-                                        roundedAmountControl =
-                                            roundedAmountControl;
-                                      } else {
-                                        setState(() {
-                                          isLoading = false;
-                                        });
-                                        Utils.snackBarErrorMessage(
-                                            "Insufficient Gas Fee");
                                         return;
                                       }
-                                    }
-                                    double balanceAfterGas =
-                                        roundedAmountControl -
-                                            roundedNetworkFeeEther;
-                                    bool token =
-                                        widget.assetData.coinType == "2";
+                                      final estGas = await client.estimateGas();
 
-                                    final balanceAsDouble =
-                                        double.parse(widget.balance);
-                                    setState(() {
-                                      isLoading = false;
-                                    });
+                                      BigInt transactionFeeWei =
+                                          estGas * gas.getInWei;
 
-                                    if (context.mounted) {
-                                      if (token) {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (builder) =>
-                                              ConfirmTransactionPage(
-                                            fromAddress: myAddress,
-                                            toAddress: addressCtrl.text,
-                                            estimatedGas:
-                                                balanceFormat.formatBalance(
-                                                    networkFeeEther.toString()),
-                                            amount: amountCtrl.text,
-                                            coinData: widget.assetData,
-                                            userWallet: widget.walletData,
-                                          ),
-                                        ));
-                                      } else if ((roundedAmountControl <=
-                                              roundedBalanceInEther) &&
-                                          (roundedAmountControl > 0)) {
-                                        Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                          builder: (builder) =>
-                                              ConfirmTransactionPage(
-                                            fromAddress: myAddress,
-                                            toAddress: addressCtrl.text,
-                                            estimatedGas:
-                                                balanceFormat.formatBalance(
-                                                    networkFeeEther.toString()),
-                                            amount: token
-                                                ? amountCtrl.text
-                                                : roundedAmountControl
-                                                    .toStringAsFixed(15),
-                                            coinData: widget.assetData,
-                                            userWallet: widget.walletData,
-                                          ),
-                                        ));
-                                      } else {
-                                        print(
-                                            "${(roundedAmountControl <= roundedBalanceInEther)}");
-                                        Utils.snackBarErrorMessage(
-                                            "Insufficient Gas Fee");
+                                      double networkFeeEther =
+                                          transactionFeeWei /
+                                          BigInt.from(1000000000000000000);
+
+                                      EtherAmount balance = await client
+                                          .getBalance(address);
+
+                                      BigInt balanceInWei = balance.getInWei;
+                                      double balanceInEther =
+                                          balanceInWei.toDouble() / 1e18;
+                                      double roundedNetworkFeeEther =
+                                          double.parse(
+                                            networkFeeEther.toStringAsFixed(15),
+                                          );
+                                      double roundedBalanceInEther =
+                                          double.parse(
+                                            balanceInEther.toStringAsFixed(15),
+                                          );
+                                      print(
+                                        'roundedBalanceInEther:::::::::${roundedBalanceInEther.toStringAsFixed(15)}',
+                                      );
+                                      double amountControl =
+                                          double.tryParse(amountCtrl.text) ??
+                                          0.0;
+                                      double roundedAmountControl =
+                                          double.parse(
+                                            amountControl.toStringAsFixed(15),
+                                          );
+                                      print(
+                                        'amountControl:::::::::${roundedAmountControl.toStringAsFixed(15)}',
+                                      );
+
+                                      double amountAndGas =
+                                          roundedAmountControl +
+                                          roundedNetworkFeeEther;
+
+                                      final balminuscontrol =
+                                          roundedBalanceInEther -
+                                          roundedAmountControl;
+
+                                      if (widget.assetData.coinType == '1') {
+                                        if (isMaxClicked == true) {
+                                          roundedAmountControl =
+                                              roundedAmountControl -
+                                              roundedNetworkFeeEther;
+                                        } else if (roundedBalanceInEther ==
+                                            roundedAmountControl) {
+                                          roundedAmountControl =
+                                              roundedAmountControl -
+                                              roundedNetworkFeeEther;
+                                        } else if (balminuscontrol >=
+                                            roundedNetworkFeeEther) {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          roundedAmountControl =
+                                              roundedAmountControl;
+                                        } else {
+                                          setState(() {
+                                            isLoading = false;
+                                          });
+                                          Utils.snackBarErrorMessage(
+                                            "Insufficient Gas Fee",
+                                          );
+                                          return;
+                                        }
+                                      }
+                                      double balanceAfterGas =
+                                          roundedAmountControl -
+                                          roundedNetworkFeeEther;
+                                      bool token =
+                                          widget.assetData.coinType == "2";
+
+                                      final balanceAsDouble = double.parse(
+                                        widget.balance,
+                                      );
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+
+                                      if (context.mounted) {
+                                        if (token) {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (builder) =>
+                                                  ConfirmTransactionPage(
+                                                    fromAddress: myAddress,
+                                                    toAddress: addressCtrl.text,
+                                                    estimatedGas: balanceFormat
+                                                        .formatBalance(
+                                                          networkFeeEther
+                                                              .toString(),
+                                                        ),
+                                                    amount: amountCtrl.text,
+                                                    coinData: widget.assetData,
+                                                    userWallet:
+                                                        widget.walletData,
+                                                  ),
+                                            ),
+                                          );
+                                        } else if ((roundedAmountControl <=
+                                                roundedBalanceInEther) &&
+                                            (roundedAmountControl > 0)) {
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (builder) =>
+                                                  ConfirmTransactionPage(
+                                                    fromAddress: myAddress,
+                                                    toAddress: addressCtrl.text,
+                                                    estimatedGas: balanceFormat
+                                                        .formatBalance(
+                                                          networkFeeEther
+                                                              .toString(),
+                                                        ),
+                                                    amount: token
+                                                        ? amountCtrl.text
+                                                        : roundedAmountControl
+                                                              .toStringAsFixed(
+                                                                15,
+                                                              ),
+                                                    coinData: widget.assetData,
+                                                    userWallet:
+                                                        widget.walletData,
+                                                  ),
+                                            ),
+                                          );
+                                        } else {
+                                          print(
+                                            "${(roundedAmountControl <= roundedBalanceInEther)}",
+                                          );
+                                          Utils.snackBarErrorMessage(
+                                            "Insufficient Gas Fee",
+                                          );
+                                        }
                                       }
                                     }
                                   }
                                 }
-                              }
-                            },
-                      height: 45,
-                      width: MediaQuery.sizeOf(context).width,
-                      text: "Send",
-                      textcolor: Colors.black,
-                      gradientColors: [],
-                    ),
-            ),
-          ]),
+                              },
+                        height: 50,
+                        width: MediaQuery.sizeOf(context).width,
+                        text: "Continue",
+                        textcolor: Colors.black,
+                        gradientColors: [],
+                      ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+
 // / ImageConstant.imgSearchGray70002

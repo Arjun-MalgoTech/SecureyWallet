@@ -4,7 +4,6 @@ import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/Gradient_App_Text/Gradient_AppText.dart';
 import 'package:securywallet/Screens/SecretPhraseGenerator/View/MnemonicGenerator.dart';
 
-
 class SecretPhrasesCheckList extends StatefulWidget {
   const SecretPhrasesCheckList({super.key});
 
@@ -75,7 +74,7 @@ class _SecretPhrasesCheckListState extends State<SecretPhrasesCheckList> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Image.asset(
-        "assets/Images/guard.png",
+        "assets/Images/trust.png",
         height: SizeConfig.height(context, 30),
       ),
     );
@@ -84,29 +83,13 @@ class _SecretPhrasesCheckListState extends State<SecretPhrasesCheckList> {
   Widget _buildTitleSection() {
     return Column(
       children: [
-        const GradientAppText(
-          text: "This Secret Phrase Unlocks Full ",
-          fontSize: 16,
+        AppText(
+          "Check that your secret phrase is  ",
+          fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        const GradientAppText(
-          text: "Access to Your Wallet",
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
+        AppText("safe here", fontSize: 20, fontWeight: FontWeight.bold),
         SizedBox(height: 8),
-        AppText(
-          "Select All Checkboxes To Confirm You Understand ",
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
-          color: Color(0xFF8B8B8B),
-        ),
-        AppText(
-          "The Importance Of Your Secret Phrase ",
-          fontSize: 13,
-          fontWeight: FontWeight.w400,
-          color: Color(0xFF8B8B8B),
-        ),
       ],
     );
   }
@@ -178,10 +161,9 @@ class _SecretPhrasesCheckListState extends State<SecretPhrasesCheckList> {
         child: ElevatedButton(
           onPressed: allCheckboxesSelected
               ? () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const MnemonicGenerator()),
-                  )
+                  context,
+                  MaterialPageRoute(builder: (_) => const MnemonicGenerator()),
+                )
               : null,
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,

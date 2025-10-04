@@ -2,13 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:securywallet/Asset_Functions/Asset_Balance/AssetBalance.dart';
 import 'package:securywallet/Crypto_Utils/AppToastMsg/AppToast.dart';
+import 'package:securywallet/Crypto_Utils/Asset_Path/Constant_Image.dart';
+import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/Gradient_App_Text/Gradient_AppText.dart';
 import 'package:securywallet/Screens/App_Drawer/App_Drawer_View.dart';
 import 'package:securywallet/Screens/Connect_Existing_Wallet/View/ConnectExistingWallet.dart';
+import 'package:securywallet/Screens/HomeScreen/Controllers/home_controller.dart';
 import 'package:securywallet/Screens/Previous_Home_Screen/ViewModel/Pre_Home_Screen_VM.dart';
 import 'package:securywallet/Screens/Secure_Backup_Screen/View/Secure_Backup_View.dart';
 import 'package:securywallet/VaultStorageService/Coin_List_Config.dart';
@@ -74,8 +78,9 @@ class _PreHomeState extends State<PreHome> {
     usdtPair = assetList
         .map((coin) => "${coin["coinSymbol"]!.toLowerCase()}usdt@ticker")
         .toList();
-    channel.sink
-        .add(jsonEncode({"method": "SUBSCRIBE", "params": usdtPair, "id": 1}));
+    channel.sink.add(
+      jsonEncode({"method": "SUBSCRIBE", "params": usdtPair, "id": 1}),
+    );
   }
 
   @override
@@ -97,9 +102,55 @@ class _PreHomeState extends State<PreHome> {
         child: Column(
           children: [
             _buildWalletBanner(),
-            _buildSetupOptions(context),
             _buildTrendingTitle(),
+            _buildSetupOptions(context),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                    ),
+                    height: 30,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(
+                      child: Text(
+                        "Crypto",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
             _buildTrendingList(),
+            _buildOptionCard(
+              context,
+
+              title: "Create New Wallet",
+
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => SecureBackup()),
+              ),
+            ),
+            _buildOptionCard(
+              context,
+
+              title: "Access Existing Wallet",
+
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => ConnectExistingWallet()),
+              ),
+            ),
           ],
         ),
       ),
@@ -109,64 +160,149 @@ class _PreHomeState extends State<PreHome> {
   AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       leading: IconButton(
-        icon: Icon(Icons.menu,
-            color: Theme.of(context).colorScheme.surfaceBright),
+        icon: Icon(
+          Icons.menu,
+          color: Theme.of(context).colorScheme.surfaceBright,
+        ),
         onPressed: () => _scaffoldKey.currentState?.openDrawer(),
       ),
     );
   }
 
   Widget _buildWalletBanner() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Image.asset('assets/Images/wallet.png', height: 200, width: 200),
-        Positioned(
-            left: 1, bottom: 10, child: _buildFloatingBall1(Colors.blueAccent)),
-        Positioned(
-            top: 0.1,
-            right: 0.1,
-            child: _buildFloatingBall2(Colors.greenAccent)),
-        Positioned(
-            bottom: 5,
-            right: 1,
-            child: _buildFloatingBall(Colors.lightBlueAccent)),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 8),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Image.asset("assets/Images/1.png"),
+          ),
+          Column(
+            children: [
+              SizedBox(height: SizeConfig.height(context, 3)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(width: 30),
+
+                  Text(
+                    "\$0.00",
+                    style: TextStyle(
+                      fontFamily: 'LexendDeca',
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).colorScheme.surfaceBright,
+                      fontSize: 36,
+                    ),
+                  ),
+
+                  const SizedBox(width: 8),
+                ],
+              ),
+              SizedBox(height: SizeConfig.height(context, 9)),
+              Padding(
+                padding: const EdgeInsets.only(left: 26.0, right: 26),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {},
+                          child: // Required for ImageFilter
+                          SvgPicture.asset(
+                            ConstantImage.arrowup,
+                          ),
+                        ),
+                        SizedBox(height: SizeConfig.height(context, 1)),
+                        AppText(
+                          "Send",
+                          fontFamily: 'LexendDeca',
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).colorScheme.surfaceBright,
+                          fontSize: 14,
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Column(
+                        children: [
+                          SvgPicture.asset(ConstantImage.arrowdown),
+
+                          SizedBox(height: SizeConfig.height(context, 1)),
+                          AppText(
+                            "Receive",
+                            fontFamily: 'LexendDeca',
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).colorScheme.surfaceBright,
+                            fontSize: 14,
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Column(
+                        children: [
+                          SvgPicture.asset(ConstantImage.crevon),
+
+                          SizedBox(height: SizeConfig.height(context, 1)),
+                          AppText(
+                            "Fund",
+                            fontFamily: 'LexendDeca',
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).colorScheme.surfaceBright,
+                            fontSize: 14,
+                          ),
+                        ],
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Column(
+                        children: [
+                          SvgPicture.asset(ConstantImage.Dollar),
+
+                          SizedBox(height: SizeConfig.height(context, 1)),
+                          AppText(
+                            "Sell",
+                            fontFamily: 'LexendDeca',
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).colorScheme.surfaceBright,
+                            fontSize: 14,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildSetupOptions(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GradientAppText(
-            text: "Empowering the next wave of\nWeb3 users—join us!",
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        _buildOptionCard(
-          context,
-          icon: Icons.add,
-          title: "Set Up Your Wallet",
-          subtitle: "Secret Phrase",
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => SecureBackup()),
-          ),
-        ),
-        _buildOptionCard(
-          context,
-          icon: Icons.arrow_downward,
-          title: "Access Existing Wallet",
-          subtitle: "Recover, Import, or View-Only Access",
-          onTap: () => Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => ConnectExistingWallet()),
-          ),
-        ),
-      ],
+    return SizedBox(
+      height: 80, // Adjust height based on your container content
+      child: StreamBuilder(
+        stream: streamController.stream,
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return Container();
+          Map<String, dynamic> data = snapshot.data as Map<String, dynamic>;
+          _updateResult(data);
+
+          return ListView.builder(
+            itemCount: assetList.length,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => _buildTokenTile(context, index),
+          );
+        },
+      ),
     );
   }
 
@@ -178,44 +314,32 @@ class _PreHomeState extends State<PreHome> {
 
   Widget _buildOptionCard(
     BuildContext context, {
-    required IconData icon,
+
     required String title,
-    required String subtitle,
+
     required VoidCallback onTap,
   }) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(top: 8.0),
       child: GestureDetector(
         onTap: onTap,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            color: Colors.white30.withOpacity(0.2),
-          ),
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: CircleAvatar(
-                  backgroundColor: Color(0xFF3D354C),
-                  radius: 20,
-                  child: Icon(icon, color: Colors.white),
-                ),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8),
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: 40,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: Colors.white,
+            ),
+            child: Center(
+              child: AppText(
+                title,
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: Colors.black,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText(title,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15,
-                      color: Theme.of(context).colorScheme.surfaceBright),
-                  AppText(subtitle,
-                      fontWeight: FontWeight.w300,
-                      fontSize: 10,
-                      color: Theme.of(context).colorScheme.surfaceBright),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -224,32 +348,22 @@ class _PreHomeState extends State<PreHome> {
 
   Widget _buildTrendingTitle() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          AppText("Trending Tokens 🔥", color: Color(0xFF787878)),
-        ],
-      ),
+      padding: const EdgeInsets.only(left: 16.0),
+      child: Row(children: [AppText("Trending", color: Colors.white)]),
     );
   }
 
   Widget _buildTrendingList() {
-    return SizedBox(
-      height: 450,
-      child: StreamBuilder(
-        stream: streamController.stream,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return Container();
-          Map<String, dynamic> data = snapshot.data as Map<String, dynamic>;
-          _updateResult(data);
-
-          return ListView.builder(
-            itemCount: assetList.length,
-            physics: NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) => _buildTokenTile(context, index),
-          );
-        },
-      ),
+    return Column(
+      children: [
+        Image.asset("assets/Images/emptywallet.png", height: 130, width: 300),
+        AppText(
+          "Your wallet is empty!",
+          color: Color(0XFFB4B1B2),
+          fontSize: 15,
+          fontWeight: FontWeight.w400,
+        ),
+      ],
     );
   }
 
@@ -268,38 +382,42 @@ class _PreHomeState extends State<PreHome> {
     List<String>? coinData = result[coinSymbol];
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 5.0),
+      padding: const EdgeInsets.only(right: 8.0, left: 8, top: 8, bottom: 8),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white30.withOpacity(0.1),
+          border: Border.all(color: Color(0XFF34373d)),
+          borderRadius: BorderRadius.circular(15),
+          color: Color(0XFF0f131a),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
-            child: ListTile(
-              onTap: () => Utils.snackBar(
-                "Please Create or Import an Wallet",
-              ),
-              leading:
-                  _buildTokenAvatar(coinSymbol, assetList[index]["imageUrl"]!),
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  AppText(coinSymbol,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.surfaceBright),
-                  AppText(coinName,
-                      fontSize: 11,
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).colorScheme.surfaceBright),
-                ],
-              ),
-              trailing:
-                  _buildTokenTrailing(context, coinSymbol, coinName, coinData),
+        width: 300,
+        child: ListTile(
+          onTap: () => Utils.snackBar("Please Create or Import an Wallet"),
+          leading: _buildTokenAvatar(coinSymbol, assetList[index]["imageUrl"]!),
+          title: Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  coinSymbol,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.surfaceBright,
+                ),
+                AppText(
+                  coinName,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.surfaceBright,
+                ),
+              ],
             ),
+          ),
+          trailing: _buildTokenTrailing(
+            context,
+            coinSymbol,
+            coinName,
+            coinData,
           ),
         ),
       ),
@@ -307,17 +425,20 @@ class _PreHomeState extends State<PreHome> {
   }
 
   Widget _buildTokenAvatar(String symbol, String imageUrl) {
-    return CircleAvatar(
-      radius: 15,
-      backgroundColor: Color(0xFF202832),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(30),
-        child: Image.network(
-          imageUrl,
-          errorBuilder: (_, __, ___) => AppText(
-            symbol.characters.first,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(right: 5.0, bottom: 15),
+      child: CircleAvatar(
+        radius: 15,
+        backgroundColor: Color(0xFF202832),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(30),
+          child: Image.network(
+            imageUrl,
+            errorBuilder: (_, __, ___) => AppText(
+              symbol.characters.first,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -325,20 +446,28 @@ class _PreHomeState extends State<PreHome> {
   }
 
   Widget _buildTokenTrailing(
-      BuildContext context, String symbol, String name, List<String>? data) {
+    BuildContext context,
+    String symbol,
+    String name,
+    List<String>? data,
+  ) {
     if (data == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
-          AppText(name,
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.surfaceBright),
-          AppText("Crypto",
-              fontSize: 11,
-              fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.surfaceBright),
+          AppText(
+            name,
+            fontSize: 15,
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.surfaceBright,
+          ),
+          AppText(
+            "Crypto",
+            fontSize: 11,
+            fontWeight: FontWeight.w400,
+            color: Theme.of(context).colorScheme.surfaceBright,
+          ),
         ],
       );
     }
@@ -366,37 +495,4 @@ class _PreHomeState extends State<PreHome> {
       ],
     );
   }
-}
-
-Widget _buildFloatingBall(Color color) {
-  return Container(
-    width: 15, // Adjust size
-    height: 15,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: color,
-    ),
-  );
-}
-
-Widget _buildFloatingBall1(Color color) {
-  return Container(
-    width: 8, // Adjust size
-    height: 8,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: color,
-    ),
-  );
-}
-
-Widget _buildFloatingBall2(Color color) {
-  return Container(
-    width: 18, // Adjust size
-    height: 18,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: color,
-    ),
-  );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:securywallet/Api_Service/Apikey_Service.dart';
@@ -90,8 +91,9 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
     if (bip39.validateMnemonic(mnemonic)) {
       final seed = bip39.mnemonicToSeed(mnemonic);
       final root = bip32.BIP32.fromSeed(seed);
-      final child =
-          root.derivePath("m/44'/60'/0'/0/0"); // Ethereum derivation path
+      final child = root.derivePath(
+        "m/44'/60'/0'/0/0",
+      ); // Ethereum derivation path
       final privateKey = child.privateKey;
 
       final privateKeyHex = HEX.encode(privateKey!);
@@ -100,8 +102,9 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
       final httpClient = Client();
       final ethClient = Web3Client(rpcUrl, httpClient);
 
-      final credentials =
-          await ethClient.credentialsFromPrivateKey(privateKeyHex);
+      final credentials = await ethClient.credentialsFromPrivateKey(
+        privateKeyHex,
+      );
       final address = await credentials.extractAddress();
 
       // Save to Get Storage
@@ -133,6 +136,7 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
   LocalStorageService localStorageService = LocalStorageService();
   bool isLoading = false;
   List<AssetModel> coinData = [];
+
   @override
   Widget build(BuildContext context) {
     localStorageService = context.watch<LocalStorageService>();
@@ -149,9 +153,12 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
             Navigator.pop(context);
           },
           child: Container(
-              color: Colors.transparent,
-              child: Icon(Icons.arrow_back,
-                  color: Theme.of(context).indicatorColor)),
+            color: Colors.transparent,
+            child: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).indicatorColor,
+            ),
+          ),
         ),
       ),
       body: SafeArea(
@@ -159,18 +166,14 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               AppText(
                 'Please select the correct seed phrase from the options\nbelow.',
                 textAlign: TextAlign.center,
                 fontSize: 12,
                 color: Colors.grey[500],
               ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.03,
-              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
               Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -188,7 +191,8 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
                       child: Row(
                         children: [
                           Text(
-                            'Word #${rowIndex * 3 + 1}', // Adjust the formula based on your requirements
+                            'Word #${rowIndex * 3 + 1}',
+                            // Adjust the formula based on your requirements
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
@@ -210,32 +214,53 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
                           return Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
+                              border: GradientBoxBorder(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Colors.white.withOpacity(0.3),
+                                    Colors.white.withOpacity(0.05),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                width: 0.5,
+                              ),
+
+                              gradient: selectedWords[rowIndex] == row[index]
+                                  ? LinearGradient(
+                                      colors: [
+                                        const Color(0xFF8b39f6),
+                                        const Color(0xFF6b9dfe),
+                                      ],
+                                      begin: Alignment.bottomLeft,
+                                      end: Alignment.topRight,
+                                    )
+                                  : null, // transparent when not selected
                               color: selectedWords[rowIndex] == row[index]
-                                  ? Color(
-                                      0xFFB982FF) // Change color when selected
-                                  : Colors.white30.withOpacity(0.2),
+                                  ? null
+                                  : Colors.transparent,
                             ),
                             width: 100,
                             child: FilterChip(
                               side: BorderSide(
                                 color: selectedWords[rowIndex] == row[index]
-                                    ? Color(0xFFB982FF)
+                                    ? Colors.transparent
                                     : Colors
-                                        .transparent, // Change color when selected
+                                          .transparent, // Change color when selected
                               ),
-                              backgroundColor: selectedWords[rowIndex] ==
-                                      row[index]
-                                  ? Color(0xFFB982FF)
+                              backgroundColor:
+                                  selectedWords[rowIndex] == row[index]
+                                  ? Colors.transparent
                                   : Colors
-                                      .transparent, // Change color when selected
+                                        .transparent, // Change color when selected
                               label: Text(
                                 '${row[index]}',
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .surfaceBright,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.surfaceBright,
                                 ),
                               ),
                               onSelected: (bool value) {
@@ -248,9 +273,7 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
                     );
 
                     // Wrap heading and rowWithChips in a column
-                    return Column(
-                      children: [heading, rowWithChips],
-                    );
+                    return Column(children: [heading, rowWithChips]);
                   }).toList(),
                 ),
               ),
@@ -263,16 +286,10 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
                     height: 44.0,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                            colors: allWordsSelected
-                                ? [
-                                    Color(0xFF912ECA),
-                                    Color(0xFF912ECA),
-                                    Color(0xFF793CDE),
-                                    Color(0xFF793CDE),
-                                  ]
-                                : [Colors.grey, Colors.grey])),
+                      borderRadius: BorderRadius.circular(20),
+
+                      color: allWordsSelected ? Colors.white : Colors.grey,
+                    ),
                     child: ElevatedButton(
                       onPressed: () async {
                         setState(() {
@@ -289,20 +306,23 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
 
                           UserWalletDataModel walletDataModel =
                               UserWalletDataModel(
-                                  walletName: "Wallet 1 (Main)",
-                                  walletAddress: walletAddress,
-                                  mnemonic: mnemonicPhrase,
-                                  privateKey: privateKeyHex);
+                                walletName: "Main Wallet 1",
+                                walletAddress: walletAddress,
+                                mnemonic: mnemonicPhrase,
+                                privateKey: privateKeyHex,
+                              );
                           localStorageService.creatingNewWallet = true;
                           await vaultStorageService.addWalletToList(
-                              ApiKeyService.nvWalletList,
-                              walletDataModel.toJson());
+                            ApiKeyService.nvWalletList,
+                            walletDataModel.toJson(),
+                          );
                           _updatePrintedValue();
                           if (privateKeyHex.isNotEmpty && mounted) {
                             WidgetsBinding.instance.addPostFrameCallback((_) {
-                              Provider.of<LocalStorageService>(context,
-                                      listen: false)
-                                  .getData();
+                              Provider.of<LocalStorageService>(
+                                context,
+                                listen: false,
+                              ).getData();
                             });
                             if (context.mounted) {
                               Navigator.pushAndRemoveUntil(
@@ -315,83 +335,89 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
                               );
 
                               // Show the bottom sheet when the screen loads
-                              showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return Container(
-                                    color: Theme.of(context)
-                                            .bottomAppBarTheme
-                                            .color ??
-                                        Color(0xFFD4D4D4),
-                                    height: 250,
-                                    padding: EdgeInsets.all(20.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              Icon(
-                                                Icons.clear,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .surfaceBright,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Image.asset(
-                                          'assets/Images/correct.png',
-                                          height: 60,
-                                          width: 60,
-                                        ),
-                                        SizedBox(height: 10.0),
-                                        AppText(
-                                          'Your Wallet Is Ready.',
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .surfaceBright,
-                                        ),
-                                        SizedBox(height: 10.0),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Container(
-                                            height: 44.0,
-                                            width:
-                                                SizeConfig.width(context, 25),
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                gradient:
-                                                    LinearGradient(colors: [
-                                                  Color(0xFF912ECA),
-                                                  Color(0xFF912ECA),
-                                                  Color(0xFF793CDE),
-                                                  Color(0xFF793CDE),
-                                                ])),
-                                            child: Center(
-                                                child: AppText(
-                                              'Start',
-                                              color: Colors.black,
-                                            )),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                },
-                              );
+                              // showModalBottomSheet(
+                              //   context: context,
+                              //   builder: (BuildContext context) {
+                              //     return Container(
+                              //       color:
+                              //           Theme.of(
+                              //             context,
+                              //           ).bottomAppBarTheme.color ??
+                              //           Color(0xFFD4D4D4),
+                              //       height: 250,
+                              //       padding: EdgeInsets.all(20.0),
+                              //       child: Column(
+                              //         mainAxisSize: MainAxisSize.min,
+                              //         crossAxisAlignment:
+                              //             CrossAxisAlignment.center,
+                              //         children: <Widget>[
+                              //           GestureDetector(
+                              //             onTap: () {
+                              //               Navigator.pop(context);
+                              //             },
+                              //             child: Row(
+                              //               mainAxisAlignment:
+                              //                   MainAxisAlignment.end,
+                              //               children: [
+                              //                 Icon(
+                              //                   Icons.clear,
+                              //                   color: Theme.of(
+                              //                     context,
+                              //                   ).colorScheme.surfaceBright,
+                              //                 ),
+                              //               ],
+                              //             ),
+                              //           ),
+                              //           Image.asset(
+                              //             'assets/Images/correct.png',
+                              //             height: 60,
+                              //             width: 60,
+                              //           ),
+                              //           SizedBox(height: 10.0),
+                              //           AppText(
+                              //             'Your Wallet Is Ready.',
+                              //             fontSize: 18.0,
+                              //             fontWeight: FontWeight.bold,
+                              //             color: Theme.of(
+                              //               context,
+                              //             ).colorScheme.surfaceBright,
+                              //           ),
+                              //           SizedBox(height: 10.0),
+                              //           GestureDetector(
+                              //             onTap: () {
+                              //               Navigator.pop(context);
+                              //             },
+                              //             child: Container(
+                              //               height: 44.0,
+                              //               width: SizeConfig.width(
+                              //                 context,
+                              //                 25,
+                              //               ),
+                              //               decoration: BoxDecoration(
+                              //                 borderRadius:
+                              //                     BorderRadius.circular(20),
+                              //                 gradient: LinearGradient(
+                              //                   colors: [
+                              //                     Color(0xFF912ECA),
+                              //                     Color(0xFF912ECA),
+                              //                     Color(0xFF793CDE),
+                              //                     Color(0xFF793CDE),
+                              //                   ],
+                              //                 ),
+                              //               ),
+                              //               child: Center(
+                              //                 child: AppText(
+                              //                   'Start',
+                              //                   color: Colors.black,
+                              //                 ),
+                              //               ),
+                              //             ),
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     );
+                              //   },
+                              // );
                             }
                           } else {}
                         } else {
@@ -405,49 +431,51 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
                                     return AlertDialog(
                                       backgroundColor:
                                           Theme.of(context).primaryColorLight ??
-                                              Color(0xFFD4D4D4),
+                                          Color(0xFFD4D4D4),
                                       title: Center(
-                                          child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Image.asset(
-                                            'assets/Images/fail.png',
-                                            height: 30,
-                                            width: 30,
-                                          ),
-                                          AppText(
-                                            'Incorrect',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .surfaceBright,
-                                            fontSize: 20,
-                                          ),
-                                        ],
-                                      )),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset(
+                                              'assets/Images/fail.png',
+                                              height: 30,
+                                              width: 30,
+                                            ),
+                                            AppText(
+                                              'Incorrect',
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.surfaceBright,
+                                              fontSize: 20,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                       content: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
                                           AppText(
                                             'Selections not matched.\nPlease try again.',
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .surfaceBright,
+                                            color: Theme.of(
+                                              context,
+                                            ).colorScheme.surfaceBright,
                                             fontSize: 16,
                                           ),
                                         ],
                                       ),
                                       actions: <Widget>[
                                         ReuseElevatedButton(
-                                          width:
-                                              MediaQuery.of(context).size.width,
+                                          width: MediaQuery.of(
+                                            context,
+                                          ).size.width,
                                           height: 45,
                                           text: 'Try again',
                                           textcolor: Colors.black,
                                           gradientColors: [
                                             Color(0XFF42E695),
-                                            Color(0XFF3BB2BB)
+                                            Color(0XFF3BB2BB),
                                           ],
                                           onTap: () {
                                             Navigator.pop(context);
@@ -461,20 +489,19 @@ class _ChooseMnemonicState extends State<ChooseMnemonic> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent),
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                      ),
                       child: isLoading
                           ? Center(
                               child: Transform.scale(
-                              scale: 0.5, // Reduces the size by half
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
+                                scale: 0.5, // Reduces the size by half
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
                               ),
-                            ))
-                          : AppText(
-                              'Confirm',
-                              color: Colors.black,
-                            ),
+                            )
+                          : AppText('Confirm', color: Colors.black),
                     ),
                   ),
                 ),

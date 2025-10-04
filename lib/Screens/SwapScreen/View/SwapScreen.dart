@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
+import 'package:securywallet/Reusable_Widgets/Gradient_App_Text/Gradient_AppText.dart';
 import 'package:securywallet/VaultStorageService/LocalDataServiceVM.dart';
 import 'package:securywallet/WalletConnectFunctions/WalletConnectPage.dart';
 import 'package:securywallet/Wallet_Session_Request.dart';
@@ -94,17 +96,19 @@ class _SwapScreenState extends State<SwapScreen> {
         timer!.cancel(); // Stop the timer once the desired condition is met
         if (!(timer!.isActive)) {
           Navigator.of(context)
-              .push(MaterialPageRoute(
+              .push(
+                MaterialPageRoute(
                   builder: (builder) => WalletConnectPage(
-                        selectedWalletData:
-                            localStorageService.activeWalletData!,
-                        wcURL: uri.toString(),
-                      )))
+                    selectedWalletData: localStorageService.activeWalletData!,
+                    wcURL: uri.toString(),
+                  ),
+                ),
+              )
               .then((v) {
-            if (mounted) {
-              walletConnectionRequest.initializeContext(context);
-            }
-          });
+                if (mounted) {
+                  walletConnectionRequest.initializeContext(context);
+                }
+              });
         }
       }
     });
@@ -138,22 +142,26 @@ class _SwapScreenState extends State<SwapScreen> {
               }
             }
             if (request.url.contains(
-                    "https://verify.walletconnect.org/v3/attestation?projectId") ||
+                  "https://verify.walletconnect.org/v3/attestation?projectId",
+                ) ||
                 request.url.contains("https://verify.walletconnect.com/")) {
               startQrCheckTimer();
               return NavigationDecision.navigate;
             } else if (validateWC(request.url) &&
                 !(request.url.contains("@2/wc"))) {
               Navigator.of(context)
-                  .push(MaterialPageRoute(
+                  .push(
+                    MaterialPageRoute(
                       builder: (builder) => WalletConnectPage(
-                            selectedWalletData:
-                                localStorageService.activeWalletData!,
-                            wcURL: request.url,
-                          )))
+                        selectedWalletData:
+                            localStorageService.activeWalletData!,
+                        wcURL: request.url,
+                      ),
+                    ),
+                  )
                   .then((v) {
-                walletConnectionRequest.initializeContext(context);
-              });
+                    walletConnectionRequest.initializeContext(context);
+                  });
               return NavigationDecision.prevent;
             } else if (request.url.contains("wc")) {
               return NavigationDecision.prevent;
@@ -201,30 +209,44 @@ class _SwapScreenState extends State<SwapScreen> {
     walletConnectionRequest = context.watch<WalletConnectionRequest>();
     walletConnectionRequest.initializeContext(context);
     return WillPopScope(
-        onWillPop: () async {
-          if (await _controller.canGoBack()) {
-            _controller.goBack(); // Navigate within the WebView
-            return false; // Don't exit the screen
-          }
-          return true; // Exit the screen if no WebView history
-        },
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: SafeArea(
-            child: Stack(
-              children: [
-                WebViewWidget(controller: _controller),
-                if (_progress < 0.8)
-                  Center(
-                    child: CircularProgressIndicator(
-                      // value: _progress,
-                      color: Colors.purpleAccent[100],
-                      strokeWidth: 3,
-                    ),
-                  ),
-              ],
+      onWillPop: () async {
+        if (await _controller.canGoBack()) {
+          _controller.goBack(); // Navigate within the WebView
+          return false; // Don't exit the screen
+        }
+        return true; // Exit the screen if no WebView history
+      },
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: AppText("Swap", fontSize: 20, fontWeight: FontWeight.w600),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+        ),
+        // body: SafeArea(
+        //   child: Stack(
+        //     children: [
+        //       WebViewWidget(controller: _controller),
+        //       if (_progress < 0.8)
+        //         Center(
+        //           child: CircularProgressIndicator(
+        //             // value: _progress,
+        //             color: Colors.purpleAccent[100],
+        //             strokeWidth: 3,
+        //           ),
+        //         ),
+        //     ],
+        //   ),
+        // ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: GradientAppText(text: 'Coming Soon...', fontSize: 40),
             ),
-          ),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

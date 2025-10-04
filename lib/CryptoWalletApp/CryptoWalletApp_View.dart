@@ -24,8 +24,8 @@ class _CryptoWalletAppState extends State<CryptoWalletApp> {
   @override
   void initState() {
     super.initState();
-    _setupNotifications();
-    _requestIosNotificationPermissions();
+    // _setupNotifications();
+    // _requestIosNotificationPermissions();
     fetchFcmToken();
     // iOS specific
   }
@@ -38,59 +38,59 @@ class _CryptoWalletAppState extends State<CryptoWalletApp> {
     print("fetchFcmToken : $token");
   }
 
-  // iOS Notification Permission
-  Future<void> _requestIosNotificationPermissions() async {
-    final iosPlugin = _notificationPlugin.resolvePlatformSpecificImplementation<
-        IOSFlutterLocalNotificationsPlugin>();
-
-    await iosPlugin?.requestPermissions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-  }
-
-  // Notifications Setup
-  void _setupNotifications() {
-    _notificationPlugin = FlutterLocalNotificationsPlugin();
-
-    const androidSettings =
-        AndroidInitializationSettings('@drawable/ic_notification');
-
-    final initSettings = InitializationSettings(
-      android: androidSettings,
-      iOS: const DarwinInitializationSettings(),
-    );
-
-    _notificationPlugin.initialize(
-      initSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse response) {
-        final payloadData = response.payload;
-        if (payloadData != null) {
-          _openPayloadUrl(payloadData);
-        }
-      },
-    );
-
-    final launchedFromNotification =
-        _notificationDetails?.didNotificationLaunchApp ?? false;
-
-    if (launchedFromNotification) {
-      final String? payload =
-          _notificationDetails!.notificationResponse?.payload;
-      if (payload != null) {
-        _openPayloadUrl(payload);
-      }
-    }
-  }
-
-  Future<void> _openPayloadUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) {
-      throw Exception('Could not launch $url');
-    }
-  }
+  // // iOS Notification Permission
+  // Future<void> _requestIosNotificationPermissions() async {
+  //   final iosPlugin = _notificationPlugin
+  //       .resolvePlatformSpecificImplementation<
+  //         IOSFlutterLocalNotificationsPlugin
+  //       >();
+  //
+  //   await iosPlugin?.requestPermissions(alert: true, badge: true, sound: true);
+  // }
+  //
+  // // Notifications Setup
+  // void _setupNotifications() {
+  //   _notificationPlugin = FlutterLocalNotificationsPlugin();
+  //
+  //   const androidSettings = AndroidInitializationSettings(
+  //     '@drawable/ic_notification',
+  //   );
+  //
+  //   final initSettings = InitializationSettings(
+  //     android: androidSettings,
+  //     iOS: const DarwinInitializationSettings(),
+  //   );
+  //
+  //   _notificationPlugin.initialize(
+  //     initSettings,
+  //     onDidReceiveNotificationResponse: (NotificationResponse response) {
+  //       final payloadData = response.payload;
+  //       if (payloadData != null) {
+  //         _openPayloadUrl(payloadData);
+  //       }
+  //     },
+  //   );
+  //
+  //   final launchedFromNotification =
+  //       _notificationDetails?.didNotificationLaunchApp ?? false;
+  //
+  //   if (launchedFromNotification) {
+  //     final String? payload =
+  //         _notificationDetails!.notificationResponse?.payload;
+  //     if (payload != null) {
+  //       _openPayloadUrl(payload);
+  //     }
+  //   }
+  // }
+  //
+  // Future<void> _openPayloadUrl(String url) async {
+  //   if (!await launchUrl(Uri.parse(url))) {
+  //     throw Exception('Could not launch $url');
+  //   }
+  // }
 
   ThemeController themeChangeProvider = ThemeController();
+
   @override
   Widget build(BuildContext context) {
     themeChangeProvider = context.watch<ThemeController>();
@@ -106,7 +106,8 @@ class _CryptoWalletAppState extends State<CryptoWalletApp> {
 
           themeMode: themeChangeProvider.isDarkMode
               ? ThemeMode.dark
-              : ThemeMode.light, // Use the theme provided by the provider
+              : ThemeMode.light,
+          // Use the theme provided by the provider
           home: LaunchScreen(),
         );
       },
