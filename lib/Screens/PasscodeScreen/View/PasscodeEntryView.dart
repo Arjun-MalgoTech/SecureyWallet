@@ -461,7 +461,7 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
       if (availableBiometrics!.contains(BiometricType.strong) ||
           availableBiometrics!.contains(BiometricType.fingerprint)) {
         final bool didAuthenticate = await auth.authenticate(
-          localizedReason: 'NVXO WALLET',
+          localizedReason: 'SECURY WALLET',
           options: const AuthenticationOptions(
             biometricOnly: true,
             stickyAuth: true,

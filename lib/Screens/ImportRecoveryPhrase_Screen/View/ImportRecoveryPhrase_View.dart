@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
 import 'package:securywallet/Api_Service/Apikey_Service.dart';
+import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
 import 'package:securywallet/QRView/QRView_Android.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
@@ -58,9 +59,9 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
 
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               _buildLabel('Wallet Name'),
@@ -68,7 +69,9 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
               _buildLabel('Seed Phrase'),
               _buildSeedPhraseInput(context),
               _buildSeedPhraseNote(),
+
               _buildRecoverWalletButton(context, fetchLocalDataVM),
+              SizedBox(height: 30),
             ],
           ),
         ),
@@ -174,7 +177,10 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
                 fontWeight: FontWeight.w300,
               ),
               maxLines: 6,
-              onChanged: _updateSuggestions,
+              onChanged: (value) {
+                setState(() {}); // ✅ rebuilds button when typing
+                _updateSuggestions(value);
+              },
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.symmetric(
                   vertical: 45,
@@ -182,7 +188,10 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
                 ),
                 border: InputBorder.none,
                 suffixIcon: TextButton(
-                  onPressed: _pasteFromClipboard,
+                  onPressed: () async {
+                    await _pasteFromClipboard();
+                    setState(() {}); // ✅ rebuilds button after paste
+                  },
                   child: AppText(
                     "PASTE",
                     fontSize: 16,
@@ -236,6 +245,7 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
           fontSize: 13,
           color: Color(0xFFB7B7B7),
           textAlign: TextAlign.center,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );
@@ -247,18 +257,34 @@ class _RestoreWalletFromPhraseState extends State<RestoreWalletFromPhrase> {
   ) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: GestureDetector(
-        onTap: () async {
-          if (_formKey.currentState!.validate()) {
-            await _generateKeysAndSave(context, fetchVM);
-          }
-        },
-        child: ReuseElevatedButton(
-          width: MediaQuery.of(context).size.width,
-          height: 45,
-          text: 'Restore Wallet',
-          textcolor: Colors.black,
-          gradientColors: [Color(0XFF42E695), Color(0XFF3BB2BB)],
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: SizeConfig.height(context, 6),
+
+        child: ElevatedButton(
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              await _generateKeysAndSave(context, fetchVM);
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: mnemonicController.text.isEmpty
+                ? Colors
+                      .grey
+                      .shade600 // disabled color
+                : Colors.white, // active color
+            foregroundColor: Colors.black, // text/icon color
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40),
+            ),
+            elevation: 2,
+          ),
+          child: AppText(
+            "Restore Wallet",
+            color: Colors.black,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );

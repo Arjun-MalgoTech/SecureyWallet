@@ -256,7 +256,6 @@ class _TransactionActionState extends State<TransactionAction> {
                             child: Column(
                               children: [
                                 Container(
-                                  width: 110,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     border: GradientBoxBorder(
@@ -317,7 +316,6 @@ class _TransactionActionState extends State<TransactionAction> {
                               );
                             },
                             child: Container(
-                              width: 110,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 border: GradientBoxBorder(

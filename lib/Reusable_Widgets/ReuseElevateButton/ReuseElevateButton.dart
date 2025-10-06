@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseContainer/ReuseContainer.dart';
 
-
-
 class ReuseElevatedButton extends StatelessWidget {
   final String text;
   final double? width;
@@ -16,7 +14,7 @@ class ReuseElevatedButton extends StatelessWidget {
   final double? fontSize;
   final BorderRadiusGeometry? borderRadius;
   final List<Color>?
-      gradientColors; // Updated: Accept a list of colors for gradient
+  gradientColors; // Updated: Accept a list of colors for gradient
 
   ReuseElevatedButton({
     Key? key,
@@ -54,15 +52,15 @@ class ReuseElevatedButton extends StatelessWidget {
             width: borderWidth ?? 0,
           ),
           borderRadius: borderRadius ?? BorderRadius.circular(40),
-       color: Colors.white
+          color: Colors.white,
         ),
         child: Center(
           child: AppText(
             text,
             color: textcolor ?? Colors.white,
             fontFamily: "LexendDeca",
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

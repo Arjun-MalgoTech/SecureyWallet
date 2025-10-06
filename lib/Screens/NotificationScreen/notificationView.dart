@@ -4,6 +4,8 @@ import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
 import 'package:securywallet/Screens/Launch_Screen/LaunchScreen_View.dart';
+import 'package:securywallet/Screens/Secure_Backup_Screen/View/Secure_Backup_2_View.dart';
+import 'package:securywallet/Screens/Secure_Backup_Screen/View/Secure_Backup_View.dart';
 import 'package:securywallet/Screens/app_bottom_nav/View/App_Bottom_nav_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -97,7 +99,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
         children: [
           /// Background image
           Align(
-            alignment: Alignment.bottomCenter,
             child: Image.asset(
               "assets/Images/back.png",
               fit: BoxFit.cover,
@@ -111,25 +112,34 @@ class _NotificationScreenState extends State<NotificationScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: SizeConfig.height(context, 8)),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                 Image.asset("assets/Images/bell2.png", height: 300, width: 300),
 
-                SizedBox(height: SizeConfig.height(context, 3)),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                 AppText(
                   "Keep up with the market!",
                   fontWeight: FontWeight.w600,
-                  fontSize: 32,
+                  fontSize: 24,
                 ),
 
-                SizedBox(height: SizeConfig.height(context, 2)),
+                SizedBox(height: SizeConfig.height(context, 1)),
 
                 AppText(
-                  "Turn on notifications to keep track of prices and receive transaction updates.",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
+                  "Turn on notifications to keep track of prices and receive",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                  color: Color(0XFFB4B1B2),
                 ),
-                SizedBox(height: SizeConfig.height(context, 12)),
+
+                AppText(
+                  "transaction updates.",
+                  fontWeight: FontWeight.w400,
+                  fontSize: 13,
+                  color: Color(0XFFB4B1B2),
+                ),
+
+                Expanded(child: Spacer()),
                 Column(
                   children: [
                     Padding(
@@ -150,7 +160,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AppBottomNav(),
+                                builder: (context) => SecureBackup2(),
                               ),
                             );
                           } else {
@@ -190,22 +200,29 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         child: ReuseElevatedButton(
                           height: SizeConfig.height(context, 7),
                           width: SizeConfig.width(context, 100),
-                          text: "Enable Notification",
+                          text: "Enable Notifications",
                           textcolor: Colors.black,
                           gradientColors: [],
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => AppBottomNav(),
-                          ),
-                        );
-                      },
-                      child: AppText("Skip, I’ll do it later"),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SecureBackup(),
+                            ),
+                          );
+                        },
+                        child: AppText(
+                          "Skip, I’ll do it later",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17,
+                        ),
+                      ),
                     ),
                   ],
                 ),

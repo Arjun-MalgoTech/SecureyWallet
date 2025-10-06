@@ -98,7 +98,7 @@ class _CryptoWalletAppState extends State<CryptoWalletApp> {
     return Consumer<ThemeController>(
       builder: (context, ThemeController, child) {
         return GetMaterialApp(
-          title: 'NVXO WALLET',
+          title: 'SECURY WALLET',
           debugShowCheckedModeBanner: false,
           theme: themeChangeProvider.isDarkMode
               ? Apptheme.darkThemeData

@@ -33,7 +33,7 @@ class _SecretPhrasesCheckListState extends State<SecretPhrasesCheckList> {
             _buildCheckbox(
               value: checkbox1,
               onChanged: (val) => setState(() => checkbox1 = val),
-              text: "NVXO WALLET never keeps a copy of your secret\nphrase.",
+              text: "Secury WALLET never keeps a copy of your secret\nphrase.",
             ),
             _buildCheckbox(
               value: checkbox2,

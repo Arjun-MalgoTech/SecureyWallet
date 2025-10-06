@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:securywallet/Api_Service/AssetTransactionApi.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
+import 'package:securywallet/Screens/OnboardingScreen_View/View/OnboardingScreen.dart';
 import 'package:securywallet/Screens/PasscodeScreen/View/PasscodeEntryView.dart';
 import 'package:securywallet/Screens/Previous_Home_Screen/View/Previous_Home_Screen_View.dart';
 import 'package:securywallet/UserWalletData/UserWalletData.dart';
@@ -12,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class WalletBackUp extends StatefulWidget {
   final UserWalletDataModel data;
+
   const WalletBackUp({super.key, required this.data});
 
   @override
@@ -23,6 +25,7 @@ class _WalletBackUpState extends State<WalletBackUp> {
   String savedText = '';
   VaultStorageService vaultStorageService = VaultStorageService();
   LocalStorageService localStorageService = LocalStorageService();
+
   @override
   void initState() {
     super.initState();
@@ -42,16 +45,14 @@ class _WalletBackUpState extends State<WalletBackUp> {
         // ),
         // centerTitle: true,
         leading: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop();
-            },
-            child: Container(
-              color: Colors.transparent,
-              child: Icon(
-                Icons.arrow_back,
-                color: Color(0xFFB7B7B7),
-              ),
-            )),
+          onTap: () {
+            Navigator.of(context).pop();
+          },
+          child: Container(
+            color: Colors.transparent,
+            child: Icon(Icons.arrow_back, color: Color(0xFFB7B7B7)),
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 8.0),
@@ -65,25 +66,28 @@ class _WalletBackUpState extends State<WalletBackUp> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PasscodeEntryView(
-                            savedPasscode: savedPasscode!,
-                            click: '123',
-                            data: widget.data),
+                          savedPasscode: savedPasscode!,
+                          click: '123',
+                          data: widget.data,
+                        ),
                       ),
                     );
 
                     if (result != true) {
                       // Remove data if passcode is correct
 
-                      UserWalletDataModel? selected =
-                          vaultStorageService.fetchSelectedList();
+                      UserWalletDataModel? selected = vaultStorageService
+                          .fetchSelectedList();
                       if (mounted) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Provider.of<LocalStorageService>(context,
-                                  listen: false)
-                              .getData();
-                          Provider.of<AssetTransactionAPI>(context,
-                                  listen: false)
-                              .getBalance(
+                          Provider.of<LocalStorageService>(
+                            context,
+                            listen: false,
+                          ).getData();
+                          Provider.of<AssetTransactionAPI>(
+                            context,
+                            listen: false,
+                          ).getBalance(
                             localStorageService.assetList,
                             localStorageService.activeWalletData!.privateKey,
                           );
@@ -93,42 +97,35 @@ class _WalletBackUpState extends State<WalletBackUp> {
                         } else {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(builder: (builder) => PreHome()),
+                            MaterialPageRoute(builder: (builder) => Onboard()),
                             (route) => false,
                           );
                         }
                       }
                     }
                   },
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Color(0xFFB7B7B7),
-                  ),
+                  icon: const Icon(Icons.delete, color: Color(0xFFB7B7B7)),
                 ),
                 IconButton(
-                    onPressed: () async {
-                      if (_controller.text.isNotEmpty) {
-                        Map data = widget.data.toJson();
+                  onPressed: () async {
+                    if (_controller.text.isNotEmpty) {
+                      Map data = widget.data.toJson();
 
-                        setState(() {
-                          data["walletName"] = _controller.text;
-                        });
-                        await vaultStorageService.updateWalletToList(data);
+                      setState(() {
+                        data["walletName"] = _controller.text;
+                      });
+                      await vaultStorageService.updateWalletToList(data);
 
-                        if (mounted) {
-                          Navigator.pop(context, {
-                            'savedText': savedText,
-                          });
-                        }
+                      if (mounted) {
+                        Navigator.pop(context, {'savedText': savedText});
                       }
-                    },
-                    icon: const Icon(
-                      Icons.check,
-                      color: Color(0xFFB7B7B8),
-                    )),
+                    }
+                  },
+                  icon: const Icon(Icons.check, color: Color(0xFFB7B7B8)),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
       body: Column(
@@ -137,11 +134,7 @@ class _WalletBackUpState extends State<WalletBackUp> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                AppText(
-                  "Name",
-                  color: Color(0xFFB7B7B7),
-                  fontSize: 13,
-                ),
+                AppText("Name", color: Color(0xFFB7B7B7), fontSize: 13),
               ],
             ),
           ),
@@ -149,10 +142,11 @@ class _WalletBackUpState extends State<WalletBackUp> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               style: TextStyle(
-                  color: Theme.of(context).colorScheme.surfaceBright,
-                  fontWeight: FontWeight.w300,
-                  fontSize: 13,
-                  decorationThickness: 0.0),
+                color: Theme.of(context).colorScheme.surfaceBright,
+                fontWeight: FontWeight.w300,
+                fontSize: 13,
+                decorationThickness: 0.0,
+              ),
               controller: _controller,
               onChanged: (e) {
                 widget.data.walletName = e;
@@ -185,10 +179,7 @@ class _WalletBackUpState extends State<WalletBackUp> {
                   onPressed: () {
                     _controller.clear();
                   },
-                  icon: Icon(
-                    Icons.close_outlined,
-                    color: Colors.white70,
-                  ),
+                  icon: Icon(Icons.close_outlined, color: Colors.white70),
                 ),
               ),
             ),
@@ -209,12 +200,18 @@ class _WalletBackUpState extends State<WalletBackUp> {
             onTap: () async {
               final prefs = await SharedPreferences.getInstance();
               final savedPasscode = prefs.getString('passcode');
-              Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return PasscodeEntryView(
-                    savedPasscode: savedPasscode!,
-                    click: 'wallet_backup',
-                    data: widget.data);
-              }));
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return PasscodeEntryView(
+                      savedPasscode: savedPasscode!,
+                      click: 'wallet_backup',
+                      data: widget.data,
+                    );
+                  },
+                ),
+              );
             },
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -235,20 +232,15 @@ class _WalletBackUpState extends State<WalletBackUp> {
                   ),
                   Row(
                     children: [
-                      AppText(
-                        'Active',
-                        color: Colors.green,
-                      ),
-                      SizedBox(
-                        width: 3,
-                      ),
+                      AppText('Active', color: Colors.green),
+                      SizedBox(width: 3),
                       Icon(
                         Icons.arrow_forward_ios,
                         color: Color(0xFFB7B7B7),
                         size: 15,
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

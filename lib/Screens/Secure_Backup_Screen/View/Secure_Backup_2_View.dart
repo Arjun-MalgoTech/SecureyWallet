@@ -8,14 +8,14 @@ import 'package:securywallet/Screens/Connect_Existing_Wallet/View/ConnectExistin
 import 'package:securywallet/Screens/SecretPhraseCheckList/SecretPharseCheckList_View.dart';
 import 'package:securywallet/Screens/SecretPhraseGenerator/View/MnemonicGenerator.dart';
 
-class SecureBackup extends StatefulWidget {
-  const SecureBackup({super.key});
+class SecureBackup2 extends StatefulWidget {
+  const SecureBackup2({super.key});
 
   @override
-  State<SecureBackup> createState() => _SecureBackupState();
+  State<SecureBackup2> createState() => _SecureBackup2State();
 }
 
-class _SecureBackupState extends State<SecureBackup> {
+class _SecureBackup2State extends State<SecureBackup2> {
   bool checkbox1 = false;
   bool checkbox2 = false;
   bool checkbox3 = false;
@@ -27,21 +27,34 @@ class _SecureBackupState extends State<SecureBackup> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: _buildAppBar(context),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            signWallet(),
-            const SizedBox(height: 10),
-            _buildImage(),
-            const SizedBox(height: 10),
-            _buildImage2(),
-            const Spacer(),
-            // _buildBackupButton(context),
-            // const SizedBox(height: 20),
-          ],
-        ),
+      body: Column(
+        children: [
+          _buildHeaderImage(context),
+          const SizedBox(height: 2),
+          _buildTitleSection(),
+          const SizedBox(height: 12),
+          _buildCheckbox(
+            value: checkbox1,
+            onChanged: (val) => setState(() => checkbox1 = val),
+            text: "Secury WALLET never keeps a copy of your\nsecret phrase.",
+          ),
+          gradientDivider(),
+          _buildCheckbox(
+            value: checkbox2,
+            onChanged: (val) => setState(() => checkbox2 = val),
+            text:
+                "For security reasons, do not save your secret\nphrase in plain text, such as in screenshots, \ntext files, or emails.",
+          ),
+          gradientDivider(),
+          _buildCheckbox(
+            value: checkbox3,
+            onChanged: (val) => setState(() => checkbox3 = val),
+            text: "Note down your secret phrase and store it\nsafely offline!",
+          ),
+          Spacer(),
+          _buildContinueButton(context),
+          const SizedBox(height: 30),
+        ],
       ),
     );
   }
@@ -297,7 +310,7 @@ class _SecureBackupState extends State<SecureBackup> {
                 CircleAvatar(
                   backgroundColor: value
                       ? const Color(0xFF006B2B)
-                      : Theme.of(context).primaryColor,
+                      : Color(0xFF8B8B8B),
                   radius: 15,
                   child: Checkbox(
                     value: value,
@@ -329,19 +342,17 @@ class _SecureBackupState extends State<SecureBackup> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12.0),
       child: Container(
-        width: double.infinity,
-        height: 45,
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: SizeConfig.height(context, 6),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(30),
           color: allCheckboxesSelected ? Colors.white : Colors.grey,
         ),
         child: ElevatedButton(
           onPressed: allCheckboxesSelected
               ? () => Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (_) => const ConnectExistingWallet(),
-                  ),
+                  MaterialPageRoute(builder: (_) => const MnemonicGenerator()),
                 )
               : null,
           style: ElevatedButton.styleFrom(
@@ -351,13 +362,11 @@ class _SecureBackupState extends State<SecureBackup> {
               borderRadius: BorderRadius.circular(20),
             ),
           ),
-          child: Text(
-            'Continue',
-            style: TextStyle(
-              color: allCheckboxesSelected ? Colors.black : Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
+          child: AppText(
+            'Confirm',
+            color: Colors.black,
+            fontSize: 17,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

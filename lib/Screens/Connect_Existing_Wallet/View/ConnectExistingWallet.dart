@@ -70,10 +70,13 @@ class _ConnectExistingWalletState extends State<ConnectExistingWallet> {
                   children: [
                     Image.asset(
                       "assets/Images/secury.png",
-                      width: 80,
-                      height: 80,
+                      height: MediaQuery.of(context).size.height * 0.06,
                     ),
-                    AppText("Multi-coin wallet"),
+                    AppText(
+                      "Multi-coin wallet",
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
                     Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -83,10 +86,19 @@ class _ConnectExistingWalletState extends State<ConnectExistingWallet> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(6.0),
-                        child: AppText("Recommended", color: Colors.black),
+                        child: AppText(
+                          "Recommended",
+                          color: Colors.black,
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
-                    Icon(Icons.arrow_forward_ios, color: Colors.white),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      color: Colors.white,
+                      size: 16,
+                    ),
                   ],
                 ),
               ),

@@ -16,11 +16,14 @@ class _AboutAppViewState extends State<AboutAppView> {
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.arrow_back,
-                color: Theme.of(context).indicatorColor)),
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).indicatorColor,
+          ),
+        ),
         title: AppText(
           'About',
           color: Theme.of(context).colorScheme.surfaceBright,
@@ -31,58 +34,69 @@ class _AboutAppViewState extends State<AboutAppView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          InkWell(
-            onTap: () {
-              launch('https://nvxowallet.com/about');
-            },
-            child: Padding(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            InkWell(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  top: 8.0,
+                  bottom: 16.0,
+                ),
+                child: AppText(
+                  'About Us',
+                  color: Theme.of(context).colorScheme.surfaceBright,
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {},
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  top: 8.0,
+                  bottom: 16.0,
+                ),
+                child: AppText(
+                  'Privacy Policy',
+                  color: Theme.of(context).colorScheme.surfaceBright,
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                launch('https://nvxowallet.com/terms');
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  left: 8.0,
+                  top: 8.0,
+                  bottom: 16.0,
+                ),
+                child: AppText(
+                  'Terms of Use',
+                  color: Theme.of(context).colorScheme.surfaceBright,
+                ),
+              ),
+            ),
+            Padding(
               padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 16.0),
               child: AppText(
-                'About Us',
+                'Review the app',
                 color: Theme.of(context).colorScheme.surfaceBright,
               ),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              launch('https://nvxowallet.com/privacy-policy');
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 16.0),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
               child: AppText(
-                'Privacy Policy',
+                'Version\n0.0.8',
                 color: Theme.of(context).colorScheme.surfaceBright,
               ),
             ),
-          ),
-          InkWell(
-            onTap: () {
-              launch('https://nvxowallet.com/terms');
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 16.0),
-              child: AppText(
-                'Terms of Use',
-                color: Theme.of(context).colorScheme.surfaceBright,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0, top: 8.0, bottom: 16.0),
-            child: AppText(
-              'Review the app',
-              color: Theme.of(context).colorScheme.surfaceBright,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: AppText(
-              'Version\n0.0.8',
-              color: Theme.of(context).colorScheme.surfaceBright,
-            ),
-          ),
-        ]),
+          ],
+        ),
       ),
     );
   }

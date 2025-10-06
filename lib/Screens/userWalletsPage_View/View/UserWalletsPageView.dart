@@ -443,7 +443,7 @@ class _UserWalletPageState extends State<UserWalletPage> {
                                 onChanged: (val) =>
                                     setStateDialog(() => checkbox1 = val),
                                 text:
-                                    "NVXO WALLET never keeps a copy of your\nsecret phrase.",
+                                    "Secury WALLET never keeps a copy of your\nsecret phrase.",
                               ),
                               gradientDivider(),
                               _buildCheckbox(

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
 import 'package:securywallet/Asset_Functions/Asset_Balance/AssetBalance.dart';
 import 'package:securywallet/Crypto_Utils/AppToastMsg/AppToast.dart';
@@ -105,7 +106,7 @@ class _PreHomeState extends State<PreHome> {
             _buildTrendingTitle(),
             _buildSetupOptions(context),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.only(left: 30.0, top: 10),
               child: Row(
                 children: [
                   Container(
@@ -113,7 +114,7 @@ class _PreHomeState extends State<PreHome> {
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white,
                     ),
-                    height: 30,
+                    height: 40,
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Center(
                       child: Text(
@@ -126,22 +127,46 @@ class _PreHomeState extends State<PreHome> {
                       ),
                     ),
                   ),
+                  SizedBox(width: 5),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+
+                      border: Border.all(color: Color(0XFF444444)),
+                    ),
+                    height: 40,
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Center(
+                      child: Text(
+                        "NFTs",
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
 
             _buildTrendingList(),
-            _buildOptionCard(
-              context,
 
-              title: "Create New Wallet",
-
-              onTap: () => Navigator.push(
+            Padding(
+              padding: const EdgeInsets.only(top: 16.0, bottom: 8),
+              child: _buildOptionCard(
                 context,
-                MaterialPageRoute(builder: (_) => SecureBackup()),
+
+                title: "Create New Wallet",
+
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => SecureBackup()),
+                ),
               ),
             ),
-            _buildOptionCard(
+            _buildOptionCard1(
               context,
 
               title: "Access Existing Wallet",
@@ -164,14 +189,14 @@ class _PreHomeState extends State<PreHome> {
           Icons.menu,
           color: Theme.of(context).colorScheme.surfaceBright,
         ),
-        onPressed: () => _scaffoldKey.currentState?.openDrawer(),
+        onPressed: () {},
       ),
     );
   }
 
   Widget _buildWalletBanner() {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0, right: 16, bottom: 8),
+      padding: const EdgeInsets.only(left: 30.0, right: 30, bottom: 8),
       child: Stack(
         children: [
           Align(
@@ -180,14 +205,12 @@ class _PreHomeState extends State<PreHome> {
           ),
           Column(
             children: [
-              SizedBox(height: SizeConfig.height(context, 3)),
+              SizedBox(height: SizeConfig.height(context, 2)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(width: 30),
-
                   Text(
-                    "\$0.00",
+                    "\$567.89",
                     style: TextStyle(
                       fontFamily: 'LexendDeca',
                       fontWeight: FontWeight.w600,
@@ -199,7 +222,13 @@ class _PreHomeState extends State<PreHome> {
                   const SizedBox(width: 8),
                 ],
               ),
-              SizedBox(height: SizeConfig.height(context, 9)),
+              AppText(
+                "\$11.32 (+1.46%)",
+                color: Colors.green,
+                fontWeight: FontWeight.w400,
+                fontSize: 14,
+              ),
+              SizedBox(height: SizeConfig.height(context, 6)),
               Padding(
                 padding: const EdgeInsets.only(left: 26.0, right: 26),
                 child: Row(
@@ -215,7 +244,7 @@ class _PreHomeState extends State<PreHome> {
                             ConstantImage.arrowup,
                           ),
                         ),
-                        SizedBox(height: SizeConfig.height(context, 1)),
+                        SizedBox(height: SizeConfig.height(context, 0.5)),
                         AppText(
                           "Send",
                           fontFamily: 'LexendDeca',
@@ -231,7 +260,7 @@ class _PreHomeState extends State<PreHome> {
                         children: [
                           SvgPicture.asset(ConstantImage.arrowdown),
 
-                          SizedBox(height: SizeConfig.height(context, 1)),
+                          SizedBox(height: SizeConfig.height(context, 0.5)),
                           AppText(
                             "Receive",
                             fontFamily: 'LexendDeca',
@@ -247,8 +276,7 @@ class _PreHomeState extends State<PreHome> {
                       child: Column(
                         children: [
                           SvgPicture.asset(ConstantImage.crevon),
-
-                          SizedBox(height: SizeConfig.height(context, 1)),
+                          SizedBox(height: SizeConfig.height(context, 0.5)),
                           AppText(
                             "Fund",
                             fontFamily: 'LexendDeca',
@@ -264,8 +292,7 @@ class _PreHomeState extends State<PreHome> {
                       child: Column(
                         children: [
                           SvgPicture.asset(ConstantImage.Dollar),
-
-                          SizedBox(height: SizeConfig.height(context, 1)),
+                          SizedBox(height: SizeConfig.height(context, 0.5)),
                           AppText(
                             "Sell",
                             fontFamily: 'LexendDeca',
@@ -326,8 +353,8 @@ class _PreHomeState extends State<PreHome> {
         child: Padding(
           padding: const EdgeInsets.only(left: 8.0, right: 8),
           child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 40,
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 50,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.white,
@@ -346,9 +373,53 @@ class _PreHomeState extends State<PreHome> {
     );
   }
 
+  Widget _buildOptionCard1(
+    BuildContext context, {
+
+    required String title,
+
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8.0),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              border: GradientBoxBorder(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.3),
+                    Colors.white.withOpacity(0.05),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                width: 0.5,
+              ),
+            ),
+            child: Center(
+              child: AppText(
+                title,
+                fontWeight: FontWeight.w500,
+                fontSize: 15,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildTrendingTitle() {
     return Padding(
-      padding: const EdgeInsets.only(left: 16.0),
+      padding: const EdgeInsets.only(left: 30.0, top: 12),
       child: Row(children: [AppText("Trending", color: Colors.white)]),
     );
   }
@@ -356,7 +427,7 @@ class _PreHomeState extends State<PreHome> {
   Widget _buildTrendingList() {
     return Column(
       children: [
-        Image.asset("assets/Images/emptywallet.png", height: 130, width: 300),
+        Image.asset("assets/Images/emptywallet.png", height: 200, width: 300),
         AppText(
           "Your wallet is empty!",
           color: Color(0XFFB4B1B2),
@@ -382,19 +453,19 @@ class _PreHomeState extends State<PreHome> {
     List<String>? coinData = result[coinSymbol];
 
     return Padding(
-      padding: const EdgeInsets.only(right: 8.0, left: 8, top: 8, bottom: 8),
+      padding: const EdgeInsets.only(left: 30, top: 8),
       child: Container(
         decoration: BoxDecoration(
           border: Border.all(color: Color(0XFF34373d)),
           borderRadius: BorderRadius.circular(15),
           color: Color(0XFF0f131a),
         ),
-        width: 300,
+        width: MediaQuery.of(context).size.width * 0.7,
         child: ListTile(
           onTap: () => Utils.snackBar("Please Create or Import an Wallet"),
           leading: _buildTokenAvatar(coinSymbol, assetList[index]["imageUrl"]!),
           title: Padding(
-            padding: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.only(top: 4.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -413,11 +484,9 @@ class _PreHomeState extends State<PreHome> {
               ],
             ),
           ),
-          trailing: _buildTokenTrailing(
-            context,
-            coinSymbol,
-            coinName,
-            coinData,
+          trailing: Padding(
+            padding: const EdgeInsets.only(bottom: 8.0),
+            child: _buildTokenTrailing(context, coinSymbol, coinName, coinData),
           ),
         ),
       ),
@@ -428,7 +497,7 @@ class _PreHomeState extends State<PreHome> {
     return Padding(
       padding: const EdgeInsets.only(right: 5.0, bottom: 15),
       child: CircleAvatar(
-        radius: 15,
+        radius: 18,
         backgroundColor: Color(0xFF202832),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(30),
@@ -453,8 +522,6 @@ class _PreHomeState extends State<PreHome> {
   ) {
     if (data == null) {
       return Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
         children: [
           AppText(
             name,
