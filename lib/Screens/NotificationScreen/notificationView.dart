@@ -213,7 +213,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SecureBackup(),
+                              builder: (context) => SecureBackup2(),
                             ),
                           );
                         },

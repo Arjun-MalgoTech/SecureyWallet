@@ -54,7 +54,15 @@ class _AppBottomNavState extends State<AppBottomNav> {
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: _getCurrentScreen(_currentTabIndex, localStorage),
-        bottomNavigationBar: _buildCustomNavBar(),
+        bottomNavigationBar: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 12.0), // adjust as needed
+            child: _buildCustomNavBar(),
+          ),
+        ),
+
+
       ),
     );
   }
@@ -63,7 +71,7 @@ class _AppBottomNavState extends State<AppBottomNav> {
   Widget _buildCustomNavBar() {
     return Container(
       color: Color(0xFF0D0D1A),
-      padding: EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.symmetric(vertical: 8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(_tabs.length, (index) {

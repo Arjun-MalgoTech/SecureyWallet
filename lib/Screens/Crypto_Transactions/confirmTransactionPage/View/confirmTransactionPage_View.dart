@@ -404,11 +404,13 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       AppText("Total Cost", color: Color(0XFF858585)),
-
-                      AppText(
-                        "${formatBalance(widget.amount) + widget.estimatedGas}",
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
+SizedBox(width: 10,),
+                      Expanded(
+                        child: AppText(
+                          "${formatBalance(widget.amount) + widget.estimatedGas}",
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
                       ),
                     ],
                   ),

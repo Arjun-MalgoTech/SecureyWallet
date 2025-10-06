@@ -1,0 +1,1 @@
+Check "Objective-C Bridging Header" and "Swift Compiler - General" settings — these should be set up even if your project is mostly Dart.

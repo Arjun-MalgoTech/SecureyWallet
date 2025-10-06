@@ -458,8 +458,25 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       ],
                     ),
                   ),
-
-                  Image.asset("assets/Images/search1.png"),
+                      InkWell(
+                        child: IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => AssetManager()),
+                            ).then((v) {});
+                          },
+                          icon: Container(
+                            color: Colors.transparent,
+                            child: Image.asset(
+                              "assets/Images/asset.png",
+                              width: 25,
+                              height: 25,
+                            ),
+                          ),
+                          color: Theme.of(context).colorScheme.surfaceBright,
+                        ),
+                      ),
                 ],
               ),
 
@@ -487,14 +504,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                       alignment: Alignment.center,
                       children: [
                         // Background Image Centered
-                        Positioned.fill(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Image.asset(
-                              "assets/Images/1.png",
-                              fit: BoxFit.contain,
-                              width: screenWidth,
-                            ),
+                        Align(
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            "assets/Images/1.png",
+                            fit: BoxFit.contain,
+                            width: screenWidth,
                           ),
                         ),
 
@@ -563,7 +578,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                   fontWeight: FontWeight.w400,
                                   fontSize:
                                   screenWidth *
-                                      0.04, // responsive font
+                                      0.032, // responsive font
                                 ),
                               ),
                             ),
@@ -772,18 +787,20 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                       "${localStorageService.assetList[index]
                                           .coinSymbol!}USDT",
                                     )
-                                        ? AppText(
-                                      "${double.parse(
-                                          result["${localStorageService
-                                              .assetList[index]
-                                              .coinSymbol!}USDT"]![0]
-                                              .toString()).toStringAsFixed(
-                                          CoinListConfig.usdtDecimal)}",
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.white
-                                          .withOpacity(0.6),
-                                    )
+                                        ? Expanded(
+                                          child: AppText(
+                                                                                "${double.parse(
+                                            result["${localStorageService
+                                                .assetList[index]
+                                                .coinSymbol!}USDT"]![0]
+                                                .toString()).toStringAsFixed(
+                                            CoinListConfig.usdtDecimal)}",
+                                                                                fontSize: 13,
+                                                                                fontWeight: FontWeight.w400,
+                                                                                color: Colors.white
+                                            .withOpacity(0.6),
+                                                                              ),
+                                        )
                                         : AppText(
                                       localStorageService
                                           .assetList[index]

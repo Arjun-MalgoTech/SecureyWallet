@@ -1,11 +1,22 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:clipboard/clipboard.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:bip32/bip32.dart' as bip32;
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
 import 'package:securywallet/Screens/SecretPhraseGenerator/View/ChooseMnemonic.dart';
+import 'package:securywallet/Screens/app_bottom_nav/View/App_Bottom_nav_view.dart';
+import 'package:securywallet/VaultStorageService/VaultStorageService.dart';
+import 'package:securywallet/VaultStorageService/LocalDataServiceVM.dart';
+import 'package:securywallet/UserWalletData/UserWalletData.dart';
+import 'package:securywallet/Api_Service/Apikey_Service.dart';
+import 'package:web3dart/web3dart.dart';
+import 'package:hex/hex.dart';
+import 'package:http/http.dart';
+import 'package:provider/provider.dart';
 
 class MnemonicGenerator extends StatefulWidget {
   const MnemonicGenerator({super.key});
@@ -190,26 +201,6 @@ class _MnemonicGeneratorState extends State<MnemonicGenerator> {
   }
 }
 
-/*
-import 'dart:io';
-import 'dart:math';
-import 'package:flutter/material.dart';
-import 'package:clipboard/clipboard.dart';
-import 'package:bip39/bip39.dart' as bip39;
-import 'package:bip32/bip32.dart' as bip32;
-import 'package:gradient_borders/box_borders/gradient_box_border.dart';
-import 'package:web3dart/web3dart.dart';
-import 'package:hex/hex.dart';
-import 'package:http/http.dart';
-import 'package:provider/provider.dart';
-
-import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
-import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
-import 'package:securywallet/Screens/app_bottom_nav/View/App_Bottom_nav_view.dart';
-import 'package:securywallet/VaultStorageService/VaultStorageService.dart';
-import 'package:securywallet/VaultStorageService/LocalDataServiceVM.dart';
-import 'package:securywallet/UserWalletData/UserWalletData.dart';
-import 'package:securywallet/Api_Service/Apikey_Service.dart';
 
 class MnemonicStepperScreen extends StatefulWidget {
   const MnemonicStepperScreen({super.key});
@@ -698,4 +689,3 @@ class _MnemonicStepperScreenState extends State<MnemonicStepperScreen> {
   }
 }
 
- */
