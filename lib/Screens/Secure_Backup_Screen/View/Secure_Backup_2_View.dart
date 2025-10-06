@@ -352,7 +352,9 @@ class _SecureBackup2State extends State<SecureBackup2> {
           onPressed: allCheckboxesSelected
               ? () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const MnemonicGenerator()),
+                  MaterialPageRoute(
+                    builder: (_) => const MnemonicStepperScreen(),
+                  ),
                 )
               : null,
           style: ElevatedButton.styleFrom(

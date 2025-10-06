@@ -8,6 +8,7 @@ import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Screens/Connect_Existing_Wallet/View/ConnectExistingWallet.dart';
 import 'package:securywallet/Screens/ImportRecoveryPhrase_Screen/View/ImportRecoveryPhrase_View.dart';
 import 'package:securywallet/Screens/SecretPhraseGenerator/View/MnemonicGenerator.dart';
+import 'package:securywallet/Screens/Secure_Backup_Screen/View/Secure_Backup_2_View.dart';
 import 'package:securywallet/Screens/Secure_Backup_Screen/View/Secure_Backup_View.dart';
 import 'package:securywallet/Screens/app_bottom_nav/View/App_Bottom_nav_view.dart';
 import 'package:securywallet/Screens/userWalletsPage_View/Backup_Vault_View/View/BackUpVaultView.dart';
@@ -312,7 +313,7 @@ class _UserWalletPageState extends State<UserWalletPage> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return SecureBackup();
+                              return SecureBackup2();
                             },
                           ),
                         );
@@ -361,7 +362,14 @@ class _UserWalletPageState extends State<UserWalletPage> {
                     ),
                     child: ListTile(
                       onTap: () {
-                        showGlassDialog(context);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return SecureBackup();
+                            },
+                          ),
+                        );
                       },
 
                       shape: RoundedRectangleBorder(

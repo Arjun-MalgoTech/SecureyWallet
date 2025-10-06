@@ -162,7 +162,9 @@ class _SecretPhrasesCheckListState extends State<SecretPhrasesCheckList> {
           onPressed: allCheckboxesSelected
               ? () => Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (_) => const MnemonicGenerator()),
+                  MaterialPageRoute(
+                    builder: (_) => const MnemonicStepperScreen(),
+                  ),
                 )
               : null,
           style: ElevatedButton.styleFrom(
