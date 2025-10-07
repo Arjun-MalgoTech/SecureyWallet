@@ -407,623 +407,626 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                     color: Colors.purpleAccent[100],
                   ),
                 )
-              : Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Image.asset("assets/Images/scan4.png"),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return const UserWalletPage();
-                                },
-                              ),
-                            );
-                            FocusScope.of(context).unfocus();
-                          },
-                          child: Row(
-                            children: [
-                              AppText(
-                                localStorageService.activeWalletData!.walletName
-                                            .toString()
-                                            .length >
-                                        16
-                                    ? '${localStorageService.activeWalletData!.walletName.toString().substring(0, 16)}...'
-                                    : localStorageService
-                                          .activeWalletData!
-                                          .walletName
-                                          .toString(),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                                fontSize: 17,
-                              ),
-                              Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.surfaceBright,
-                                size: 26,
-                              ),
-                            ],
-                          ),
-                        ),
-                        InkWell(
-                          child: IconButton(
-                            onPressed: () {
+              : SingleChildScrollView(
+                child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Image.asset("assets/Images/scan4.png"),
+                          InkWell(
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => AssetManager(),
+                                  builder: (context) {
+                                    return const UserWalletPage();
+                                  },
                                 ),
-                              ).then((v) {});
+                              );
+                              FocusScope.of(context).unfocus();
                             },
-                            icon: Container(
-                              color: Colors.transparent,
-                              child: Image.asset(
-                                "assets/Images/asset.png",
-                                width: 25,
-                                height: 25,
-                              ),
+                            child: Row(
+                              children: [
+                                AppText(
+                                  localStorageService.activeWalletData!.walletName
+                                              .toString()
+                                              .length >
+                                          16
+                                      ? '${localStorageService.activeWalletData!.walletName.toString().substring(0, 16)}...'
+                                      : localStorageService
+                                            .activeWalletData!
+                                            .walletName
+                                            .toString(),
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17,
+                                ),
+                                Icon(
+                                  Icons.arrow_drop_down_outlined,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.surfaceBright,
+                                  size: 26,
+                                ),
+                              ],
                             ),
-                            color: Theme.of(context).colorScheme.surfaceBright,
                           ),
-                        ),
-                      ],
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 18,
-                      ),
-                      child: LayoutBuilder(
-                        builder: (context, constraints) {
-                          final screenWidth = MediaQuery.of(context).size.width;
-                          final screenHeight = MediaQuery.of(
-                            context,
-                          ).size.height;
-
-                          return Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              // Background Image Centered
-                              Align(
-                                alignment: Alignment.center,
+                          InkWell(
+                            child: IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AssetManager(),
+                                  ),
+                                ).then((v) {});
+                              },
+                              icon: Container(
+                                color: Colors.transparent,
                                 child: Image.asset(
-                                  "assets/Images/1.png",
-                                  fit: BoxFit.contain,
-                                  width: screenWidth,
+                                  "assets/Images/asset.png",
+                                  width: 25,
+                                  height: 25,
                                 ),
                               ),
-
-                              // Foreground Content
-                              Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  SizedBox(height: screenHeight * 0.02),
-
-                                  // Balance Row
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      ValueListenableBuilder(
-                                        valueListenable: usdTotal,
-                                        builder: (context, value, child) {
-                                          return FittedBox(
-                                            fit: BoxFit.scaleDown,
-                                            child: Text(
-                                              "\$574.89",
-                                              style: TextStyle(
-                                                fontFamily: 'LexendDeca',
-                                                fontWeight: FontWeight.w600,
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.surfaceBright,
-                                                fontSize:
-                                                    screenWidth *
-                                                    0.09, // responsive font
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                      SizedBox(width: screenWidth * 0.02),
-                                      // Example of toggle icon (optional)
-                                      // GestureDetector(
-                                      //   onTap: () {
-                                      //     setState(() {
-                                      //       isTextVisible = !isTextVisible;
-                                      //     });
-                                      //   },
-                                      //   child: Icon(
-                                      //     isTextVisible ? Icons.visibility : Icons.visibility_off,
-                                      //     color: Theme.of(context).colorScheme.surfaceBright,
-                                      //     size: screenWidth * 0.06,
-                                      //   ),
-                                      // ),
-                                    ],
-                                  ),
-
-                                  // Percentage text
-                                  Text(
-                                    "\$11.32 (+1.46%)",
-                                    style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize:
-                                          screenWidth *
-                                          0.032, // responsive font
-                                    ),
-                                  ),
-
-                                  SizedBox(height: screenHeight * 0.055),
-
-                                  // Bottom icon row (buttons)
-                                  iconRow(context),
-                                ],
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ),
-
-                    SizedBox(height: SizeConfig.height(context, 2)),
-                    // bannerImage(context),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: Row(
-                        children: [
-                          AppText(
-                            "Trending",
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17,
+                              color: Theme.of(context).colorScheme.surfaceBright,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-
-                    SizedBox(height: SizeConfig.height(context, 1)),
-
-                    SizedBox(
-                      height:
-                          70, // Adjust height based on your container content
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: localStorageService
-                            .assetList
-                            .length, // Number of items
-                        itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.only(left: 30),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border: GradientBoxBorder(
-                                  gradient: LinearGradient(
-                                    colors: [
-                                      Colors.white.withOpacity(0.3),
-                                      Colors.white.withOpacity(0.05),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
+                
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 18,
+                        ),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final screenWidth = MediaQuery.of(context).size.width;
+                            final screenHeight = MediaQuery.of(
+                              context,
+                            ).size.height;
+                
+                            return Stack(
+                              alignment: Alignment.center,
+                              children: [
+                                // Background Image Centered
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Image.asset(
+                                    "assets/Images/1.png",
+                                    fit: BoxFit.contain,
+                                    width: screenWidth,
                                   ),
-                                  width: 0.5,
                                 ),
-                                borderRadius: BorderRadius.circular(15),
-                                color: Color(0XFF0f131a),
-                              ),
-                              width: MediaQuery.of(context).size.width * 0.7,
-
-                              child: ListTile(
-                                leading: Stack(
+                
+                                // Foreground Content
+                                Column(
+                                  mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        right: 5,
-                                        bottom: 15,
+                                    SizedBox(height: screenHeight * 0.02),
+                
+                                    // Balance Row
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        ValueListenableBuilder(
+                                          valueListenable: usdTotal,
+                                          builder: (context, value, child) {
+                                            return FittedBox(
+                                              fit: BoxFit.scaleDown,
+                                              child: Text(
+                                                "\$574.89",
+                                                style: TextStyle(
+                                                  fontFamily: 'LexendDeca',
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Theme.of(
+                                                    context,
+                                                  ).colorScheme.surfaceBright,
+                                                  fontSize:
+                                                      screenWidth *
+                                                      0.09, // responsive font
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        SizedBox(width: screenWidth * 0.02),
+                                        // Example of toggle icon (optional)
+                                        // GestureDetector(
+                                        //   onTap: () {
+                                        //     setState(() {
+                                        //       isTextVisible = !isTextVisible;
+                                        //     });
+                                        //   },
+                                        //   child: Icon(
+                                        //     isTextVisible ? Icons.visibility : Icons.visibility_off,
+                                        //     color: Theme.of(context).colorScheme.surfaceBright,
+                                        //     size: screenWidth * 0.06,
+                                        //   ),
+                                        // ),
+                                      ],
+                                    ),
+                
+                                    // Percentage text
+                                    Text(
+                                      "\$11.32 (+1.46%)",
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize:
+                                            screenWidth *
+                                            0.032, // responsive font
                                       ),
-                                      child: CircleAvatar(
-                                        radius: 18,
-                                        backgroundColor: Color(0xFF202832),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            30,
-                                          ),
-                                          child: Image.network(
-                                            localStorageService
-                                                .assetList[index]
-                                                .imageUrl!,
-                                            errorBuilder: (_, obj, trc) {
-                                              return AppText(
-                                                localStorageService
-                                                    .assetList[index]
-                                                    .coinSymbol
-                                                    .toString()
-                                                    .characters
-                                                    .first,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              );
-                                            },
+                                    ),
+                
+                                    SizedBox(height: screenHeight * 0.055),
+                
+                                    // Bottom icon row (buttons)
+                                    iconRow(context),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                
+                      SizedBox(height: SizeConfig.height(context, 2)),
+                      // bannerImage(context),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0),
+                        child: Row(
+                          children: [
+                            AppText(
+                              "Trending",
+                              fontWeight: FontWeight.w600,
+                              fontSize: 17,
+                            ),
+                          ],
+                        ),
+                      ),
+                
+                      SizedBox(height: SizeConfig.height(context, 1)),
+                
+                      SizedBox(
+                        height:
+                            70, // Adjust height based on your container content
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: localStorageService
+                              .assetList
+                              .length, // Number of items
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 30),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: GradientBoxBorder(
+                                    gradient: LinearGradient(
+                                      colors: [
+                                        Colors.white.withOpacity(0.3),
+                                        Colors.white.withOpacity(0.05),
+                                      ],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                                    width: 0.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Color(0XFF0f131a),
+                                ),
+                                width: MediaQuery.of(context).size.width * 0.7,
+                
+                                child: ListTile(
+                                  leading: Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                          right: 5,
+                                          bottom: 15,
+                                        ),
+                                        child: CircleAvatar(
+                                          radius: 18,
+                                          backgroundColor: Color(0xFF202832),
+                                          child: ClipRRect(
+                                            borderRadius: BorderRadius.circular(
+                                              30,
+                                            ),
+                                            child: Image.network(
+                                              localStorageService
+                                                  .assetList[index]
+                                                  .imageUrl!,
+                                              errorBuilder: (_, obj, trc) {
+                                                return AppText(
+                                                  localStorageService
+                                                      .assetList[index]
+                                                      .coinSymbol
+                                                      .toString()
+                                                      .characters
+                                                      .first,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold,
+                                                );
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    localStorageService
-                                                .assetList[index]
-                                                .coinType ==
-                                            "2"
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 5,
-                                            ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              child: Image.network(
-                                                localStorageService.allAssetList.indexWhere(
-                                                          (v) =>
-                                                              v.gasPriceSymbol ==
-                                                              localStorageService
-                                                                  .assetList[index]
-                                                                  .gasPriceSymbol,
-                                                        ) ==
-                                                        -1
-                                                    ? ""
-                                                    : localStorageService
-                                                          .allAssetList[localStorageService
-                                                              .allAssetList
-                                                              .indexWhere(
-                                                                (v) =>
-                                                                    v.gasPriceSymbol ==
-                                                                    localStorageService
-                                                                        .assetList[index]
-                                                                        .gasPriceSymbol,
-                                                              )]
-                                                          .imageUrl!,
-                                                errorBuilder: (_, obj, trc) {
-                                                  return AppText(
-                                                    localStorageService
-                                                        .assetList[index]
-                                                        .gasPriceSymbol
-                                                        .toString(),
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 7,
-                                                  );
-                                                },
-                                                height: 15,
+                                      localStorageService
+                                                  .assetList[index]
+                                                  .coinType ==
+                                              "2"
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 5,
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(30),
+                                                child: Image.network(
+                                                  localStorageService.allAssetList.indexWhere(
+                                                            (v) =>
+                                                                v.gasPriceSymbol ==
+                                                                localStorageService
+                                                                    .assetList[index]
+                                                                    .gasPriceSymbol,
+                                                          ) ==
+                                                          -1
+                                                      ? ""
+                                                      : localStorageService
+                                                            .allAssetList[localStorageService
+                                                                .allAssetList
+                                                                .indexWhere(
+                                                                  (v) =>
+                                                                      v.gasPriceSymbol ==
+                                                                      localStorageService
+                                                                          .assetList[index]
+                                                                          .gasPriceSymbol,
+                                                                )]
+                                                            .imageUrl!,
+                                                  errorBuilder: (_, obj, trc) {
+                                                    return AppText(
+                                                      localStorageService
+                                                          .assetList[index]
+                                                          .gasPriceSymbol
+                                                          .toString(),
+                                                      color: Colors.white,
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 7,
+                                                    );
+                                                  },
+                                                  height: 15,
+                                                ),
+                                              ),
+                                            )
+                                          : SizedBox(),
+                                    ],
+                                  ),
+                                  title: Padding(
+                                    padding: const EdgeInsets.only(top: 4.0),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              child: AppText(
+                                                localStorageService
+                                                    .assetList[index]
+                                                    .coinName!,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400,
+                                                color: Theme.of(
+                                                  context,
+                                                ).colorScheme.surfaceBright,
+                                                overflow: TextOverflow
+                                                    .ellipsis, // This ensures truncation if needed
                                               ),
                                             ),
-                                          )
-                                        : SizedBox(),
-                                  ],
-                                ),
-                                title: Padding(
-                                  padding: const EdgeInsets.only(top: 4.0),
-                                  child: Column(
+                                            SizedBox(width: 10),
+                
+                                            // Use Flexible instead of Expanded
+                                            // Flexible(
+                                            //   child: Container(
+                                            //     decoration: BoxDecoration(
+                                            //       borderRadius: BorderRadius.circular(
+                                            //         10,
+                                            //       ),
+                                            //       color: Colors.black38,
+                                            //     ),
+                                            //     child: Padding(
+                                            //       padding: const EdgeInsets.only(
+                                            //         left: 4.0,
+                                            //         right: 4.0,
+                                            //       ),
+                                            //       child: AppText(
+                                            //         localStorageService
+                                            //             .assetList[index]
+                                            //             .network!,
+                                            //         fontSize: 10,
+                                            //         overflow: TextOverflow.ellipsis,
+                                            //         // Ensure truncation here too
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            result.containsKey(
+                                                  "${localStorageService.assetList[index].coinSymbol!}USDT",
+                                                )
+                                                ? Expanded(
+                                                    child: AppText(
+                                                      "${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}",
+                                                      fontSize: 13,
+                                                      fontWeight: FontWeight.w400,
+                                                      color: Colors.white
+                                                          .withOpacity(0.6),
+                                                    ),
+                                                  )
+                                                : AppText(
+                                                    localStorageService
+                                                                .assetList[index]
+                                                                .coinType ==
+                                                            '2'
+                                                        ? "Token"
+                                                        : "\$1224.45",
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Theme.of(
+                                                      context,
+                                                    ).colorScheme.surfaceBright,
+                                                  ),
+                                            SizedBox(
+                                              width: SizeConfig.width(context, 4),
+                                            ),
+                                            //old code
+                                            // result.containsKey(
+                                            //       "${localStorageService.assetList[index].coinSymbol!}USDT",
+                                            //     )
+                                            //     ? Row(
+                                            //         children: [
+                                            //           AppText(
+                                            //             double.parse(
+                                            //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                                            //                           .toString(),
+                                            //                     ) <
+                                            //                     0
+                                            //                 ? ''
+                                            //                 : '+',
+                                            //             fontSize: 12,
+                                            //             color:
+                                            //                 double.parse(
+                                            //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                                            //                           .toString(),
+                                            //                     ) <
+                                            //                     0
+                                            //                 ? Color(0xFFFD0000)
+                                            //                 : Colors.green,
+                                            //           ),
+                                            //           AppText(
+                                            //             '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
+                                            //             fontSize: 13,
+                                            //             fontWeight: FontWeight.w400,
+                                            //             color:
+                                            //                 double.parse(
+                                            //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                                            //                           .toString(),
+                                            //                     ) <
+                                            //                     0
+                                            //                 ? Color(0xFFFD0000)
+                                            //                 : Colors.green,
+                                            //           ),
+                                            //         ],
+                                            //       )
+                                            //     : SizedBox(),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  trailing: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                
+                                    // Ensure the column takes minimum space
                                     children: [
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            child: AppText(
-                                              localStorageService
-                                                  .assetList[index]
-                                                  .coinName!,
-                                              fontSize: 15,
+                                      result.containsKey(
+                                            "${localStorageService.assetList[index].coinSymbol!}USDT",
+                                          )
+                                          ? AppText(
+                                              "\$${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}",
+                                              fontSize: 13,
                                               fontWeight: FontWeight.w400,
                                               color: Theme.of(
                                                 context,
                                               ).colorScheme.surfaceBright,
-                                              overflow: TextOverflow
-                                                  .ellipsis, // This ensures truncation if needed
+                                            )
+                                          : AppText(
+                                              localStorageService
+                                                          .assetList[index]
+                                                          .coinType ==
+                                                      '2'
+                                                  ? "Token"
+                                                  : "\$1227.87",
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              color: Theme.of(
+                                                context,
+                                              ).colorScheme.surfaceBright,
                                             ),
-                                          ),
-                                          SizedBox(width: 10),
-
-                                          // Use Flexible instead of Expanded
-                                          // Flexible(
-                                          //   child: Container(
-                                          //     decoration: BoxDecoration(
-                                          //       borderRadius: BorderRadius.circular(
-                                          //         10,
-                                          //       ),
-                                          //       color: Colors.black38,
-                                          //     ),
-                                          //     child: Padding(
-                                          //       padding: const EdgeInsets.only(
-                                          //         left: 4.0,
-                                          //         right: 4.0,
-                                          //       ),
-                                          //       child: AppText(
-                                          //         localStorageService
-                                          //             .assetList[index]
-                                          //             .network!,
-                                          //         fontSize: 10,
-                                          //         overflow: TextOverflow.ellipsis,
-                                          //         // Ensure truncation here too
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          result.containsKey(
-                                                "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                              )
-                                              ? Expanded(
-                                                  child: AppText(
-                                                    "${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}",
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.white
-                                                        .withOpacity(0.6),
-                                                  ),
-                                                )
-                                              : AppText(
-                                                  localStorageService
-                                                              .assetList[index]
-                                                              .coinType ==
-                                                          '2'
-                                                      ? "Token"
-                                                      : "\$1224.45",
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: Theme.of(
-                                                    context,
-                                                  ).colorScheme.surfaceBright,
-                                                ),
-                                          SizedBox(
-                                            width: SizeConfig.width(context, 4),
-                                          ),
-                                          //old code
-                                          // result.containsKey(
-                                          //       "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                          //     )
-                                          //     ? Row(
-                                          //         children: [
-                                          //           AppText(
-                                          //             double.parse(
-                                          //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                          //                           .toString(),
-                                          //                     ) <
-                                          //                     0
-                                          //                 ? ''
-                                          //                 : '+',
-                                          //             fontSize: 12,
-                                          //             color:
-                                          //                 double.parse(
-                                          //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                          //                           .toString(),
-                                          //                     ) <
-                                          //                     0
-                                          //                 ? Color(0xFFFD0000)
-                                          //                 : Colors.green,
-                                          //           ),
-                                          //           AppText(
-                                          //             '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
-                                          //             fontSize: 13,
-                                          //             fontWeight: FontWeight.w400,
-                                          //             color:
-                                          //                 double.parse(
-                                          //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                          //                           .toString(),
-                                          //                     ) <
-                                          //                     0
-                                          //                 ? Color(0xFFFD0000)
-                                          //                 : Colors.green,
-                                          //           ),
-                                          //         ],
-                                          //       )
-                                          //     : SizedBox(),
-                                        ],
-                                      ),
+                                      //old code
+                                      // AppText(
+                                      //   isTextVisible
+                                      //       ? (index <
+                                      //                 localStorageService
+                                      //                     .assetBalance1
+                                      //                     .length
+                                      //             ? double.tryParse(
+                                      //                             localStorageService
+                                      //                                 .assetBalance1[index],
+                                      //                           ) !=
+                                      //                           null &&
+                                      //                       double.tryParse(
+                                      //                             localStorageService
+                                      //                                 .assetBalance1[index],
+                                      //                           )! >
+                                      //                           0
+                                      //                   ? double.tryParse(
+                                      //                           localStorageService
+                                      //                               .assetBalance1[index],
+                                      //                         )!
+                                      //                         .toStringAsFixed(6)
+                                      //                         .replaceAll(
+                                      //                           RegExp(
+                                      //                             r"([.]*0+)(?!.*\d)",
+                                      //                           ),
+                                      //                           "",
+                                      //                         ) // Remove trailing zeros
+                                      //                   : "0"
+                                      //             : "0")
+                                      //       : "****",
+                                      //   fontSize: 15,
+                                      //   fontWeight: FontWeight.w400,
+                                      //   color: Theme.of(
+                                      //     context,
+                                      //   ).colorScheme.surfaceBright,
+                                      // ),
+                                      result.containsKey(
+                                            "${localStorageService.assetList[index].coinSymbol!}USDT",
+                                          )
+                                          ? AppText(
+                                              '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                              color:
+                                                  double.parse(
+                                                        result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                                                            .toString(),
+                                                      ) <
+                                                      0
+                                                  ? Color(0xFFFD0000)
+                                                  : Colors.green,
+                                            )
+                                          : AppText(
+                                              "0.54%",
+                                              color: Colors.green,
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                      //old code
+                                      // result.containsKey(
+                                      //       "${localStorageService.assetList[index].coinSymbol!}USDT",
+                                      //     )
+                                      //     ? AppText(
+                                      //         isTextVisible
+                                      //             ? "\$${(num.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()) * num.parse(index < localStorageService.assetBalance1.length ? localStorageService.assetBalance1[index].toString() : "0.0")).toStringAsFixed(CoinListConfig.usdtDecimal)}"
+                                      //             : '****',
+                                      //         fontSize: 12,
+                                      //         fontWeight: FontWeight.w400,
+                                      //         color: Theme.of(
+                                      //           context,
+                                      //         ).colorScheme.surfaceBright,
+                                      //       )
+                                      //     : SizedBox(),
                                     ],
                                   ),
                                 ),
-                                trailing: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-
-                                  // Ensure the column takes minimum space
-                                  children: [
-                                    result.containsKey(
-                                          "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                        )
-                                        ? AppText(
-                                            "\$${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}",
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.surfaceBright,
-                                          )
-                                        : AppText(
-                                            localStorageService
-                                                        .assetList[index]
-                                                        .coinType ==
-                                                    '2'
-                                                ? "Token"
-                                                : "\$1227.87",
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                            color: Theme.of(
-                                              context,
-                                            ).colorScheme.surfaceBright,
-                                          ),
-                                    //old code
-                                    // AppText(
-                                    //   isTextVisible
-                                    //       ? (index <
-                                    //                 localStorageService
-                                    //                     .assetBalance1
-                                    //                     .length
-                                    //             ? double.tryParse(
-                                    //                             localStorageService
-                                    //                                 .assetBalance1[index],
-                                    //                           ) !=
-                                    //                           null &&
-                                    //                       double.tryParse(
-                                    //                             localStorageService
-                                    //                                 .assetBalance1[index],
-                                    //                           )! >
-                                    //                           0
-                                    //                   ? double.tryParse(
-                                    //                           localStorageService
-                                    //                               .assetBalance1[index],
-                                    //                         )!
-                                    //                         .toStringAsFixed(6)
-                                    //                         .replaceAll(
-                                    //                           RegExp(
-                                    //                             r"([.]*0+)(?!.*\d)",
-                                    //                           ),
-                                    //                           "",
-                                    //                         ) // Remove trailing zeros
-                                    //                   : "0"
-                                    //             : "0")
-                                    //       : "****",
-                                    //   fontSize: 15,
-                                    //   fontWeight: FontWeight.w400,
-                                    //   color: Theme.of(
-                                    //     context,
-                                    //   ).colorScheme.surfaceBright,
-                                    // ),
-                                    result.containsKey(
-                                          "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                        )
-                                        ? AppText(
-                                            '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                            color:
-                                                double.parse(
-                                                      result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                                          .toString(),
-                                                    ) <
-                                                    0
-                                                ? Color(0xFFFD0000)
-                                                : Colors.green,
-                                          )
-                                        : AppText(
-                                            "0.54%",
-                                            color: Colors.green,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                    //old code
-                                    // result.containsKey(
-                                    //       "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                    //     )
-                                    //     ? AppText(
-                                    //         isTextVisible
-                                    //             ? "\$${(num.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()) * num.parse(index < localStorageService.assetBalance1.length ? localStorageService.assetBalance1[index].toString() : "0.0")).toStringAsFixed(CoinListConfig.usdtDecimal)}"
-                                    //             : '****',
-                                    //         fontSize: 12,
-                                    //         fontWeight: FontWeight.w400,
-                                    //         color: Theme.of(
-                                    //           context,
-                                    //         ).colorScheme.surfaceBright,
-                                    //       )
-                                    //     : SizedBox(),
-                                  ],
-                                ),
                               ),
-                            ),
-                          );
-                        },
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(height: SizeConfig.height(context, 2)),
-
-                    // Row of custom tabs
-                    Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedIndex = 0;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: _selectedIndex == 0
-                                    ? Colors.white
-                                    : Colors.transparent,
-                                border: _selectedIndex == 0
-                                    ? null
-                                    : Border.all(color: Color(0XFF444444)),
-                              ),
-                              height: 40,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Center(
-                                child: Text(
-                                  "Crypto",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: _selectedIndex == 0
-                                        ? Colors.black
-                                        : Colors.white,
+                      SizedBox(height: SizeConfig.height(context, 2)),
+                
+                      // Row of custom tabs
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedIndex = 0;
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: _selectedIndex == 0
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  border: _selectedIndex == 0
+                                      ? null
+                                      : Border.all(color: Color(0XFF444444)),
+                                ),
+                                height: 40,
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Center(
+                                  child: Text(
+                                    "Crypto",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: _selectedIndex == 0
+                                          ? Colors.black
+                                          : Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(width: 12),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                _selectedIndex = 1;
-                              });
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color: _selectedIndex == 1
-                                    ? Colors.white
-                                    : Colors.transparent,
-                                border: _selectedIndex == 1
-                                    ? null
-                                    : Border.all(color: Color(0XFF444444)),
-                              ),
-                              height: 40,
-                              padding: EdgeInsets.symmetric(horizontal: 20),
-                              child: Center(
-                                child: Text(
-                                  "NFTs",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                    color: _selectedIndex == 1
-                                        ? Colors.black
-                                        : Colors.white,
+                            SizedBox(width: 12),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _selectedIndex = 1;
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: _selectedIndex == 1
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  border: _selectedIndex == 1
+                                      ? null
+                                      : Border.all(color: Color(0XFF444444)),
+                                ),
+                                height: 40,
+                                padding: EdgeInsets.symmetric(horizontal: 20),
+                                child: Center(
+                                  child: Text(
+                                    "NFTs",
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: _selectedIndex == 1
+                                          ? Colors.black
+                                          : Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: SizeConfig.height(context, 1)),
-
-                    // Show content based on selected index
-                    Expanded(
-                      child: _selectedIndex == 0 ? AssetTab() : NFTsTab(),
-                    ),
-                  ],
-                ),
+                      SizedBox(height: SizeConfig.height(context, 1)),
+                
+                      // Show content based on selected index
+                      SizedBox(
+                        height: SizeConfig.height(context, localStorageService.assetList.length *9),
+                        child: _selectedIndex == 0 ? AssetTab() : NFTsTab(),
+                      ),
+                    ],
+                  ),
+              ),
         ),
       ),
     );

@@ -457,11 +457,10 @@ class _MnemonicStepperScreenState extends State<MnemonicStepperScreen> {
                 ),
                 child: AppText(
                   "${index + 1}. ${words[index]}",
-                  style: TextStyle(
+
                     color: Colors.white.withOpacity(0.9),
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
-                  ),
                 ),
               ),
             ),
@@ -569,9 +568,10 @@ fontWeight: FontWeight.w400,
                       width: 0.5,
                     ),
                   ),
-                  child: Text(
-                    "${allWords.indexOf(word) + 1}. $word",
-                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                  child: AppText(
+                    "${selectedWords.indexOf(word) + 1}. $word",
+                  color: Colors.white, fontSize: 14,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               )
@@ -614,13 +614,12 @@ fontWeight: FontWeight.w400,
                     color: isSelected ? Colors.white : const Color(0xFF141922),
                     border: Border.all(color: Colors.grey.withOpacity(0.4),width: 0.6)
                   ),
-                  child: Text(
-                    "${allWords.indexOf(word) + 1}. $word",
-                    style: TextStyle(
+                  child: AppText(
+                    "$word",
+
                       color: isSelected ? Colors.black : Colors.white,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.w700,
                       fontSize: 14,
-                    ),
                   ),
                 ),
               );
