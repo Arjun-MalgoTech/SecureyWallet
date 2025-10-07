@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 
 import 'package:provider/provider.dart';
 import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
@@ -185,233 +186,236 @@ class _ReceiveAssetPageState extends State<ReceiveAssetPage> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white30.withOpacity(
-                                            0.1), // Make it slightly transparent
+
+
+                                        border: GradientBoxBorder(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Colors.white.withOpacity(0.3),
+                                              Colors.white.withOpacity(0.08),
+                                            ],
+                                          ),
+                                          width: 0.5,
+                                        ),// Make it slightly transparent
                                       ),
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              10), // Ensure blur stays within bounds
-                                          child: BackdropFilter(
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 20, sigmaY: 20),
-                                              child: ListTile(
-                                                onTap: () {
-                                                  Navigator.push(context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) {
-                                                    int originalIndex =
-                                                        localStorageService
-                                                            .assetList
-                                                            .indexOf(
-                                                                filteredCoins[
-                                                                    index]);
-                                                    return ReceiveCrypto(
-                                                      coinData:
-                                                          filteredCoins[index],
-                                                    );
-                                                  }));
-                                                },
-                                                leading: Stack(
-                                                    alignment:
-                                                        Alignment.bottomRight,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 15,
-                                                        backgroundColor:
-                                                            Color(0xFF202832),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                          child: Image.network(
-                                                            filteredCoins[index]
-                                                                .imageUrl!,
-                                                            errorBuilder:
-                                                                (_, obj, trc) {
-                                                              return AppText(
-                                                                filteredCoins[
-                                                                        index]
-                                                                    .coinSymbol
-                                                                    .toString()
-                                                                    .characters
-                                                                    .first,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      filteredCoins[index]
-                                                                  .coinType ==
-                                                              "2"
-                                                          ? Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 5),
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            30),
-                                                                child: Image
-                                                                    .network(
-                                                                  localStorageService.allAssetList.indexWhere((v) =>
-                                                                              v.gasPriceSymbol ==
-                                                                              filteredCoins[index]
-                                                                                  .gasPriceSymbol) ==
-                                                                          -1
-                                                                      ? ""
-                                                                      : localStorageService
-                                                                          .allAssetList[localStorageService.allAssetList.indexWhere((v) =>
-                                                                              v.gasPriceSymbol ==
-                                                                              filteredCoins[index].gasPriceSymbol)]
-                                                                          .imageUrl!,
-                                                                  errorBuilder:
-                                                                      (_, obj,
-                                                                          trc) {
-                                                                    return AppText(
-                                                                      filteredCoins[
-                                                                              index]
-                                                                          .gasPriceSymbol
-                                                                          .toString(),
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          7,
-                                                                    );
-                                                                  },
-                                                                  height: 15,
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : SizedBox(),
-                                                    ]),
-                                                title: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        AppText(
-                                                          filteredCoins[index]
-                                                              .coinSymbol!,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .colorScheme
-                                                              .surfaceBright,
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Flexible(
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              color: Color(
-                                                                  0xFF262737),
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 4.0,
-                                                                      right:
-                                                                          4.0),
-                                                              child: AppText(
-                                                                filteredCoins[
-                                                                        index]
-                                                                    .network!,
-                                                                fontSize: 10,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis, // Ensure truncation here too
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Row(
-                                                          children: [
-                                                            AppText(
+                                      child: ListTile(
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            int originalIndex =
+                                                localStorageService
+                                                    .assetList
+                                                    .indexOf(
+                                                        filteredCoins[
+                                                            index]);
+                                            return ReceiveCrypto(
+                                              coinData:
+                                                  filteredCoins[index],
+                                            );
+                                          }));
+                                        },
+                                        leading: Stack(
+                                            alignment:
+                                                Alignment.bottomRight,
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 15,
+                                                backgroundColor:
+                                                    Color(0xFF202832),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius
+                                                          .circular(30),
+                                                  child: Image.network(
+                                                    filteredCoins[index]
+                                                        .imageUrl!,
+                                                    errorBuilder:
+                                                        (_, obj, trc) {
+                                                      return AppText(
+                                                        filteredCoins[
+                                                                index]
+                                                            .coinSymbol
+                                                            .toString()
+                                                            .characters
+                                                            .first,
+                                                        color: Colors
+                                                            .white,
+                                                        fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              filteredCoins[index]
+                                                          .coinType ==
+                                                      "2"
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets
+                                                              .only(
+                                                              left: 5),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    30),
+                                                        child: Image
+                                                            .network(
+                                                          localStorageService.allAssetList.indexWhere((v) =>
+                                                                      v.gasPriceSymbol ==
+                                                                      filteredCoins[index]
+                                                                          .gasPriceSymbol) ==
+                                                                  -1
+                                                              ? ""
+                                                              : localStorageService
+                                                                  .allAssetList[localStorageService.allAssetList.indexWhere((v) =>
+                                                                      v.gasPriceSymbol ==
+                                                                      filteredCoins[index].gasPriceSymbol)]
+                                                                  .imageUrl!,
+                                                          errorBuilder:
+                                                              (_, obj,
+                                                                  trc) {
+                                                            return AppText(
                                                               filteredCoins[
                                                                       index]
-                                                                  .coinName!,
-                                                              fontSize: 13,
+                                                                  .gasPriceSymbol
+                                                                  .toString(),
+                                                              color: Colors
+                                                                  .white,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w400,
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .colorScheme
-                                                                  .surfaceBright,
-                                                            ),
-                                                          ],
+                                                                      .bold,
+                                                              fontSize:
+                                                                  7,
+                                                            );
+                                                          },
+                                                          height: 15,
                                                         ),
-                                                        SizedBox(
-                                                          width:
-                                                              SizeConfig.width(
-                                                                  context, 4),
-                                                        ),
-                                                        result.containsKey(
-                                                                filteredCoins[
-                                                                        index]
-                                                                    .coinSymbol!)
-                                                            ? Row(
-                                                                children: [
-                                                                  AppText(
-                                                                    double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()) <
-                                                                            0
-                                                                        ? ''
-                                                                        : '+',
-                                                                    fontSize:
-                                                                        12,
-                                                                    color: double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()) <
-                                                                            0
-                                                                        ? Color(
-                                                                            0xFFFD0000)
-                                                                        : Colors
-                                                                            .green,
-                                                                  ),
-                                                                  AppText(
-                                                                    '${double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
-                                                                    fontSize:
-                                                                        13,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w400,
-                                                                    color: double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()) <
-                                                                            0
-                                                                        ? Color(
-                                                                            0xFFFD0000)
-                                                                        : Colors
-                                                                            .green,
-                                                                  ),
-                                                                ],
-                                                              )
-                                                            : SizedBox(),
-                                                      ],
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
+                                            ]),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                AppText(
+                                                  filteredCoins[index]
+                                                      .coinSymbol!,
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                      FontWeight.w400,
+                                                  color: Theme.of(
+                                                          context)
+                                                      .colorScheme
+                                                      .surfaceBright,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Flexible(
+                                                  child: Container(
+                                                    decoration:
+                                                        BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                                  10),
+                                                      color: Color(
+                                                          0xFF262737),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets
+                                                              .only(
+                                                              left: 4.0,
+                                                              right:
+                                                                  4.0),
+                                                      child: AppText(
+                                                        filteredCoins[
+                                                                index]
+                                                            .network!,
+                                                        fontSize: 10,
+                                                        overflow:
+                                                            TextOverflow
+                                                                .ellipsis, // Ensure truncation here too
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    AppText(
+                                                      filteredCoins[
+                                                              index]
+                                                          .coinName!,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight
+                                                              .w400,
+                                                      color: Theme.of(
+                                                              context)
+                                                          .colorScheme
+                                                          .surfaceBright,
                                                     ),
                                                   ],
                                                 ),
-                                              )))));
+                                                SizedBox(
+                                                  width:
+                                                      SizeConfig.width(
+                                                          context, 4),
+                                                ),
+                                                result.containsKey(
+                                                        filteredCoins[
+                                                                index]
+                                                            .coinSymbol!)
+                                                    ? Row(
+                                                        children: [
+                                                          AppText(
+                                                            double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()) <
+                                                                    0
+                                                                ? ''
+                                                                : '+',
+                                                            fontSize:
+                                                                12,
+                                                            color: double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()) <
+                                                                    0
+                                                                ? Color(
+                                                                    0xFFFD0000)
+                                                                : Colors
+                                                                    .green,
+                                                          ),
+                                                          AppText(
+                                                            '${double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
+                                                            fontSize:
+                                                                13,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w400,
+                                                            color: double.parse(result[filteredCoins[index].coinSymbol!]![1].toString()) <
+                                                                    0
+                                                                ? Color(
+                                                                    0xFFFD0000)
+                                                                : Colors
+                                                                    .green,
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : SizedBox(),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )));
                             },
                           )
                         : ListView.builder(
@@ -425,186 +429,188 @@ class _ReceiveAssetPageState extends State<ReceiveAssetPage> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
-                                        color: Colors.white30.withOpacity(
-                                            0.1), // Make it slightly transparent
+
+                                        border: GradientBoxBorder(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Colors.white.withOpacity(0.3),
+                                              Colors.white.withOpacity(0.08),
+                                            ],
+                                          ),
+                                          width: 0.5,
+                                        ),// Make it slightly transparent
                                       ),
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                              10), // Ensure blur stays within bounds
-                                          child: BackdropFilter(
-                                              filter: ImageFilter.blur(
-                                                  sigmaX: 20, sigmaY: 20),
-                                              child: ListTile(
-                                                onTap: () {
-                                                  Navigator.push(context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) {
-                                                    return ReceiveCrypto(
-                                                      coinData:
-                                                          localStorageService
-                                                              .assetList[index],
-                                                    );
-                                                  }));
-                                                },
-                                                leading: Stack(
-                                                    alignment:
-                                                        Alignment.bottomRight,
-                                                    children: [
-                                                      CircleAvatar(
-                                                        radius: 15,
-                                                        backgroundColor:
-                                                            Color(0xFF202832),
-                                                        child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                          child: Image.network(
-                                                            localStorageService
-                                                                .assetList[
-                                                                    index]
-                                                                .imageUrl!,
-                                                            errorBuilder:
-                                                                (_, obj, trc) {
-                                                              return AppText(
-                                                                localStorageService
-                                                                    .assetList[
-                                                                        index]
-                                                                    .coinSymbol
-                                                                    .toString()
-                                                                    .characters
-                                                                    .first,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              );
-                                                            },
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      localStorageService
+                                      child: ListTile(
+                                        onTap: () {
+                                          Navigator.push(context,
+                                              MaterialPageRoute(
+                                                  builder: (context) {
+                                            return ReceiveCrypto(
+                                              coinData:
+                                                  localStorageService
+                                                      .assetList[index],
+                                            );
+                                          }));
+                                        },
+                                        leading: Stack(
+                                            alignment:
+                                                Alignment.bottomRight,
+                                            children: [
+                                              CircleAvatar(
+                                                radius: 15,
+                                                backgroundColor:
+                                                    Color(0xFF202832),
+                                                child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius
+                                                          .circular(30),
+                                                  child: Image.network(
+                                                    localStorageService
+                                                        .assetList[
+                                                            index]
+                                                        .imageUrl!,
+                                                    errorBuilder:
+                                                        (_, obj, trc) {
+                                                      return AppText(
+                                                        localStorageService
+                                                            .assetList[
+                                                                index]
+                                                            .coinSymbol
+                                                            .toString()
+                                                            .characters
+                                                            .first,
+                                                        color: Colors
+                                                            .white,
+                                                        fontWeight:
+                                                            FontWeight
+                                                                .bold,
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              localStorageService
+                                                          .assetList[
+                                                              index]
+                                                          .coinType ==
+                                                      "2"
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets
+                                                              .only(
+                                                              left: 5),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    30),
+                                                        child: Image
+                                                            .network(
+                                                          localStorageService.allAssetList.indexWhere((v) => v.gasPriceSymbol == localStorageService.assetList[index].gasPriceSymbol) ==
+                                                                  -1
+                                                              ? ""
+                                                              : localStorageService
+                                                                  .allAssetList[localStorageService.allAssetList.indexWhere((v) =>
+                                                                      v.gasPriceSymbol ==
+                                                                      localStorageService.assetList[index].gasPriceSymbol)]
+                                                                  .imageUrl!,
+                                                          errorBuilder:
+                                                              (_, obj,
+                                                                  trc) {
+                                                            return AppText(
+                                                              localStorageService
                                                                   .assetList[
                                                                       index]
-                                                                  .coinType ==
-                                                              "2"
-                                                          ? Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 5),
-                                                              child: ClipRRect(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            30),
-                                                                child: Image
-                                                                    .network(
-                                                                  localStorageService.allAssetList.indexWhere((v) => v.gasPriceSymbol == localStorageService.assetList[index].gasPriceSymbol) ==
-                                                                          -1
-                                                                      ? ""
-                                                                      : localStorageService
-                                                                          .allAssetList[localStorageService.allAssetList.indexWhere((v) =>
-                                                                              v.gasPriceSymbol ==
-                                                                              localStorageService.assetList[index].gasPriceSymbol)]
-                                                                          .imageUrl!,
-                                                                  errorBuilder:
-                                                                      (_, obj,
-                                                                          trc) {
-                                                                    return AppText(
-                                                                      localStorageService
-                                                                          .assetList[
-                                                                              index]
-                                                                          .gasPriceSymbol
-                                                                          .toString(),
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
-                                                                      fontSize:
-                                                                          7,
-                                                                    );
-                                                                  },
-                                                                  height: 15,
-                                                                ),
-                                                              ),
-                                                            )
-                                                          : SizedBox(),
-                                                    ]),
-                                                title: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        AppText(
-                                                          localStorageService
-                                                              .assetList[index]
-                                                              .coinSymbol!,
-                                                          fontSize: 15,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .colorScheme
-                                                              .surfaceBright,
+                                                                  .gasPriceSymbol
+                                                                  .toString(),
+                                                              color: Colors
+                                                                  .white,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize:
+                                                                  7,
+                                                            );
+                                                          },
+                                                          height: 15,
                                                         ),
-                                                        SizedBox(
-                                                          width: 10,
-                                                        ),
-                                                        Flexible(
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              color: Color(
-                                                                  0xFF262737),
-                                                            ),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      left: 4.0,
-                                                                      right:
-                                                                          4.0),
-                                                              child: AppText(
-                                                                localStorageService
-                                                                    .assetList[
-                                                                        index]
-                                                                    .network!,
-                                                                fontSize: 10,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis, // Ensure truncation here too
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        AppText(
-                                                          localStorageService
-                                                              .assetList[index]
-                                                              .coinName!,
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: Theme.of(
-                                                                  context)
-                                                              .colorScheme
-                                                              .surfaceBright,
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
+                                                      ),
+                                                    )
+                                                  : SizedBox(),
+                                            ]),
+                                        title: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                AppText(
+                                                  localStorageService
+                                                      .assetList[index]
+                                                      .coinSymbol!,
+                                                  fontSize: 15,
+                                                  fontWeight:
+                                                      FontWeight.w400,
+                                                  color: Theme.of(
+                                                          context)
+                                                      .colorScheme
+                                                      .surfaceBright,
                                                 ),
-                                              )))));
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Flexible(
+                                                  child: Container(
+                                                    decoration:
+                                                        BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius
+                                                              .circular(
+                                                                  10),
+                                                      color: Color(
+                                                          0xFF262737),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets
+                                                              .only(
+                                                              left: 4.0,
+                                                              right:
+                                                                  4.0),
+                                                      child: AppText(
+                                                        localStorageService
+                                                            .assetList[
+                                                                index]
+                                                            .network!,
+                                                        fontSize: 10,
+                                                        overflow:
+                                                            TextOverflow
+                                                                .ellipsis, // Ensure truncation here too
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                AppText(
+                                                  localStorageService
+                                                      .assetList[index]
+                                                      .coinName!,
+                                                  fontSize: 13,
+                                                  fontWeight:
+                                                      FontWeight.w400,
+                                                  color: Theme.of(
+                                                          context)
+                                                      .colorScheme
+                                                      .surfaceBright,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )));
                             },
                           );
                   },

@@ -1,179 +1,267 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
-import 'package:securywallet/Reusable_Widgets/Gradient_App_Text/Gradient_AppText.dart';
-import 'package:securywallet/VaultStorageService/LocalDataServiceVM.dart';
-import 'package:securywallet/WalletConnectFunctions/WalletConnectPage.dart';
-import 'package:securywallet/Wallet_Session_Request.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
-class SwapScreen extends StatefulWidget {
-  SwapScreen({Key? key}) : super(key: key);
-
-  @override
-  State<SwapScreen> createState() => _SwapScreenState();
-}
-
-class _SwapScreenState extends State<SwapScreen> {
-  late final WebViewController _controller;
-
-  bool _isValidUrl(String url) {
-    // Regular expression to check URL format
-    RegExp urlRegExp = RegExp(
-      r"^(?:http|https):\/\/[^\s\.]+\.[^\s]{2,}$",
-      caseSensitive: false,
-      multiLine: false,
-    );
-    return urlRegExp.hasMatch(url);
-  }
-
-  String urlListener = "";
-  LocalStorageService localStorageService = LocalStorageService();
-  WalletConnectionRequest walletConnectionRequest = WalletConnectionRequest();
-
-  double _progress = 0;
-
-  Timer? timer;
-
-  void startQrCheckTimer() {
-    String js = '''
-   (function() {
-      // Get the first shadow root
-      var shadowRoot1 = document.querySelector("body > wcm-modal");
-      if (!shadowRoot1) {
-        return 'shadowRoot1 is null';
-      }
-      shadowRoot1 = shadowRoot1.shadowRoot;
-      
-      // Get the second shadow root
-      var shadowRoot2 = shadowRoot1.querySelector("#wcm-modal > div > div > wcm-modal-router");
-      if (!shadowRoot2) {
-        return 'shadowRoot2 is null';
-      }
-      shadowRoot2 = shadowRoot2.shadowRoot;
-      
-      // Get the third shadow root
-      var shadowRoot3 = shadowRoot2.querySelector("div > div > wcm-qrcode-view");
-      if (!shadowRoot3) {
-        return 'shadowRoot3 is null';
-      }
-      shadowRoot3 = shadowRoot3.shadowRoot;
-      
-      // Get the fourth shadow root
-      var shadowRoot4 = shadowRoot3.querySelector("wcm-modal-content > wcm-walletconnect-qr");
-      if (!shadowRoot4) {
-        return 'shadowRoot4 is null';
-      }
-      shadowRoot4 = shadowRoot4.shadowRoot;
-      
-      // Get the QR code element
-      var qrElement = shadowRoot4.querySelector("div > wcm-qrcode");
-      if (!qrElement) {
-        return 'qrElement is null';
-      }
-      
-      // Return the URI attribute
-      if (qrElement.getAttribute('uri')) {
-        return qrElement.getAttribute('uri');
-      } else {
-        return 'URI attribute is missing';
-      }
-    })();
-  ''';
-    timer = Timer.periodic(Duration(seconds: 1), (t) async {
-      if (!mounted) {
-        timer!.cancel();
-        return;
-      }
-
-      Object? uri = await _controller.runJavaScriptReturningResult(js);
-
-      // print("qrContainerHtml$uri");
-
-      if (uri.toString().contains("wc") && mounted) {
-        timer!.cancel(); // Stop the timer once the desired condition is met
-        if (!(timer!.isActive)) {
-          Navigator.of(context)
-              .push(
-                MaterialPageRoute(
-                  builder: (builder) => WalletConnectPage(
-                    selectedWalletData: localStorageService.activeWalletData!,
-                    wcURL: uri.toString(),
-                  ),
-                ),
-              )
-              .then((v) {
-                if (mounted) {
-                  walletConnectionRequest.initializeContext(context);
-                }
-              });
-        }
-      }
-    });
-  }
-
-  bool validateWC(String text) {
-    return text.contains("wc:");
-  }
-
-  String updateBrowserUrl(String data) {
-    if (_isValidUrl(data)) {
-      String url = data;
-      if (!(url.contains("https://") || url.contains("http://"))) {
-        url = "https://$url";
-      }
-
-      return url;
-    } else {
-      return "https://$data";
-    }
-  }
+class SwapScreen extends StatelessWidget {
+  const SwapScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    localStorageService = context.watch<LocalStorageService>();
-    walletConnectionRequest = context.watch<WalletConnectionRequest>();
-    walletConnectionRequest.initializeContext(context);
-    return WillPopScope(
-      onWillPop: () async {
-        if (await _controller.canGoBack()) {
-          _controller.goBack(); // Navigate within the WebView
-          return false; // Don't exit the screen
-        }
-        return true; // Exit the screen if no WebView history
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          title: AppText("Swap", fontSize: 20, fontWeight: FontWeight.w600),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
+    const backgroundColor = Color(0xFF0D0D0D);
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: AppBar(
+        backgroundColor: backgroundColor,
+        elevation: 0,
+        centerTitle: true,
+        title: AppText(
+          'Swap',
+          color: Colors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
         ),
-        // body: SafeArea(
-        //   child: Stack(
-        //     children: [
-        //       WebViewWidget(controller: _controller),
-        //       if (_progress < 0.8)
-        //         Center(
-        //           child: CircularProgressIndicator(
-        //             // value: _progress,
-        //             color: Colors.purpleAccent[100],
-        //             strokeWidth: 3,
-        //           ),
-        //         ),
-        //     ],
-        //   ),
-        // ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        leading: IconButton(
+          icon: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              color: const Color(0XFF27282B),
+            ),
+            padding: const EdgeInsets.all(10),
+            child: const Icon(Icons.history, color: Colors.white, size: 18),
+          ),
+          onPressed: () {},
+        ),
+        actions: [
+          Container(
+            margin: const EdgeInsets.only(right: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            decoration: BoxDecoration(
+              color: const Color(0XFF131720),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                SvgPicture.asset("assets/Images/custom.svg", height: 14),
+                const SizedBox(width: 4),
+                AppText('2%', color: Colors.white),
+              ],
+            ),
+          ),
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
           children: [
-            Center(
-              child: GradientAppText(text: 'Coming Soon...', fontSize: 40),
+            // --- Stack for cards + centered swap button ---
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                Column(
+                  children: const [
+                    FromSwapCard(),
+                    SizedBox(height: 20), // spacing for the circle overlap
+                    ToSwapCard(),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: CircleAvatar(
+                    radius: 22,
+                    backgroundColor: const Color(0xFF31323b),
+                    child: const Icon(Icons.swap_vert, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+            const Spacer(),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[700],
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                alignment: Alignment.center,
+                child: AppText(
+                  'Continue',
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ---------------- FROM SWAP CARD ----------------
+class FromSwapCard extends StatelessWidget {
+  const FromSwapCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0XFF131720),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              AppText('From',
+                  color: Color(0XFF858585), fontSize: 14),
+              const Spacer(),
+              const Icon(Icons.account_balance_wallet_outlined,
+                  size: 16, color: Color(0xFFB4B1B2)),
+              const SizedBox(width: 4),
+              AppText('0.005742',
+               color: Color(0xFFB4B1B2), fontSize: 13),
+              const SizedBox(width: 6),
+              _percentButton('25%'),
+              const SizedBox(width: 6),
+              _percentButton('50%'),
+              const SizedBox(width: 6),
+              _percentButton('Max'),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Image.asset("assets/Images/eth1.png", height: 30),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      AppText('Ethereum',
+                          fontSize: 17,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.chevron_right, color: Colors.white),
+                    ],
+                  ),
+                  AppText("ETH",
+                      color: Colors.grey,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400)
+                ],
+              ),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AppText('0',
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                  AppText('\$0',
+                      style: const TextStyle(
+                          color: Color(0xFFB4B1B2), fontSize: 13)),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget _percentButton(String text) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF131720),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0XFFAF77F8).withOpacity(0.3)),
+      ),
+      child: AppText(
+        text,
+        style: const TextStyle(color: Color(0XFFAF77F8), fontSize: 12),
+      ),
+    );
+  }
+}
+
+// ---------------- TO SWAP CARD ----------------
+class ToSwapCard extends StatelessWidget {
+  const ToSwapCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0XFF131720),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              AppText('To',
+                 color: Color(0XFF858585), fontSize: 14),
+              const Spacer(),
+              const Icon(Icons.account_balance_wallet_outlined,
+                  size: 16, color: Color(0xFFB4B1B2)),
+              const SizedBox(width: 4),
+              AppText('0',
+                 color: Color(0xFFB4B1B2), fontSize: 13),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Image.asset("assets/Images/arb.png", height: 30),
+              const SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      AppText('Arbitrum',
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 17),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.chevron_right, color: Colors.white),
+                    ],
+                  ),
+                  AppText('ARB',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14,
+                      color: Colors.grey),
+                ],
+              ),
+              const Spacer(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  AppText('0',
+
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                  AppText('\$0',
+
+                          color: Color(0xFFB4B1B2), fontSize: 13),
+                ],
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }

@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:securywallet/Reusable_Widgets/Gradient_App_Text/Gradient_AppText.dart';
 import 'package:securywallet/Screens/HomeScreen/HomeScreenView.dart';
 import 'package:securywallet/Screens/OnboardingScreen_View/View/OnboardingScreen.dart';
-import 'package:securywallet/Screens/Previous_Home_Screen/View/Previous_Home_Screen_View.dart';
 import 'package:securywallet/Screens/SwapScreen/View/SwapScreen.dart';
 import 'package:securywallet/Screens/User_Chat/View/UserChatSearchView.dart';
 import 'package:securywallet/Screens/smart_web_screen/smart_web_view.dart';
@@ -22,11 +22,11 @@ class _AppBottomNavState extends State<AppBottomNav> {
   String _privateKey = '';
 
   final List<Map<String, dynamic>> _tabs = [
-    {'icon': Icons.home_outlined, 'label': 'Home'},
-    {'icon': Icons.trending_up, 'label': 'Trending'},
-    {'icon': Icons.swap_horiz, 'label': 'Swap'},
-    {'icon': Icons.chat_bubble_outline, 'label': 'Chat'},
-    {'icon': Icons.explore, 'label': 'Discover'},
+    {'icon': 'assets/Images/homepic.svg', 'label': 'Home'},
+    {'icon': 'assets/Images/trending.svg', 'label': 'Trending'},
+    {'icon': 'assets/Images/exchange.svg', 'label': 'Swap'},
+    {'icon': 'assets/Images/comment.svg', 'label': 'Chat'},
+    {'icon': 'assets/Images/compass.svg', 'label': 'Discover'},
   ];
 
   @override
@@ -57,17 +57,14 @@ class _AppBottomNavState extends State<AppBottomNav> {
         bottomNavigationBar: SafeArea(
           bottom: false,
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 12.0), // adjust as needed
+            padding: const EdgeInsets.only(bottom: 12.0),
             child: _buildCustomNavBar(),
           ),
         ),
-
-
       ),
     );
   }
 
-  // Custom Bottom Nav with gradient selected icon & label
   Widget _buildCustomNavBar() {
     return Container(
       color: Color(0xFF0D0D1A),
@@ -82,50 +79,45 @@ class _AppBottomNavState extends State<AppBottomNav> {
     );
   }
 
-  Widget _buildTabItem(IconData icon, String label, int index) {
+  Widget _buildTabItem(String svgPath, String label, int index) {
     final isSelected = _currentTabIndex == index;
+
     return GestureDetector(
       onTap: () => setState(() => _currentTabIndex = index),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          isSelected
-              ? ShaderMask(
-                  shaderCallback: (bounds) =>
-                      LinearGradient(
-                        colors: [Color(0xFFb753d6), Color(0xFFf36bce)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(
-                        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                      ),
-                  child: Icon(icon, color: Colors.white, size: 28),
-                )
-              : Icon(icon, color: Colors.white70, size: 28),
-
-          isSelected
-              ? ShaderMask(
-                  shaderCallback: (bounds) =>
-                      LinearGradient(
-                        colors: [Colors.white, Colors.white],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ).createShader(
-                        Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                      ),
-                  child: Text(
-                    label,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                    ),
-                  ),
-                )
-              : Text(
-                  label,
-                  style: TextStyle(color: Colors.white, fontSize: 12),
-                ),
+          Container(
+            width: 28,
+            height: 28,
+            child: isSelected
+                ? ShaderMask(
+              shaderCallback: (bounds) => LinearGradient(
+                colors: [Color(0xFFb753d6), Color(0xFFf36bce)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ).createShader(
+                Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+              ),
+              child: SvgPicture.asset(
+                svgPath,
+                color: Colors.white,
+              ),
+            )
+                : SvgPicture.asset(
+              svgPath,
+              color: Colors.grey,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            label,
+            style: TextStyle(
+              color: isSelected ? Colors.white : Colors.grey,
+              fontSize: 12,
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
         ],
       ),
     );
@@ -155,7 +147,7 @@ class _AppBottomNavState extends State<AppBottomNav> {
   Widget _buildLoginPrompt() {
     return Center(
       child: GradientAppText(
-        text: "Please Create or Import an Wallet",
+        text: "Please Create or Import a Wallet",
         fontSize: 20,
         fontWeight: FontWeight.w500,
       ),

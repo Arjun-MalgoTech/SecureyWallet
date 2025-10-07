@@ -86,9 +86,9 @@ class _SecretPhrasesCheckListState extends State<SecretPhrasesCheckList> {
         AppText(
           "Check that your secret phrase is  ",
           fontSize: 20,
-          fontWeight: FontWeight.bold,
+          fontWeight: FontWeight.w600,
         ),
-        AppText("safe here", fontSize: 20, fontWeight: FontWeight.bold),
+        AppText("safe here", fontSize: 20, fontWeight: FontWeight.w600),
         SizedBox(height: 8),
       ],
     );

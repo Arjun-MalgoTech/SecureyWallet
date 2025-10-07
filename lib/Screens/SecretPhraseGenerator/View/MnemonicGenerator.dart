@@ -272,9 +272,7 @@ class _MnemonicStepperScreenState extends State<MnemonicStepperScreen> {
     if (bip39.validateMnemonic(mnemonic)) {
       final seed = bip39.mnemonicToSeed(mnemonic);
       final root = bip32.BIP32.fromSeed(seed);
-      final child = root.derivePath(
-        "m/44'/60'/0'/0/0",
-      ); // Ethereum derivation path
+      final child = root.derivePath("m/44'/60'/0'/0/0");
       final privateKey = child.privateKey;
 
       final privateKeyHex = HEX.encode(privateKey!);
@@ -406,7 +404,7 @@ class _MnemonicStepperScreenState extends State<MnemonicStepperScreen> {
         ),
         const SizedBox(height: 8),
         AppText(
-          "This 12-word secret phrase is the only way to access\nand recover your wallet. Write it down and keep it\nin a safe place.",
+          "This 12-word secret phrase is the only way to\naccess and recover your wallet. Write it down\nand keep it in a safe place.",
           color: Colors.white.withOpacity(0.7),
           fontWeight: FontWeight.w400,
           fontSize: 13,
@@ -433,14 +431,14 @@ class _MnemonicStepperScreenState extends State<MnemonicStepperScreen> {
           ),
           child: Wrap(
             alignment: WrapAlignment.spaceBetween,
-            spacing: 12,
-            runSpacing: 12,
+            spacing: 10,
+            runSpacing: 10,
             children: List.generate(
               words.length,
-              (index) => Container(
+                  (index) => Container(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 10,
-                  horizontal: 16,
+                  vertical: 8,
+                  horizontal:6,
                 ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40),
@@ -449,7 +447,7 @@ class _MnemonicStepperScreenState extends State<MnemonicStepperScreen> {
                     gradient: LinearGradient(
                       colors: [
                         Colors.white.withOpacity(0.3),
-                        Colors.white.withOpacity(0.05),
+                        Colors.white.withOpacity(0.3),
                       ],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
@@ -498,7 +496,7 @@ class _MnemonicStepperScreenState extends State<MnemonicStepperScreen> {
             borderRadius: BorderRadius.circular(10),
           ),
           child: AppText(
-            "Do not share your secret phrase with anyone. Saving it to\ncloud storage is at your own risk. We are not liable for\nany loss or security breach resulting from this action.\nStore it securely.",
+            "Do not share your secret phrase with anyone.\nSaving it to cloud storage is at your own risk.\nWe are not liable for any loss or security breach\nresulting from this action. Store it securely.",
 
               color: Color(0xFFF9B732),
               fontSize: 12,
@@ -563,7 +561,7 @@ fontWeight: FontWeight.w400,
                       gradient: LinearGradient(
                         colors: [
                           Colors.white.withOpacity(0.3),
-                          Colors.white.withOpacity(0.05),
+                          Colors.white.withOpacity(0.3),
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -614,6 +612,7 @@ fontWeight: FontWeight.w400,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     color: isSelected ? Colors.white : const Color(0xFF141922),
+                    border: Border.all(color: Colors.grey.withOpacity(0.4),width: 0.6)
                   ),
                   child: Text(
                     "${allWords.indexOf(word) + 1}. $word",

@@ -35,7 +35,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<LocalStorageService>(context, listen: false).getData();
     });
-
+print("////${widget.coinData.address!}");
     super.initState();
   }
 

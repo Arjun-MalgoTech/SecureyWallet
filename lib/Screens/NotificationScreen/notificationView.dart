@@ -115,7 +115,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.1),
                 Image.asset("assets/Images/bell2.png", height: 300, width: 300),
 
-                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.02),
 
                 AppText(
                   "Keep up with the market!",
@@ -126,14 +126,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 SizedBox(height: SizeConfig.height(context, 1)),
 
                 AppText(
-                  "Turn on notifications to keep track of prices and receive",
+                  "Turn on notifications to keep track of prices and ",
                   fontWeight: FontWeight.w400,
                   fontSize: 13,
                   color: Color(0XFFB4B1B2),
                 ),
 
                 AppText(
-                  "transaction updates.",
+                  "receive transaction updates.",
                   fontWeight: FontWeight.w400,
                   fontSize: 13,
                   color: Color(0XFFB4B1B2),

@@ -191,7 +191,7 @@ class _SecureBackupState extends State<SecureBackup> {
                                 onChanged: (val) =>
                                     setStateDialog(() => checkbox1 = val),
                                 text:
-                                    "Secury WALLET never keeps a copy of your\nsecret phrase.",
+                                    "Secury WALLET never keeps a copy of\nyour secret phrase.",
                               ),
                               gradientDivider(),
                               _buildCheckbox(
@@ -199,7 +199,7 @@ class _SecureBackupState extends State<SecureBackup> {
                                 onChanged: (val) =>
                                     setStateDialog(() => checkbox2 = val),
                                 text:
-                                    "For security reasons, do not save your secret\nphrase in plain text, such as in screenshots, \ntext files, or emails.",
+                                    "For security reasons, do not save your\nsecret phrase in plain text, such as in\nscreenshots,text files, or emails.",
                               ),
                               gradientDivider(),
                               _buildCheckbox(
@@ -207,7 +207,7 @@ class _SecureBackupState extends State<SecureBackup> {
                                 onChanged: (val) =>
                                     setStateDialog(() => checkbox3 = val),
                                 text:
-                                    "Note down your secret phrase and store it\nsafely offline!",
+                                    "Note down your secret phrase and store\nit safely offline!",
                               ),
                               const SizedBox(height: 16),
                               _buildContinueButton(context),
@@ -270,11 +270,11 @@ class _SecureBackupState extends State<SecureBackup> {
     return Column(
       children: [
         AppText(
-          "Check that your secret phrase is  ",
+          "Check that your secret phrase",
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
-        AppText("safe here", fontSize: 20, fontWeight: FontWeight.bold),
+        AppText("is safe here", fontSize: 20, fontWeight: FontWeight.bold),
         SizedBox(height: 8),
       ],
     );
