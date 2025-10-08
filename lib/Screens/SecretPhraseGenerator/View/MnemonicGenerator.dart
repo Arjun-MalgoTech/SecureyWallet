@@ -616,7 +616,6 @@ fontWeight: FontWeight.w400,
                   ),
                   child: AppText(
                     "$word",
-
                       color: isSelected ? Colors.black : Colors.white,
                       fontWeight: FontWeight.w700,
                       fontSize: 14,
