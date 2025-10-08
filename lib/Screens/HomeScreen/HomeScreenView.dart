@@ -408,7 +408,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                   ),
                 )
               : SingleChildScrollView(
-                child: Column(
+                  child: Column(
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -429,7 +429,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                             child: Row(
                               children: [
                                 AppText(
-                                  localStorageService.activeWalletData!.walletName
+                                  localStorageService
+                                              .activeWalletData!
+                                              .walletName
                                               .toString()
                                               .length >
                                           16
@@ -470,12 +472,14 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                   height: 25,
                                 ),
                               ),
-                              color: Theme.of(context).colorScheme.surfaceBright,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.surfaceBright,
                             ),
                           ),
                         ],
                       ),
-                
+
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 24,
@@ -483,11 +487,13 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         ),
                         child: LayoutBuilder(
                           builder: (context, constraints) {
-                            final screenWidth = MediaQuery.of(context).size.width;
+                            final screenWidth = MediaQuery.of(
+                              context,
+                            ).size.width;
                             final screenHeight = MediaQuery.of(
                               context,
                             ).size.height;
-                
+
                             return Stack(
                               alignment: Alignment.center,
                               children: [
@@ -500,16 +506,17 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                     width: screenWidth,
                                   ),
                                 ),
-                
+
                                 // Foreground Content
                                 Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     SizedBox(height: screenHeight * 0.02),
-                
+
                                     // Balance Row
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
@@ -550,7 +557,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                         // ),
                                       ],
                                     ),
-                
+
                                     // Percentage text
                                     Text(
                                       "\$11.32 (+1.46%)",
@@ -562,9 +569,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                             0.032, // responsive font
                                       ),
                                     ),
-                
+
                                     SizedBox(height: screenHeight * 0.055),
-                
+
                                     // Bottom icon row (buttons)
                                     iconRow(context),
                                   ],
@@ -574,7 +581,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           },
                         ),
                       ),
-                
+
                       SizedBox(height: SizeConfig.height(context, 2)),
                       // bannerImage(context),
                       Padding(
@@ -589,9 +596,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                           ],
                         ),
                       ),
-                
+
                       SizedBox(height: SizeConfig.height(context, 1)),
-                
+
                       SizedBox(
                         height:
                             70, // Adjust height based on your container content
@@ -620,7 +627,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                   color: Color(0XFF0f131a),
                                 ),
                                 width: MediaQuery.of(context).size.width * 0.7,
-                
+
                                 child: ListTile(
                                   leading: Stack(
                                     children: [
@@ -695,7 +702,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                                           .gasPriceSymbol
                                                           .toString(),
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 7,
                                                     );
                                                   },
@@ -727,7 +735,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                               ),
                                             ),
                                             SizedBox(width: 10),
-                
+
                                             // Use Flexible instead of Expanded
                                             // Flexible(
                                             //   child: Container(
@@ -764,7 +772,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                                     child: AppText(
                                                       "${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}",
                                                       fontSize: 13,
-                                                      fontWeight: FontWeight.w400,
+                                                      fontWeight:
+                                                          FontWeight.w400,
                                                       color: Colors.white
                                                           .withOpacity(0.6),
                                                     ),
@@ -783,7 +792,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                                     ).colorScheme.surfaceBright,
                                                   ),
                                             SizedBox(
-                                              width: SizeConfig.width(context, 4),
+                                              width: SizeConfig.width(
+                                                context,
+                                                4,
+                                              ),
                                             ),
                                             //old code
                                             // result.containsKey(
@@ -832,7 +844,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                   ),
                                   trailing: Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
-                
+
                                     // Ensure the column takes minimum space
                                     children: [
                                       result.containsKey(
@@ -942,7 +954,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         ),
                       ),
                       SizedBox(height: SizeConfig.height(context, 2)),
-                
+
                       // Row of custom tabs
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0),
@@ -1018,15 +1030,18 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         ),
                       ),
                       SizedBox(height: SizeConfig.height(context, 1)),
-                
+
                       // Show content based on selected index
                       SizedBox(
-                        height: SizeConfig.height(context, localStorageService.assetList.length *9),
+                        height: SizeConfig.height(
+                          context,
+                          localStorageService.assetList.length * 9,
+                        ),
                         child: _selectedIndex == 0 ? AssetTab() : NFTsTab(),
                       ),
                     ],
                   ),
-              ),
+                ),
         ),
       ),
     );
@@ -1585,19 +1600,6 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   }
 
   Widget NFTsTab() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) {
-              return Nfts();
-            },
-          ),
-        );
-      },
-
-      child: Expanded(child: Nfts()),
-    );
+    return Expanded(child: Nfts());
   }
 }

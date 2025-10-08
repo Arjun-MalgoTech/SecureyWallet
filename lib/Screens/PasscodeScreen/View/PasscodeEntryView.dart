@@ -4,6 +4,7 @@ import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:securywallet/Crypto_Utils/AppToastMsg/AppToast.dart';
 import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
+import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
 import 'package:securywallet/Screens/Mnemonic_Backup_View/View/MnemonicBackup.dart';
 import 'package:securywallet/Screens/PasscodeScreen/View/PasscodeBoxUi.dart';
@@ -229,7 +230,7 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
     bool isPasscodeCorrect = passcode == widget.savedPasscode;
     List<Color> boxColors = List.filled(
       6,
-      Theme.of(context).primaryColor,
+      Color(0XFF3d3c40),
     ); // Initially set all box colors to gray
     if (isPasscodeEntered) {
       if (isPasscodeCorrect) {
@@ -270,13 +271,12 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
+            AppText(
               'Enter Passcode',
-              style: TextStyle(
-                fontSize: 20,
-                color: Theme.of(context).colorScheme.surfaceBright,
-                fontWeight: FontWeight.w500,
-              ),
+
+              fontSize: 20,
+              color: Theme.of(context).colorScheme.surfaceBright,
+              fontWeight: FontWeight.w500,
             ),
             SizedBox(height: 20),
             Row(
@@ -421,7 +421,7 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
                     padding: EdgeInsets.only(
                       left: 20.0,
                       right: 20,
-                      bottom: Platform.isIOS ? 16 : 0,
+                      bottom: Platform.isIOS ? 16 : 5,
                     ),
                     child: ReuseElevatedButton(
                       onTap: () => isDelayActive ? null : handleDone(context),
@@ -436,15 +436,17 @@ class _PasscodeEntryViewState extends State<PasscodeEntryView> {
                     padding: EdgeInsets.only(
                       left: 20.0,
                       right: 20,
-                      bottom: Platform.isIOS ? 16 : 0,
+                      bottom: Platform.isIOS ? 16 : 10,
                     ),
                     child: ReuseElevatedButton(
                       onTap: () => isDelayActive ? null : handleDone(context),
-                      width: MediaQuery.sizeOf(context).width,
-                      height: 45,
+                      width: MediaQuery.sizeOf(context).width * 0.9,
+                      height: SizeConfig.height(context, 6),
                       text: 'Continue',
                       textcolor: Colors.black,
-                      gradientColors: [Color(0XFF70A2FF), Color(0XFF54F0D1)],
+                      buttonColor: passcode.length == 6
+                          ? Colors.white
+                          : Colors.grey,
                     ),
                   ),
           ],

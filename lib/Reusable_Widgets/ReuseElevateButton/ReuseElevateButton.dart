@@ -10,6 +10,7 @@ class ReuseElevatedButton extends StatelessWidget {
   final VoidCallback? onTap;
   final double? borderWidth;
   final TextStyle? style;
+  final Color? buttonColor;
   Color? textcolor;
   final double? fontSize;
   final BorderRadiusGeometry? borderRadius;
@@ -27,6 +28,7 @@ class ReuseElevatedButton extends StatelessWidget {
     this.borderWidth,
     this.textcolor,
     this.style,
+    this.buttonColor,
     this.fontSize,
     this.gradientColors, // Updated: Added gradientColors parameter
   }) : super(key: key);
@@ -52,13 +54,13 @@ class ReuseElevatedButton extends StatelessWidget {
             width: borderWidth ?? 0,
           ),
           borderRadius: borderRadius ?? BorderRadius.circular(40),
-          color: Colors.white,
+          color: buttonColor ?? Colors.white,
         ),
         child: Center(
           child: AppText(
             text,
             color: textcolor ?? Colors.white,
-            fontFamily: "LexendDeca",
+
             fontSize: 17,
             fontWeight: FontWeight.w600,
           ),

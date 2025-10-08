@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Reusable_Widgets/ReuseElevateButton/ReuseElevateButton.dart';
 import 'package:securywallet/Screens/PasscodeScreen/View/PasscodeBoxUi.dart';
@@ -408,7 +409,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
               ? (i < passcode.length ? '*' : '')
               : (i < confirmPasscode.length ? '*' : ''),
           isCorrect: isSettingPasscode,
-          boxColor: Colors.grey,
+          boxColor: Color(0XFF3d3c40),
           colorCheck: false,
         ),
       );
@@ -435,29 +436,50 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
         return false; // Allow back action if not in the confirmation step
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        backgroundColor: Color(0XFF090b0f),
         appBar: AppBar(
-          title: Text(''),
-          // leading: Icon(Icons.arrow_back,color: Color(0xFF363738),),
-          automaticallyImplyLeading: false,
+          title: AppText(
+            'Setup Passcode',
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 17,
+          ),
+          centerTitle: true,
+          leading: Icon(Icons.arrow_back, color: Colors.white),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Text(
+            AppText(
               isSettingPasscode ? 'Create Passcode' : 'Confirm Passcode',
-              style: TextStyle(
-                fontSize: 24,
-                color: Theme.of(context).colorScheme.surfaceBright,
-                fontWeight: FontWeight.w500,
-              ),
+
+              fontSize: 20,
+              color: Theme.of(context).colorScheme.surfaceBright,
+              fontWeight: FontWeight.w600,
             ),
-            SizedBox(height: 60),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: passcodeDigitBoxes,
             ),
-            SizedBox(height: 30),
+
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppText(
+                  "Enter your passcode. Be sure to remember ",
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0XFFB4B1B2),
+                ),
+                AppText(
+                  "it so you can unlock your wallet.",
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0XFFB4B1B2),
+                ),
+              ],
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
@@ -542,12 +564,12 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                         },
                         child: Icon(
                           Icons.fingerprint,
-                          size: 50.0,
+                          size: 65.0,
                           color: Theme.of(context).colorScheme.surfaceBright,
                         ),
                       ),
                 PasscodeButton(
-                  label: '0',
+                  label: ' 0',
                   onPressed: () => _handleButtonPress('0'),
                   backgroundColor: Colors.transparent,
                   labelColor: Theme.of(context).colorScheme.surfaceBright,
@@ -565,11 +587,15 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: ReuseElevatedButton(
                 onTap: _handleDone,
-                width: MediaQuery.sizeOf(context).width,
-                height: 45,
-                text: 'Next',
+                width: MediaQuery.sizeOf(context).width * 0.9,
+                height: SizeConfig.height(context, 6),
+                text: isSettingPasscode ? "Create" : 'Confirm',
                 textcolor: Colors.black,
-                gradientColors: [Color(0XFF70A2FF), Color(0XFF54F0D1)],
+                buttonColor: isSettingPasscode
+                    ? (passcode.length != 6 ? Colors.grey : Colors.white)
+                    : (confirmPasscode.length != 6
+                          ? Colors.grey
+                          : Colors.white),
               ),
             ),
           ],

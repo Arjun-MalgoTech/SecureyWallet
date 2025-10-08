@@ -760,11 +760,12 @@ class Nfts extends StatefulWidget {
 
 class _NftsState extends State<Nfts> {
   final String ownerAddress =
-      '0x3239Df95eFCF9882DA672773b4b261B47DfEa961'; // wallet
+      '0x254540FA14Ca3DF2248eD1cF4FD3ddD3f6e8fff1'; // wallet
   final String alchemyApiKey =
       'gSBUx520RvEVfp8EK9XqfP2mvdlqYRaz'; // Alchemy API
   final String rpcUrl =
-      'https://mainnet.infura.io/v3/${apiKeyService.infuraKey}'; // for sending tx
+      'https://mainnet.infura.io/v3/${apiKeyService
+      .infuraKey}'; // for sending tx
   List<NFT> nfts = [];
   bool loading = true;
 
@@ -880,75 +881,76 @@ class _NftsState extends State<Nfts> {
 
     showDialog(
       context: context,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setStateDialog) {
-          return AlertDialog(
-            title: Text('Send ${nft.name}'),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: toController,
-                  decoration: const InputDecoration(
-                    labelText: 'Recipient address',
-                  ),
+      builder: (context) =>
+          StatefulBuilder(
+            builder: (context, setStateDialog) {
+              return AlertDialog(
+                title: Text('Send ${nft.name}'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: toController,
+                      decoration: const InputDecoration(
+                        labelText: 'Recipient address',
+                      ),
+                    ),
+                    TextField(
+                      controller: pkController,
+                      decoration: const InputDecoration(
+                        labelText: 'Your private key',
+                      ),
+                    ),
+                    if (sending) const CircularProgressIndicator(),
+                    if (txHash != null)
+                      SelectableText(
+                        'Tx hash: $txHash',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                  ],
                 ),
-                TextField(
-                  controller: pkController,
-                  decoration: const InputDecoration(
-                    labelText: 'Your private key',
+                actions: [
+                  TextButton(
+                    onPressed: sending ? null : () => Navigator.pop(context),
+                    child: const Text('Cancel'),
                   ),
-                ),
-                if (sending) const CircularProgressIndicator(),
-                if (txHash != null)
-                  SelectableText(
-                    'Tx hash: $txHash',
-                    style: const TextStyle(fontSize: 12),
-                  ),
-              ],
-            ),
-            actions: [
-              TextButton(
-                onPressed: sending ? null : () => Navigator.pop(context),
-                child: const Text('Cancel'),
-              ),
-              ElevatedButton(
-                onPressed: sending
-                    ? null
-                    : () async {
-                        final to = toController.text.trim();
-                        final pk = pkController.text.trim();
-                        if (to.isEmpty || pk.isEmpty) return;
+                  ElevatedButton(
+                    onPressed: sending
+                        ? null
+                        : () async {
+                      final to = toController.text.trim();
+                      final pk = pkController.text.trim();
+                      if (to.isEmpty || pk.isEmpty) return;
 
+                      setStateDialog(() {
+                        sending = true;
+                        txHash = null;
+                      });
+
+                      try {
+                        final hash = await sendNFT(
+                          privateKey: pk.startsWith('0x') ? pk : '0x$pk',
+                          contractAddress: nft.contract,
+                          toAddress: to,
+                          tokenId: BigInt.parse(nft.tokenId),
+                        );
                         setStateDialog(() {
-                          sending = true;
-                          txHash = null;
+                          txHash = hash;
                         });
-
-                        try {
-                          final hash = await sendNFT(
-                            privateKey: pk.startsWith('0x') ? pk : '0x$pk',
-                            contractAddress: nft.contract,
-                            toAddress: to,
-                            tokenId: BigInt.parse(nft.tokenId),
-                          );
-                          setStateDialog(() {
-                            txHash = hash;
-                          });
-                        } catch (e) {
-                          setStateDialog(() {
-                            txHash = 'Error: $e';
-                          });
-                        } finally {
-                          setStateDialog(() => sending = false);
-                        }
-                      },
-                child: const Text('Send'),
-              ),
-            ],
-          );
-        },
-      ),
+                      } catch (e) {
+                        setStateDialog(() {
+                          txHash = 'Error: $e';
+                        });
+                      } finally {
+                        setStateDialog(() => sending = false);
+                      }
+                    },
+                    child: const Text('Send'),
+                  ),
+                ],
+              );
+            },
+          ),
     );
   }
 
@@ -957,104 +959,106 @@ class _NftsState extends State<Nfts> {
     return Scaffold(
       body: loading
           ? Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50.0),
-                child: AppText('Loading...'),
-              ),
-            )
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 50.0),
+          child: AppText('Loading...'),
+        ),
+      )
           : nfts.isEmpty
           ? Padding(
-              padding: const EdgeInsets.all(80.0),
-              child: AppText('No NFTs found for this wallet.'),
-            )
+        padding: const EdgeInsets.all(80.0),
+        child: AppText('No NFTs found for this wallet.'),
+      )
           : GridView.builder(
-              padding: const EdgeInsets.all(8),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.78,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemCount: nfts.length,
-              itemBuilder: (context, index) {
-                final nft = nfts[index];
+        padding: const EdgeInsets.all(8),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.78,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+        ),
+        itemCount: nfts.length,
+        itemBuilder: (context, index) {
+          final nft = nfts[index];
 
-                return GestureDetector(
-                  onTap: () => _showSendDialog(nft),
-                  child: ClipRRect(
+          return GestureDetector(
+            onTap: () => _showSendDialog(nft),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+                // stronger blur
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withOpacity(0.05),
+                        Colors.white.withOpacity(0.1),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                     borderRadius: BorderRadius.circular(12),
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-                      // stronger blur
-                      child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              Colors.white.withOpacity(0.05),
-                              Colors.white.withOpacity(0.1),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.1),
+                      width: 1,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                        child: nft.image.startsWith('data:')
+                            ? _buildDataImage(nft.image)
+                            : CachedNetworkImage(
+                          imageUrl: nft.image.isNotEmpty
+                              ? nft.image
+                              : 'https://via.placeholder.com/300',
+                          fit: BoxFit.cover,
+                          placeholder: (_, __) =>
+                          const Center(
+                            child: CircularProgressIndicator(),
                           ),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: Colors.white.withOpacity(0.1),
-                            width: 1,
+                          errorWidget: (_, __, ___) =>
+                          const Center(
+                            child: Icon(Icons.broken_image),
                           ),
                         ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Expanded(
-                              child: nft.image.startsWith('data:')
-                                  ? _buildDataImage(nft.image)
-                                  : CachedNetworkImage(
-                                      imageUrl: nft.image.isNotEmpty
-                                          ? nft.image
-                                          : 'https://via.placeholder.com/300',
-                                      fit: BoxFit.cover,
-                                      placeholder: (_, __) => const Center(
-                                        child: CircularProgressIndicator(),
-                                      ),
-                                      errorWidget: (_, __, ___) => const Center(
-                                        child: Icon(Icons.broken_image),
-                                      ),
-                                    ),
+                            Text(
+                              nft.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    nft.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    'ID: ${BigInt.parse(nft.tokenId).toString()}',
-                                    style: const TextStyle(
-                                      fontSize: 12,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
+                            const SizedBox(height: 4),
+                            Text(
+                              'ID: ${BigInt.parse(nft.tokenId).toString()}',
+                              style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                );
-              },
+                ),
+              ),
             ),
+          );
+        },
+      ),
     );
   }
 }

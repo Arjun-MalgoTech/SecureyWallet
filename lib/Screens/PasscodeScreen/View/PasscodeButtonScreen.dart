@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 
 class PasscodeButton extends StatelessWidget {
   final String label;
@@ -37,26 +38,18 @@ class PasscodeButton extends StatelessWidget {
                 : borderRadius * 1.5, // Adjust height for delete button
             child: Center(
               child: isDeleteButton
-                  ? Icon(
-                      Icons.backspace,
-                      size: 24,
-                      color: labelColor,
-                    )
+                  ? Icon(Icons.backspace, size: 24, color: labelColor)
                   : isFingerPrintButton && Platform.isIOS
-                      ? SizedBox()
-                      : isFingerPrintButton
-                          ? Icon(
-                              Icons.fingerprint,
-                              size: 40,
-                              color: labelColor,
-                            )
-                          : Text(
-                              label,
-                              style: TextStyle(
-                                  fontSize: 30,
-                                  color: labelColor,
-                                  fontWeight: FontWeight.w300),
-                            ),
+                  ? SizedBox()
+                  : isFingerPrintButton
+                  ? Icon(Icons.fingerprint, size: 40, color: labelColor)
+                  : AppText(
+                      label,
+
+                      fontSize: 32,
+                      color: labelColor,
+                      fontWeight: FontWeight.w600,
+                    ),
             ),
           ),
         ),
