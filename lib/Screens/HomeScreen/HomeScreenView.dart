@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:gradient_borders/box_borders/gradient_box_border.dart';
 import 'package:provider/provider.dart';
+import 'package:securywallet/Api_Service/Apikey_Service.dart';
 import 'package:securywallet/Asset_Functions/Asset_Balance/AssetBalance.dart';
 import 'package:securywallet/Crypto_Utils/Asset_Path/Constant_Image.dart';
 import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
@@ -28,9 +30,13 @@ import 'package:securywallet/VaultStorageService/LocalDataServiceVM.dart';
 import 'package:securywallet/Wallet_Session_Request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class HomeView extends StatefulWidget {
   final String dollar;
@@ -49,7 +55,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   late Timer _timer;
   late Timer _timer2;
 
-  ValueNotifier<String> usdTotal = ValueNotifier<String>('574.89');
+  ValueNotifier<String> usdTotal = ValueNotifier<String>('0.00');
 
   LocalStorageService localStorageService = LocalStorageService();
 
@@ -109,6 +115,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(() {
       setState(() {
@@ -121,6 +128,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       balanceLoading = true;
       Provider.of<LocalStorageService>(context, listen: false).getData();
+
       Future.delayed(Duration(milliseconds: 500), () async {
         await _refresh();
         balanceLoading = false;
@@ -143,6 +151,12 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       _subscribeToPairs();
     });
 
+
+    //************** Nfts flow *********************//
+
+    web3client = Web3Client(rpcUrl, Client());
+    //************** Nfts flow *********************//
+
     tabviewController = TabController(length: 2, vsync: this);
     channel.stream.listen((message) async {
       Map<String, dynamic> data = jsonDecode(message);
@@ -158,6 +172,18 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
       duration: Duration(seconds: 1), // Set the duration of one full rotation
     );
   }
+  String? ownerAddress;
+ // wallet
+  final String alchemyApiKey =
+      'gSBUx520RvEVfp8EK9XqfP2mvdlqYRaz'; // Alchemy API
+  final String rpcUrl =
+      'https://mainnet.infura.io/v3/${apiKeyService
+      .infuraKey}'; // for sending tx
+  List<NFT> nfts = [];
+  bool loading1 = true;
+
+  late Web3Client web3client;
+
 
   walletSessionContextInit() {
     _timer2 = Timer.periodic(Duration(seconds: 1), (Timer t) {
@@ -298,6 +324,8 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     themeController = context.watch<ThemeController>();
     walletSessionRequest = context.watch<WalletConnectionRequest>();
     walletSessionRequest.initializeContext(context);
+    ownerAddress = localStorageService.activeWalletData?.walletAddress;
+
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -525,9 +553,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                           builder: (context, value, child) {
                                             return FittedBox(
                                               fit: BoxFit.scaleDown,
-                                              child: Text(
-                                                "\$574.89",
-                                                style: TextStyle(
+                                              child: AppText(
+                                                "\$${value}",
+
                                                   fontFamily: 'LexendDeca',
                                                   fontWeight: FontWeight.w600,
                                                   color: Theme.of(
@@ -536,7 +564,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                                   fontSize:
                                                       screenWidth *
                                                       0.09, // responsive font
-                                                ),
+
                                               ),
                                             );
                                           },
@@ -996,6 +1024,7 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                             SizedBox(width: 12),
                             GestureDetector(
                               onTap: () {
+                                fetchNFTs();
                                 setState(() {
                                   _selectedIndex = 1;
                                 });
@@ -1094,501 +1123,979 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
                     return Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16),
-                      child: ListView.builder(
-                        itemCount: localStorageService
-                            .assetList
+                      child:
+
+                      ListView.builder(
+                        itemCount: localStorageService.assetList
                             .length, // Set the number of items to 5
-                        physics: const AlwaysScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemBuilder: (BuildContext context, int index) {
                           return Slidable(
-                            key: ValueKey(index),
-                            endActionPane: ActionPane(
-                              motion: ScrollMotion(),
-                              extentRatio: 0.2,
-                              children: [
-                                index > 0
-                                    ? Builder(
-                                        builder: (context) {
-                                          return InkWell(
-                                            onTap: () async {
-                                              setState(() {
-                                                localStorageService
-                                                    .assetBalance1
-                                                    .removeAt(index);
-                                              });
-                                              await localStorageService
-                                                  .removeMapValue(
-                                                    localStorageService
-                                                        .assetList[index],
-                                                    context,
-                                                  );
-                                              WidgetsBinding.instance
-                                                  .addPostFrameCallback((_) {
-                                                    Provider.of<
-                                                          LocalStorageService
-                                                        >(
-                                                          context,
-                                                          listen: false,
-                                                        )
-                                                        .getData();
-                                                  });
-                                              Slidable.of(context)?.close();
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                bottom: 6.0,
-                                              ),
-                                              child: Container(
-                                                decoration: const BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.only(
-                                                        topRight:
-                                                            Radius.circular(10),
-                                                        bottomRight:
-                                                            Radius.circular(10),
-                                                      ),
-                                                  color: Colors.red,
-                                                ),
-                                                width: SizeConfig.width(
-                                                  context,
-                                                  16,
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(
-                                                    4.0,
-                                                  ),
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.delete,
-                                                        color: Colors.white,
-                                                      ),
-                                                      AppText(
-                                                        "Delete",
-                                                        color: Colors.white,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      )
-                                    : InkWell(
+                              key: ValueKey(index),
+                              endActionPane: ActionPane(
+                                  motion: ScrollMotion(),
+                                  extentRatio: 0.2,
+                                  children: [
+                                    Builder(builder: (context) {
+                                      return InkWell(
                                         onTap: () async {
-                                          if (!await launchUrl(
-                                            Uri.parse(
+                                          setState(() {
+                                            localStorageService
+                                                .assetBalance1
+                                                .removeAt(index);
+                                          });
+                                          await localStorageService
+                                              .removeMapValue(
                                               localStorageService
-                                                  .assetList[index]
-                                                  .explorerURL!,
-                                            ),
-                                          )) {
-                                            throw Exception(
-                                              'Could not launch ',
-                                            );
-                                          }
+                                                  .assetList[
+                                              index],
+                                              context);
+                                          WidgetsBinding.instance
+                                              .addPostFrameCallback(
+                                                  (_) {
+                                                Provider.of<LocalStorageService>(
+                                                    context,
+                                                    listen: false)
+                                                    .getData();
+                                              });
+                                          Slidable.of(context)
+                                              ?.close();
                                         },
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                            bottom: 6.0,
-                                          ),
+                                          padding:
+                                          const EdgeInsets.only(
+                                              bottom: 6.0),
                                           child: Container(
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(10),
-                                                bottomRight: Radius.circular(
-                                                  10,
-                                                ),
-                                              ),
-                                              color: Colors.blue,
+                                            decoration:
+                                            const BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.only(
+                                                  topRight: Radius
+                                                      .circular(
+                                                      10),
+                                                  bottomRight:
+                                                  Radius.circular(
+                                                      10)),
+                                              color: Colors.red,
                                             ),
                                             width: SizeConfig.width(
-                                              context,
-                                              16,
-                                            ),
+                                                context, 16),
                                             child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                4.0,
-                                              ),
+                                              padding:
+                                              const EdgeInsets
+                                                  .all(4.0),
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
+                                                CrossAxisAlignment
+                                                    .center,
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.center,
+                                                MainAxisAlignment
+                                                    .center,
                                                 children: [
                                                   Icon(
-                                                    Icons.info,
-                                                    color: Colors.white,
+                                                    Icons.delete,
+                                                    color: Colors
+                                                        .white,
                                                   ),
                                                   AppText(
-                                                    "  Info  ",
-                                                    color: Colors.white,
+                                                    "Delete",
+                                                    color: Colors
+                                                        .white,
                                                     fontSize: 12,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .bold,
+                                                  )
                                                 ],
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 5.0),
-                              child: ListTile(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return TransactionAction(
-                                          coinData: localStorageService
-                                              .assetList[index],
-                                          balance:
-                                              (index <
+                                      );
+                                    })
+                                    //     : InkWell(
+                                    //   onTap: () async {
+                                    //     if (!await launchUrl(Uri
+                                    //         .parse(localStorageService
+                                    //         .assetList[index]
+                                    //         .explorerURL!))) {
+                                    //       throw Exception(
+                                    //           'Could not launch ');
+                                    //     }
+                                    //   },
+                                    //   child: Padding(
+                                    //     padding:
+                                    //     const EdgeInsets.only(
+                                    //         bottom: 6.0),
+                                    //     child: Container(
+                                    //       decoration:
+                                    //       const BoxDecoration(
+                                    //         borderRadius:
+                                    //         BorderRadius.only(
+                                    //             topRight: Radius
+                                    //                 .circular(
+                                    //                 10),
+                                    //             bottomRight: Radius
+                                    //                 .circular(
+                                    //                 10)),
+                                    //         color: Colors.blue,
+                                    //       ),
+                                    //       width: SizeConfig.width(
+                                    //           context, 16),
+                                    //       child: Padding(
+                                    //         padding:
+                                    //         const EdgeInsets
+                                    //             .all(4.0),
+                                    //         child: Column(
+                                    //           crossAxisAlignment:
+                                    //           CrossAxisAlignment
+                                    //               .center,
+                                    //           mainAxisAlignment:
+                                    //           MainAxisAlignment
+                                    //               .center,
+                                    //           children: [
+                                    //             Icon(
+                                    //               Icons.info,
+                                    //               color:
+                                    //               Colors.white,
+                                    //             ),
+                                    //             AppText(
+                                    //               "  Info  ",
+                                    //               color:
+                                    //               Colors.white,
+                                    //               fontSize: 12,
+                                    //               fontWeight:
+                                    //               FontWeight
+                                    //                   .bold,
+                                    //             )
+                                    //           ],
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // )
+                                  ]),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                  BorderRadius.circular(10),
+                               // Make it slightly transparent
+                                ),
+                                child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(context,
+                                        MaterialPageRoute(
+                                            builder: (context) {
+                                              return TransactionAction(
+                                                  coinData:
                                                   localStorageService
-                                                      .assetBalance1
-                                                      .length
-                                              ? localStorageService
-                                                    .assetBalance1[index]
-                                              : "0.0"),
-                                          userWallet: localStorageService
-                                              .activeWalletData!,
-                                          usdPrice: double.parse(
-                                            result.containsKey(
-                                                  "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                                )
-                                                ? result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0]
+                                                      .assetList[
+                                                  index],
+                                                  balance: (index <
+                                                      localStorageService
+                                                          .assetBalance1
+                                                          .length
+                                                      ? localStorageService
+                                                      .assetBalance1[
+                                                  index]
+                                                      : "0.0"),
+                                                  userWallet:
+                                                  localStorageService
+                                                      .activeWalletData!,
+                                                  usdPrice: double.parse(
+                                                      result.containsKey(
+                                                          "${localStorageService.assetList[index].coinSymbol!}USDT")
+                                                          ? result["${localStorageService.assetList[index].coinSymbol!}USDT"]![
+                                                      0]
+                                                          .toString()
+                                                          : "0"));
+                                            }));
+                                  },
+                                  leading: Stack(
+                                    alignment:
+                                    Alignment.bottomRight,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                        const EdgeInsets.only(
+                                            right: 5),
+                                        child: CircleAvatar(
+                                          radius: 18,
+                                          backgroundColor:
+                                          Color(0xFF202832),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                            BorderRadius
+                                                .circular(30),
+                                            child: Image.network(
+                                              localStorageService
+                                                  .assetList[
+                                              index]
+                                                  .imageUrl!,
+                                              errorBuilder:
+                                                  (_, obj, trc) {
+                                                return AppText(
+                                                  localStorageService
+                                                      .assetList[
+                                                  index]
+                                                      .coinSymbol
                                                       .toString()
-                                                : "0",
+                                                      .characters
+                                                      .first,
+                                                  color: Colors
+                                                      .white,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .bold,
+                                                );
+                                              },
+                                            ),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                                leading: Stack(
-                                  alignment: Alignment.bottomRight,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 5),
-                                      child: CircleAvatar(
-                                        radius: 20,
-                                        backgroundColor: Color(0xFF202832),
+                                        ),
+                                      ),
+                                      localStorageService
+                                          .assetList[
+                                      index]
+                                          .coinType ==
+                                          "2"
+                                          ? Padding(
+                                        padding:
+                                        const EdgeInsets
+                                            .only(
+                                            left: 5),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(
-                                            30,
-                                          ),
-                                          child: Image.network(
-                                            localStorageService
-                                                .assetList[index]
+                                          borderRadius:
+                                          BorderRadius
+                                              .circular(
+                                              30),
+                                          child:
+                                          Image.network(
+                                            localStorageService.allAssetList.indexWhere((v) =>
+                                            v.gasPriceSymbol ==
+                                                localStorageService
+                                                    .assetList[
+                                                index]
+                                                    .gasPriceSymbol) ==
+                                                -1
+                                                ? ""
+                                                : localStorageService
+                                                .allAssetList[localStorageService.allAssetList.indexWhere((v) =>
+                                            v.gasPriceSymbol ==
+                                                localStorageService.assetList[index].gasPriceSymbol)]
                                                 .imageUrl!,
-                                            errorBuilder: (_, obj, trc) {
+                                            errorBuilder:
+                                                (_, obj,
+                                                trc) {
                                               return AppText(
                                                 localStorageService
-                                                    .assetList[index]
-                                                    .coinSymbol
-                                                    .toString()
-                                                    .characters
-                                                    .first,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
+                                                    .assetList[
+                                                index]
+                                                    .gasPriceSymbol
+                                                    .toString(),
+                                                color: Colors
+                                                    .white,
+                                                fontWeight:
+                                                FontWeight
+                                                    .bold,
+                                                fontSize: 7,
                                               );
                                             },
+                                            height: 15,
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                    localStorageService
-                                                .assetList[index]
-                                                .coinType ==
-                                            "2"
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                              left: 5,
+                                      )
+                                          : SizedBox(),
+                                    ],
+                                  ),
+                                  title: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: AppText(
+                                              localStorageService
+                                                  .assetList[index]
+                                                  .coinName!,
+                                              fontSize: 15,
+                                              fontWeight:
+                                              FontWeight.w400,
+                                              color: Theme.of(
+                                                  context)
+                                                  .colorScheme
+                                                  .surfaceBright,
+                                              overflow: TextOverflow
+                                                  .ellipsis, // This ensures truncation if needed
                                             ),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(30),
-                                              child: Image.network(
-                                                localStorageService.allAssetList.indexWhere(
-                                                          (v) =>
-                                                              v.gasPriceSymbol ==
-                                                              localStorageService
-                                                                  .assetList[index]
-                                                                  .gasPriceSymbol,
-                                                        ) ==
-                                                        -1
-                                                    ? ""
-                                                    : localStorageService
-                                                          .allAssetList[localStorageService
-                                                              .allAssetList
-                                                              .indexWhere(
-                                                                (v) =>
-                                                                    v.gasPriceSymbol ==
-                                                                    localStorageService
-                                                                        .assetList[index]
-                                                                        .gasPriceSymbol,
-                                                              )]
-                                                          .imageUrl!,
-                                                errorBuilder: (_, obj, trc) {
-                                                  return AppText(
-                                                    localStorageService
-                                                        .assetList[index]
-                                                        .gasPriceSymbol
-                                                        .toString(),
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 7,
-                                                  );
-                                                },
-                                                height: 15,
-                                              ),
-                                            ),
-                                          )
-                                        : SizedBox(),
-                                  ],
-                                ),
-                                title: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        AppText(
-                                          localStorageService
-                                              .assetList[index]
-                                              .coinName!,
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
-                                          color: Theme.of(
-                                            context,
-                                          ).colorScheme.surfaceBright,
-                                          overflow: TextOverflow
-                                              .ellipsis, // This ensures truncation if needed
-                                        ),
-                                        SizedBox(width: 10),
+                                          ),
+                                          SizedBox(width: 10),
 
-                                        // Use Flexible instead of Expanded
-                                        // Flexible(
-                                        //   child: Container(
-                                        //     decoration: BoxDecoration(
-                                        //       borderRadius: BorderRadius.circular(
-                                        //         10,
-                                        //       ),
-                                        //       color: Colors.black38,
-                                        //     ),
-                                        //     child: Padding(
-                                        //       padding: const EdgeInsets.only(
-                                        //         left: 4.0,
-                                        //         right: 4.0,
-                                        //       ),
-                                        //       child: AppText(
-                                        //         localStorageService
-                                        //             .assetList[index]
-                                        //             .network!,
-                                        //         fontSize: 10,
-                                        //         overflow: TextOverflow.ellipsis,
-                                        //         // Ensure truncation here too
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        result.containsKey(
-                                              "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                            )
-                                            ? AppText(
-                                                "${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)} ${localStorageService.assetList[index].coinSymbol!}",
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.white.withOpacity(
-                                                  0.6,
-                                                ),
-                                              )
-                                            : AppText(
-                                                localStorageService
-                                                            .assetList[index]
-                                                            .coinType ==
-                                                        '2'
-                                                    ? "Token"
-                                                    : "\$1224.65",
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w400,
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.surfaceBright,
-                                              ),
-                                        SizedBox(
-                                          width: SizeConfig.width(context, 4),
-                                        ),
-                                        //old code
-                                        // result.containsKey(
-                                        //       "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                        //     )
-                                        //     ? Row(
-                                        //         children: [
-                                        //           AppText(
-                                        //             double.parse(
-                                        //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                        //                           .toString(),
-                                        //                     ) <
-                                        //                     0
-                                        //                 ? ''
-                                        //                 : '+',
-                                        //             fontSize: 12,
-                                        //             color:
-                                        //                 double.parse(
-                                        //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                        //                           .toString(),
-                                        //                     ) <
-                                        //                     0
-                                        //                 ? Color(0xFFFD0000)
-                                        //                 : Colors.green,
-                                        //           ),
-                                        //           AppText(
-                                        //             '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
-                                        //             fontSize: 13,
-                                        //             fontWeight: FontWeight.w400,
-                                        //             color:
-                                        //                 double.parse(
-                                        //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                        //                           .toString(),
-                                        //                     ) <
-                                        //                     0
-                                        //                 ? Color(0xFFFD0000)
-                                        //                 : Colors.green,
-                                        //           ),
-                                        //         ],
-                                        //       )
-                                        //     : SizedBox(),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                                trailing: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  mainAxisSize: MainAxisSize.min,
-                                  // Ensure the column takes minimum space
-                                  children: [
-                                    result.containsKey(
-                                          "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                        )
-                                        ? AppText(
+                                          // Use Flexible instead of Expanded
+                                          // Flexible(
+                                          //   child: Container(
+                                          //     decoration:
+                                          //     BoxDecoration(
+                                          //       borderRadius:
+                                          //       BorderRadius
+                                          //           .circular(
+                                          //           10),
+                                          //       color: Colors
+                                          //           .black38,
+                                          //     ),
+                                          //     child: Padding(
+                                          //       padding:
+                                          //       const EdgeInsets
+                                          //           .only(
+                                          //           left: 4.0,
+                                          //           right:
+                                          //           4.0),
+                                          //       child: AppText(
+                                          //         localStorageService
+                                          //             .assetList[
+                                          //         index]
+                                          //             .network!,
+                                          //         fontSize: 10,
+                                          //         overflow:
+                                          //         TextOverflow
+                                          //             .ellipsis,
+                                          //         // Ensure truncation here too
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          // ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          result.containsKey(
+                                              "${localStorageService.assetList[index].coinSymbol!}USDT")
+                                              ? AppText(
                                             "\$${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}",
                                             fontSize: 13,
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight:
+                                            FontWeight
+                                                .w400,
                                             color: Theme.of(
-                                              context,
-                                            ).colorScheme.surfaceBright,
+                                                context)
+                                                .colorScheme
+                                                .surfaceBright,
                                           )
-                                        : AppText(
+                                              : AppText(
                                             localStorageService
-                                                        .assetList[index]
-                                                        .coinType ==
-                                                    '2'
+                                                .assetList[index]
+                                                .coinType ==
+                                                '2'
                                                 ? "Token"
-                                                : "\$1224.65",
+                                                : "Crypto",
                                             fontSize: 13,
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight:
+                                            FontWeight
+                                                .w400,
                                             color: Theme.of(
-                                              context,
-                                            ).colorScheme.surfaceBright,
+                                                context)
+                                                .colorScheme
+                                                .surfaceBright,
                                           ),
-                                    //old code
-                                    // AppText(
-                                    //   isTextVisible
-                                    //       ? (index <
-                                    //                 localStorageService
-                                    //                     .assetBalance1
-                                    //                     .length
-                                    //             ? double.tryParse(
-                                    //                             localStorageService
-                                    //                                 .assetBalance1[index],
-                                    //                           ) !=
-                                    //                           null &&
-                                    //                       double.tryParse(
-                                    //                             localStorageService
-                                    //                                 .assetBalance1[index],
-                                    //                           )! >
-                                    //                           0
-                                    //                   ? double.tryParse(
-                                    //                           localStorageService
-                                    //                               .assetBalance1[index],
-                                    //                         )!
-                                    //                         .toStringAsFixed(6)
-                                    //                         .replaceAll(
-                                    //                           RegExp(
-                                    //                             r"([.]*0+)(?!.*\d)",
-                                    //                           ),
-                                    //                           "",
-                                    //                         ) // Remove trailing zeros
-                                    //                   : "0"
-                                    //             : "0")
-                                    //       : "****",
-                                    //   fontSize: 15,
-                                    //   fontWeight: FontWeight.w400,
-                                    //   color: Theme.of(
-                                    //     context,
-                                    //   ).colorScheme.surfaceBright,
-                                    // ),
-                                    result.containsKey(
-                                          "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                        )
-                                        ? AppText(
-                                            '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                            color:
-                                                double.parse(
-                                                      result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
-                                                          .toString(),
-                                                    ) <
+                                          SizedBox(
+                                            width:
+                                            SizeConfig.width(
+                                                context, 4),
+                                          ),
+                                          result.containsKey(
+                                              "${localStorageService.assetList[index].coinSymbol!}USDT")
+                                              ? Row(
+                                            children: [
+                                              AppText(
+                                                double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()) <
                                                     0
-                                                ? Color(0xFFFD0000)
-                                                : Colors.green,
+                                                    ? ''
+                                                    : '+',
+                                                fontSize:
+                                                12,
+                                                color: double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()) <
+                                                    0
+                                                    ? Color(
+                                                    0xFFFD0000)
+                                                    : Colors
+                                                    .green,
+                                              ),
+                                              AppText(
+                                                '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
+                                                fontSize:
+                                                13,
+                                                fontWeight:
+                                                FontWeight
+                                                    .w400,
+                                                color: double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()) <
+                                                    0
+                                                    ? Color(
+                                                    0xFFFD0000)
+                                                    : Colors
+                                                    .green,
+                                              ),
+                                            ],
                                           )
-                                        : AppText(
-                                            "0.54%",
-                                            color: Colors.green,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                    //old code
-                                    // result.containsKey(
-                                    //       "${localStorageService.assetList[index].coinSymbol!}USDT",
-                                    //     )
-                                    //     ? AppText(
-                                    //         isTextVisible
-                                    //             ? "\$${(num.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()) * num.parse(index < localStorageService.assetBalance1.length ? localStorageService.assetBalance1[index].toString() : "0.0")).toStringAsFixed(CoinListConfig.usdtDecimal)}"
-                                    //             : '****',
-                                    //         fontSize: 12,
-                                    //         fontWeight: FontWeight.w400,
-                                    //         color: Theme.of(
-                                    //           context,
-                                    //         ).colorScheme.surfaceBright,
-                                    //       )
-                                    //     : SizedBox(),
-                                  ],
+                                              : SizedBox(),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.end,
+                                    mainAxisSize:
+                                    MainAxisSize.min,
+                                    // Ensure the column takes minimum space
+                                    children: [
+                                      AppText(
+                                        isTextVisible
+                                            ? (index <
+                                            localStorageService
+                                                .assetBalance1
+                                                .length
+                                            ? double.tryParse(localStorageService.assetBalance1[
+                                        index]) !=
+                                            null &&
+                                            double.tryParse(localStorageService.assetBalance1[
+                                            index])! >
+                                                0
+                                            ? double.tryParse(
+                                            localStorageService.assetBalance1[
+                                            index])!
+                                            .toStringAsFixed(
+                                            6)
+                                            .replaceAll(
+                                            RegExp(
+                                                r"([.]*0+)(?!.*\d)"),
+                                            "") // Remove trailing zeros
+                                            : "0"
+                                            : "0")
+                                            : "****",
+                                        fontSize: 15,
+                                        fontWeight:
+                                        FontWeight.w400,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .surfaceBright,
+                                      ),
+                                      result.containsKey(
+                                          "${localStorageService.assetList[index].coinSymbol!}USDT")
+                                          ? AppText(
+                                        isTextVisible
+                                            ? "\$${(num.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()) * num.parse(index < localStorageService.assetBalance1.length ? localStorageService.assetBalance1[index].toString() : "0.0")).toStringAsFixed(CoinListConfig.usdtDecimal)}"
+                                            : '****',
+                                        fontSize: 12,
+                                        fontWeight:
+                                        FontWeight.w400,
+                                        color: Theme.of(
+                                            context)
+                                            .colorScheme
+                                            .surfaceBright,
+                                      )
+                                          : SizedBox(),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                          );
+                              ));
                         },
                       ),
+
+                      // ListView.builder(
+                      //   itemCount: localStorageService
+                      //       .assetList
+                      //       .length, // Set the number of items to 5
+                      //   physics: const AlwaysScrollableScrollPhysics(),
+                      //   itemBuilder: (BuildContext context, int index) {
+                      //     return Slidable(
+                      //       key: ValueKey(index),
+                      //       endActionPane: ActionPane(
+                      //         motion: ScrollMotion(),
+                      //         extentRatio: 0.2,
+                      //         children: [
+                      //           index > 0
+                      //               ? Builder(
+                      //                   builder: (context) {
+                      //                     return InkWell(
+                      //                       onTap: () async {
+                      //                         setState(() {
+                      //                           localStorageService
+                      //                               .assetBalance1
+                      //                               .removeAt(index);
+                      //                         });
+                      //                         await localStorageService
+                      //                             .removeMapValue(
+                      //                               localStorageService
+                      //                                   .assetList[index],
+                      //                               context,
+                      //                             );
+                      //                         WidgetsBinding.instance
+                      //                             .addPostFrameCallback((_) {
+                      //                               Provider.of<
+                      //                                     LocalStorageService
+                      //                                   >(
+                      //                                     context,
+                      //                                     listen: false,
+                      //                                   )
+                      //                                   .getData();
+                      //                             });
+                      //                         Slidable.of(context)?.close();
+                      //                       },
+                      //                       child: Padding(
+                      //                         padding: const EdgeInsets.only(
+                      //                           bottom: 6.0,
+                      //                         ),
+                      //                         child: Container(
+                      //                           decoration: const BoxDecoration(
+                      //                             borderRadius:
+                      //                                 BorderRadius.only(
+                      //                                   topRight:
+                      //                                       Radius.circular(10),
+                      //                                   bottomRight:
+                      //                                       Radius.circular(10),
+                      //                                 ),
+                      //                             color: Colors.red,
+                      //                           ),
+                      //                           width: SizeConfig.width(
+                      //                             context,
+                      //                             16,
+                      //                           ),
+                      //                           child: Padding(
+                      //                             padding: const EdgeInsets.all(
+                      //                               4.0,
+                      //                             ),
+                      //                             child: Column(
+                      //                               crossAxisAlignment:
+                      //                                   CrossAxisAlignment
+                      //                                       .center,
+                      //                               mainAxisAlignment:
+                      //                                   MainAxisAlignment
+                      //                                       .center,
+                      //                               children: [
+                      //                                 Icon(
+                      //                                   Icons.delete,
+                      //                                   color: Colors.white,
+                      //                                 ),
+                      //                                 AppText(
+                      //                                   "Delete",
+                      //                                   color: Colors.white,
+                      //                                   fontSize: 12,
+                      //                                   fontWeight:
+                      //                                       FontWeight.bold,
+                      //                                 ),
+                      //                               ],
+                      //                             ),
+                      //                           ),
+                      //                         ),
+                      //                       ),
+                      //                     );
+                      //                   },
+                      //                 )
+                      //               : InkWell(
+                      //                   onTap: () async {
+                      //                     if (!await launchUrl(
+                      //                       Uri.parse(
+                      //                         localStorageService
+                      //                             .assetList[index]
+                      //                             .explorerURL!,
+                      //                       ),
+                      //                     )) {
+                      //                       throw Exception(
+                      //                         'Could not launch ',
+                      //                       );
+                      //                     }
+                      //                   },
+                      //                   child: Padding(
+                      //                     padding: const EdgeInsets.only(
+                      //                       bottom: 6.0,
+                      //                     ),
+                      //                     child: Container(
+                      //                       decoration: const BoxDecoration(
+                      //                         borderRadius: BorderRadius.only(
+                      //                           topRight: Radius.circular(10),
+                      //                           bottomRight: Radius.circular(
+                      //                             10,
+                      //                           ),
+                      //                         ),
+                      //                         color: Colors.blue,
+                      //                       ),
+                      //                       width: SizeConfig.width(
+                      //                         context,
+                      //                         16,
+                      //                       ),
+                      //                       child: Padding(
+                      //                         padding: const EdgeInsets.all(
+                      //                           4.0,
+                      //                         ),
+                      //                         child: Column(
+                      //                           crossAxisAlignment:
+                      //                               CrossAxisAlignment.center,
+                      //                           mainAxisAlignment:
+                      //                               MainAxisAlignment.center,
+                      //                           children: [
+                      //                             Icon(
+                      //                               Icons.info,
+                      //                               color: Colors.white,
+                      //                             ),
+                      //                             AppText(
+                      //                               "  Info  ",
+                      //                               color: Colors.white,
+                      //                               fontSize: 12,
+                      //                               fontWeight: FontWeight.bold,
+                      //                             ),
+                      //                           ],
+                      //                         ),
+                      //                       ),
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //         ],
+                      //       ),
+                      //       child: Padding(
+                      //         padding: const EdgeInsets.only(bottom: 5.0),
+                      //         child: ListTile(
+                      //           onTap: () {
+                      //             Navigator.push(
+                      //               context,
+                      //               MaterialPageRoute(
+                      //                 builder: (context) {
+                      //                   return TransactionAction(
+                      //                     coinData: localStorageService
+                      //                         .assetList[index],
+                      //                     balance:
+                      //                         (index <
+                      //                             localStorageService
+                      //                                 .assetBalance1
+                      //                                 .length
+                      //                         ? localStorageService
+                      //                               .assetBalance1[index]
+                      //                         : "0.0"),
+                      //                     userWallet: localStorageService
+                      //                         .activeWalletData!,
+                      //                     usdPrice: double.parse(
+                      //                       result.containsKey(
+                      //                             "${localStorageService.assetList[index].coinSymbol!}USDT",
+                      //                           )
+                      //                           ? result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0]
+                      //                                 .toString()
+                      //                           : "0",
+                      //                     ),
+                      //                   );
+                      //                 },
+                      //               ),
+                      //             );
+                      //           },
+                      //           leading: Stack(
+                      //             alignment: Alignment.bottomRight,
+                      //             children: [
+                      //               Padding(
+                      //                 padding: const EdgeInsets.only(right: 5),
+                      //                 child: CircleAvatar(
+                      //                   radius: 20,
+                      //                   backgroundColor: Color(0xFF202832),
+                      //                   child: ClipRRect(
+                      //                     borderRadius: BorderRadius.circular(
+                      //                       30,
+                      //                     ),
+                      //                     child: Image.network(
+                      //                       localStorageService
+                      //                           .assetList[index]
+                      //                           .imageUrl!,
+                      //                       errorBuilder: (_, obj, trc) {
+                      //                         return AppText(
+                      //                           localStorageService
+                      //                               .assetList[index]
+                      //                               .coinSymbol
+                      //                               .toString()
+                      //                               .characters
+                      //                               .first,
+                      //                           color: Colors.white,
+                      //                           fontWeight: FontWeight.bold,
+                      //                         );
+                      //                       },
+                      //                     ),
+                      //                   ),
+                      //                 ),
+                      //               ),
+                      //               localStorageService
+                      //                           .assetList[index]
+                      //                           .coinType ==
+                      //                       "2"
+                      //                   ? Padding(
+                      //                       padding: const EdgeInsets.only(
+                      //                         left: 5,
+                      //                       ),
+                      //                       child: ClipRRect(
+                      //                         borderRadius:
+                      //                             BorderRadius.circular(30),
+                      //                         child: Image.network(
+                      //                           localStorageService.allAssetList.indexWhere(
+                      //                                     (v) =>
+                      //                                         v.gasPriceSymbol ==
+                      //                                         localStorageService
+                      //                                             .assetList[index]
+                      //                                             .gasPriceSymbol,
+                      //                                   ) ==
+                      //                                   -1
+                      //                               ? ""
+                      //                               : localStorageService
+                      //                                     .allAssetList[localStorageService
+                      //                                         .allAssetList
+                      //                                         .indexWhere(
+                      //                                           (v) =>
+                      //                                               v.gasPriceSymbol ==
+                      //                                               localStorageService
+                      //                                                   .assetList[index]
+                      //                                                   .gasPriceSymbol,
+                      //                                         )]
+                      //                                     .imageUrl!,
+                      //                           errorBuilder: (_, obj, trc) {
+                      //                             return AppText(
+                      //                               localStorageService
+                      //                                   .assetList[index]
+                      //                                   .gasPriceSymbol
+                      //                                   .toString(),
+                      //                               color: Colors.white,
+                      //                               fontWeight: FontWeight.bold,
+                      //                               fontSize: 7,
+                      //                             );
+                      //                           },
+                      //                           height: 15,
+                      //                         ),
+                      //                       ),
+                      //                     )
+                      //                   : SizedBox(),
+                      //             ],
+                      //           ),
+                      //           title: Column(
+                      //             crossAxisAlignment: CrossAxisAlignment.start,
+                      //             children: [
+                      //               Row(
+                      //                 children: [
+                      //                   AppText(
+                      //                     localStorageService
+                      //                         .assetList[index]
+                      //                         .coinName!,
+                      //                     fontSize: 15,
+                      //                     fontWeight: FontWeight.w400,
+                      //                     color: Theme.of(
+                      //                       context,
+                      //                     ).colorScheme.surfaceBright,
+                      //                     overflow: TextOverflow
+                      //                         .ellipsis, // This ensures truncation if needed
+                      //                   ),
+                      //                   SizedBox(width: 10),
+                      //
+                      //                   // Use Flexible instead of Expanded
+                      //                   // Flexible(
+                      //                   //   child: Container(
+                      //                   //     decoration: BoxDecoration(
+                      //                   //       borderRadius: BorderRadius.circular(
+                      //                   //         10,
+                      //                   //       ),
+                      //                   //       color: Colors.black38,
+                      //                   //     ),
+                      //                   //     child: Padding(
+                      //                   //       padding: const EdgeInsets.only(
+                      //                   //         left: 4.0,
+                      //                   //         right: 4.0,
+                      //                   //       ),
+                      //                   //       child: AppText(
+                      //                   //         localStorageService
+                      //                   //             .assetList[index]
+                      //                   //             .network!,
+                      //                   //         fontSize: 10,
+                      //                   //         overflow: TextOverflow.ellipsis,
+                      //                   //         // Ensure truncation here too
+                      //                   //       ),
+                      //                   //     ),
+                      //                   //   ),
+                      //                   // ),
+                      //                 ],
+                      //               ),
+                      //               Row(
+                      //                 children: [
+                      //                   result.containsKey(
+                      //                         "${localStorageService.assetList[index].coinSymbol!}USDT",
+                      //                       )
+                      //                       ? AppText(
+                      //                           "${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)} ${localStorageService.assetList[index].coinSymbol!}",
+                      //                           fontSize: 13,
+                      //                           fontWeight: FontWeight.w400,
+                      //                           color: Colors.white.withOpacity(
+                      //                             0.6,
+                      //                           ),
+                      //                         )
+                      //                       : AppText(
+                      //                           localStorageService
+                      //                                       .assetList[index]
+                      //                                       .coinType ==
+                      //                                   '2'
+                      //                               ? "Token"
+                      //                               : "\$1224.65",
+                      //                           fontSize: 13,
+                      //                           fontWeight: FontWeight.w400,
+                      //                           color: Theme.of(
+                      //                             context,
+                      //                           ).colorScheme.surfaceBright,
+                      //                         ),
+                      //                   SizedBox(
+                      //                     width: SizeConfig.width(context, 4),
+                      //                   ),
+                      //                   //old code
+                      //                   // result.containsKey(
+                      //                   //       "${localStorageService.assetList[index].coinSymbol!}USDT",
+                      //                   //     )
+                      //                   //     ? Row(
+                      //                   //         children: [
+                      //                   //           AppText(
+                      //                   //             double.parse(
+                      //                   //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                      //                   //                           .toString(),
+                      //                   //                     ) <
+                      //                   //                     0
+                      //                   //                 ? ''
+                      //                   //                 : '+',
+                      //                   //             fontSize: 12,
+                      //                   //             color:
+                      //                   //                 double.parse(
+                      //                   //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                      //                   //                           .toString(),
+                      //                   //                     ) <
+                      //                   //                     0
+                      //                   //                 ? Color(0xFFFD0000)
+                      //                   //                 : Colors.green,
+                      //                   //           ),
+                      //                   //           AppText(
+                      //                   //             '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
+                      //                   //             fontSize: 13,
+                      //                   //             fontWeight: FontWeight.w400,
+                      //                   //             color:
+                      //                   //                 double.parse(
+                      //                   //                       result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                      //                   //                           .toString(),
+                      //                   //                     ) <
+                      //                   //                     0
+                      //                   //                 ? Color(0xFFFD0000)
+                      //                   //                 : Colors.green,
+                      //                   //           ),
+                      //                   //         ],
+                      //                   //       )
+                      //                   //     : SizedBox(),
+                      //                 ],
+                      //               ),
+                      //             ],
+                      //           ),
+                      //           trailing: Column(
+                      //             crossAxisAlignment: CrossAxisAlignment.end,
+                      //             mainAxisSize: MainAxisSize.min,
+                      //             // Ensure the column takes minimum space
+                      //             children: [
+                      //               result.containsKey(
+                      //                     "${localStorageService.assetList[index].coinSymbol!}USDT",
+                      //                   )
+                      //                   ? AppText(
+                      //                       "\$${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}",
+                      //                       fontSize: 13,
+                      //                       fontWeight: FontWeight.w400,
+                      //                       color: Theme.of(
+                      //                         context,
+                      //                       ).colorScheme.surfaceBright,
+                      //                     )
+                      //                   : AppText(
+                      //                       localStorageService
+                      //                                   .assetList[index]
+                      //                                   .coinType ==
+                      //                               '2'
+                      //                           ? "Token"
+                      //                           : "\$1224.65",
+                      //                       fontSize: 13,
+                      //                       fontWeight: FontWeight.w400,
+                      //                       color: Theme.of(
+                      //                         context,
+                      //                       ).colorScheme.surfaceBright,
+                      //                     ),
+                      //               //old code
+                      //               // AppText(
+                      //               //   isTextVisible
+                      //               //       ? (index <
+                      //               //                 localStorageService
+                      //               //                     .assetBalance1
+                      //               //                     .length
+                      //               //             ? double.tryParse(
+                      //               //                             localStorageService
+                      //               //                                 .assetBalance1[index],
+                      //               //                           ) !=
+                      //               //                           null &&
+                      //               //                       double.tryParse(
+                      //               //                             localStorageService
+                      //               //                                 .assetBalance1[index],
+                      //               //                           )! >
+                      //               //                           0
+                      //               //                   ? double.tryParse(
+                      //               //                           localStorageService
+                      //               //                               .assetBalance1[index],
+                      //               //                         )!
+                      //               //                         .toStringAsFixed(6)
+                      //               //                         .replaceAll(
+                      //               //                           RegExp(
+                      //               //                             r"([.]*0+)(?!.*\d)",
+                      //               //                           ),
+                      //               //                           "",
+                      //               //                         ) // Remove trailing zeros
+                      //               //                   : "0"
+                      //               //             : "0")
+                      //               //       : "****",
+                      //               //   fontSize: 15,
+                      //               //   fontWeight: FontWeight.w400,
+                      //               //   color: Theme.of(
+                      //               //     context,
+                      //               //   ).colorScheme.surfaceBright,
+                      //               // ),
+                      //               result.containsKey(
+                      //                     "${localStorageService.assetList[index].coinSymbol!}USDT",
+                      //                   )
+                      //                   ? AppText(
+                      //                       '${double.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1].toString()).toStringAsFixed(CoinListConfig.usdtDecimal)}% ',
+                      //                       fontSize: 13,
+                      //                       fontWeight: FontWeight.w400,
+                      //                       color:
+                      //                           double.parse(
+                      //                                 result["${localStorageService.assetList[index].coinSymbol!}USDT"]![1]
+                      //                                     .toString(),
+                      //                               ) <
+                      //                               0
+                      //                           ? Color(0xFFFD0000)
+                      //                           : Colors.green,
+                      //                     )
+                      //                   : AppText(
+                      //                       "0.54%",
+                      //                       color: Colors.green,
+                      //                       fontSize: 13,
+                      //                       fontWeight: FontWeight.w400,
+                      //                     ),
+                      //               //old code
+                      //               // result.containsKey(
+                      //               //       "${localStorageService.assetList[index].coinSymbol!}USDT",
+                      //               //     )
+                      //               //     ? AppText(
+                      //               //         isTextVisible
+                      //               //             ? "\$${(num.parse(result["${localStorageService.assetList[index].coinSymbol!}USDT"]![0].toString()) * num.parse(index < localStorageService.assetBalance1.length ? localStorageService.assetBalance1[index].toString() : "0.0")).toStringAsFixed(CoinListConfig.usdtDecimal)}"
+                      //               //             : '****',
+                      //               //         fontSize: 12,
+                      //               //         fontWeight: FontWeight.w400,
+                      //               //         color: Theme.of(
+                      //               //           context,
+                      //               //         ).colorScheme.surfaceBright,
+                      //               //       )
+                      //               //     : SizedBox(),
+                      //             ],
+                      //           ),
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // ),
                     );
                     // }
                     // return Container();
@@ -1599,7 +2106,297 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
     );
   }
 
+
+  //*************Ntf flow *****************************//
+
+
+
+
+
+  Future<void> fetchNFTs() async {
+
+
+    setState(() => loading1 = true);
+    try {
+      final url =
+          'https://eth-mainnet.alchemyapi.io/v2/$alchemyApiKey/getNFTs?owner=$ownerAddress';
+      print("??????????????????????${url}");
+      final resp = await http.get(Uri.parse(url));
+      if (resp.statusCode != 200) throw Exception('Failed to fetch NFTs');
+
+      final data = json.decode(resp.body);
+      final List<NFT> fetchedNFTs = [];
+
+      for (var item in data['ownedNfts']) {
+        final metadata = item['metadata'] ?? {};
+        final image = metadata['image'] ?? '';
+        final tokenId = item['id']['tokenId'] ?? '';
+        fetchedNFTs.add(
+          NFT(
+            contract: item['contract']['address'] ?? '',
+            tokenId: tokenId,
+            name: metadata['name'] ?? 'Token #$tokenId',
+            description: metadata['description'] ?? '',
+            image: image.startsWith('ipfs://')
+                ? 'https://ipfs.io/ipfs/${image.substring(7)}'
+                : image,
+            rawTokenURI: item['tokenUri']?['gateway'] ?? '',
+          ),
+        );
+      }
+
+      setState(() => nfts = fetchedNFTs);
+    } catch (e) {
+      print('Error fetching NFTs: $e');
+    } finally {
+      setState(() => loading1 = false);
+    }
+  }
+
+  Widget _buildDataImage(String dataUri) {
+    if (dataUri.contains('image/svg+xml')) {
+      final start = dataUri.indexOf('base64,');
+      if (start != -1) {
+        final b64 = dataUri.substring(start + 'base64,'.length);
+        final svgStr = utf8.decode(base64.decode(b64));
+        return SvgPicture.string(svgStr, fit: BoxFit.contain);
+      }
+    }
+    if (dataUri.contains('image/png') ||
+        dataUri.contains('image/jpeg') ||
+        dataUri.contains('image/jpg')) {
+      final start = dataUri.indexOf('base64,');
+      if (start != -1) {
+        final b64 = dataUri.substring(start + 'base64,'.length);
+        final bytes = base64.decode(b64);
+        return Image.memory(bytes, fit: BoxFit.cover);
+      }
+    }
+    return const Center(child: Icon(Icons.broken_image));
+  }
+
+  Future<String> sendNFT({
+    required String privateKey,
+    required String contractAddress,
+    required String toAddress,
+    required BigInt tokenId,
+  }) async
+  {
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final contract = DeployedContract(
+      ContractAbi.fromJson('''
+        [
+          {"constant": false, "inputs": [{"name": "from", "type": "address"}, {"name": "to", "type": "address"}, {"name": "tokenId", "type": "uint256"}], "name": "safeTransferFrom", "outputs": [], "type": "function"}
+        ]
+        ''', 'ERC721'),
+      EthereumAddress.fromHex(contractAddress),
+    );
+    final function = contract.function('safeTransferFrom');
+
+    final tx = Transaction.callContract(
+      contract: contract,
+      function: function,
+      parameters: [
+        EthereumAddress.fromHex(ownerAddress!),
+        EthereumAddress.fromHex(toAddress),
+        tokenId,
+      ],
+    );
+
+    final hash = await web3client.sendTransaction(
+      credentials,
+      tx,
+      chainId: 1,
+      fetchChainIdFromNetworkId: false,
+    );
+    return hash;
+  }
+
+  void _showSendDialog(NFT nft) {
+    final toController = TextEditingController();
+    final pkController = TextEditingController();
+    bool sending = false;
+    String? txHash;
+
+    showDialog(
+      context: context,
+      builder: (context) =>
+          StatefulBuilder(
+            builder: (context, setStateDialog) {
+              return AlertDialog(
+                title: Text('Send ${nft.name}'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: toController,
+                      decoration: const InputDecoration(
+                        labelText: 'Recipient address',
+                      ),
+                    ),
+                    TextField(
+                      controller: pkController,
+                      decoration: const InputDecoration(
+                        labelText: 'Your private key',
+                      ),
+                    ),
+                    if (sending) const CircularProgressIndicator(),
+                    if (txHash != null)
+                      SelectableText(
+                        'Tx hash: $txHash',
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                  ],
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: sending ? null : () => Navigator.pop(context),
+                    child: const Text('Cancel'),
+                  ),
+                  ElevatedButton(
+                    onPressed: sending
+                        ? null
+                        : () async {
+                      final to = toController.text.trim();
+                      final pk = pkController.text.trim();
+                      if (to.isEmpty || pk.isEmpty) return;
+
+                      setStateDialog(() {
+                        sending = true;
+                        txHash = null;
+                      });
+
+                      try {
+                        final hash = await sendNFT(
+                          privateKey: pk.startsWith('0x') ? pk : '0x$pk',
+                          contractAddress: nft.contract,
+                          toAddress: to,
+                          tokenId: BigInt.parse(nft.tokenId),
+                        );
+                        setStateDialog(() {
+                          txHash = hash;
+                        });
+                      } catch (e) {
+                        setStateDialog(() {
+                          txHash = 'Error: $e';
+                        });
+                      } finally {
+                        setStateDialog(() => sending = false);
+                      }
+                    },
+                    child: const Text('Send'),
+                  ),
+                ],
+              );
+            },
+          ),
+    );
+  }
+
+  //*************Ntf flow *****************************//
+
   Widget NFTsTab() {
-    return Expanded(child: Nfts());
+    return loading1
+        ? Align(
+      alignment: Alignment.topCenter,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 50.0),
+        child: AppText('Loading...'),
+      ),
+    )
+        : nfts.isEmpty
+        ? Padding(
+      padding: const EdgeInsets.all(80.0),
+      child: AppText('No NFTs found for this wallet.'),
+    )
+        : GridView.builder(
+      padding: const EdgeInsets.all(8),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 0.78,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+      ),
+      itemCount: nfts.length,
+      itemBuilder: (context, index) {
+        final nft = nfts[index];
+
+        return GestureDetector(
+          onTap: () => _showSendDialog(nft),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              // stronger blur
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.white.withOpacity(0.05),
+                      Colors.white.withOpacity(0.1),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.white.withOpacity(0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      child: nft.image.startsWith('data:')
+                          ? _buildDataImage(nft.image)
+                          : CachedNetworkImage(
+                        imageUrl: nft.image.isNotEmpty
+                            ? nft.image
+                            : 'https://via.placeholder.com/300',
+                        fit: BoxFit.cover,
+                        placeholder: (_, __) =>
+                        const Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                        errorWidget: (_, __, ___) =>
+                        const Center(
+                          child: Icon(Icons.broken_image),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            nft.name,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'ID: ${BigInt.parse(nft.tokenId).toString()}',
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 }

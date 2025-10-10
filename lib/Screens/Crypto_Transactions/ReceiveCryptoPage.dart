@@ -32,10 +32,11 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
   String? Address;
   @override
   void initState() {
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<LocalStorageService>(context, listen: false).getData();
     });
-print("////${widget.coinData.address!}");
+
     super.initState();
   }
 
@@ -72,7 +73,7 @@ print("////${widget.coinData.address!}");
     localStorageService = context.watch<LocalStorageService>();
     walletConnectionRequest = context.watch<WalletConnectionRequest>();
     walletConnectionRequest.initializeContext(context);
-
+    print("////${localStorageService.activeWalletData!.walletAddress}");
     return localStorageService.isLoading
         ? const CircularProgressIndicator(
             color: Color(0xFF30DCF9),

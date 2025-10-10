@@ -141,10 +141,10 @@ packages:
     dependency: "direct overridden"
     description:
       name: blockchain_utils
-      sha256: "104f5212ade36b01a67511b074feed2ece513876d45c8daace277818cdc16873"
+      sha256: edc360f7f2a8978d089a34dd62a5dfad303c79260e5f6207e1709fed80c84334
       url: "https://pub.dev"
     source: hosted
-    version: "4.4.0"
+    version: "5.2.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -1256,6 +1256,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  on_chain:
+    dependency: "direct overridden"
+    description:
+      name: on_chain
+      sha256: "835290a644a9a9367a428c0bab796c04972f71aa9b7119c8857e28caeec9592e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "6.9.0"
   package_config:
     dependency: transitive
     description:
@@ -2221,14 +2229,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.9"
-  xrpl_dart:
-    dependency: "direct main"
-    description:
-      name: xrpl_dart
-      sha256: dfd82f66569634e5a8e4f78c33b7090c00ac20753201e758247dbd9d83cfc604
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.4.0"
   yaml:
     dependency: transitive
     description:

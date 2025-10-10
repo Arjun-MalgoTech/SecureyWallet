@@ -1,6 +1,6 @@
 import 'package:blockchain_utils/blockchain_utils.dart';
-// import 'package:on_chain/solana/src/keypair/private_key.dart';
-// import 'package:on_chain/tron/src/keys/private_key.dart';
+import 'package:on_chain/solana/src/keypair/private_key.dart';
+import 'package:on_chain/tron/src/keys/private_key.dart';
 import 'package:securywallet/Asset_Functions/Address_Generation/btc_generator.dart';
 import 'package:securywallet/Asset_Functions/Address_Generation/doge_generator.dart';
 import 'package:securywallet/Asset_Functions/Address_Generation/ltc_generator.dart';
@@ -36,12 +36,12 @@ class AssetAddressGenerate {
       //   return solanaPrivateKey.publicKey().toAddress().address;
       // // case 'tVET' || 'VET':
       // //   return generateVeChainAddressFromMnemonic([mnemonic]);
-      // case 'TRX' || 'tTRX':
-      //   final tronDefaultPath =
-      //       Bip44.fromSeed(seed, Bip44Coins.tron).deriveDefaultPath;
-      //   final tronPrivateKey =
-      //       TronPrivateKey.fromBytes(tronDefaultPath.privateKey.raw);
-      //   return tronPrivateKey.publicKey().toAddress().toAddress();
+      case 'TRX' || 'tTRX':
+        final tronDefaultPath =
+            Bip44.fromSeed(seed, Bip44Coins.tron).deriveDefaultPath;
+        final tronPrivateKey =
+            TronPrivateKey.fromBytes(tronDefaultPath.privateKey.raw);
+        return tronPrivateKey.publicKey().toAddress().toAddress();
       case 'XRP' || 'tXRP':
         final xrpDefaultPath =
             Bip44.fromSeed(seed, Bip44Coins.ripple).deriveDefaultPath;

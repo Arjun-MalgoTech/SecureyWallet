@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 import 'package:thor_request_dart/connect.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:solana_web3/solana_web3.dart' as sol;
-import 'package:xrpl_dart/xrpl_dart.dart';
+// import 'package:xrpl_dart/xrpl_dart.dart';
 import 'package:solana/src/solana_client.dart';
 import 'package:solana/dto.dart';
 
@@ -518,26 +518,26 @@ class AssetBalanceFunction {
     }
   }
 
-  Future<String> txrpBalance(String address) async {
-    XRPHTTPClient? service;
-    final rpc = await XRPProvider.testNet((httpUri, websocketUri) async {
-      service = XRPHTTPClient(httpUri, http.Client());
-      return service!;
-    });
-
-    /// sync
-    try {
-      var inf = await rpc.request(XRPRequestAccountInfo(account: address));
-
-      // return inf.accountData.balance;
-      return (double.parse(inf.accountData.balance) / 1000000).toString();
-
-      /// catch rpc errors
-    } on RPCError catch (e) {
-      // print(e.toString());
-      return "0.0";
-    }
-  }
+  // Future<String> txrpBalance(String address) async {
+  //   XRPHTTPClient? service;
+  //   final rpc = await XRPProvider.testNet((httpUri, websocketUri) async {
+  //     service = XRPHTTPClient(httpUri, http.Client());
+  //     return service!;
+  //   });
+  //
+  //   /// sync
+  //   try {
+  //     var inf = await rpc.request(XRPRequestAccountInfo(account: address));
+  //
+  //     // return inf.accountData.balance;
+  //     return (double.parse(inf.accountData.balance) / 1000000).toString();
+  //
+  //     /// catch rpc errors
+  //   } on RPCError catch (e) {
+  //     // print(e.toString());
+  //     return "0.0";
+  //   }
+  // }
 
   Future<String> trxTestnetBalance(String address) async {
     final body = jsonEncode({"address": address, "visible": true});

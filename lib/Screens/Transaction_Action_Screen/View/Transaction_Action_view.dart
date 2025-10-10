@@ -727,7 +727,7 @@ class _TransactionActionState extends State<TransactionAction> {
            ],
          ),
        ),
-        AppText("Bitcoin is a decentralized digital currency that allows\npeer-to-peer transactions on a borderless network.\nLaunched as the world's first cryptocurrency, it\nsparked the blockchain revolution and is often\ncalled \"digital gold\" for its fixed supply and\ndecentralized nature.",
+        AppText("${widget.coinData.coinName} is a decentralized digital currency that allows\npeer-to-peer transactions on a borderless network.\nLaunched as the world's first cryptocurrency, it\nsparked the blockchain revolution and is often\ncalled \"digital gold\" for its fixed supply and\ndecentralized nature.",
         fontSize: 14,
           fontWeight: FontWeight.w400,
           color: Color(0XFF858585),

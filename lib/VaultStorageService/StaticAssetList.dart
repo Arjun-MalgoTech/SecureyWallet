@@ -1,22 +1,7 @@
 import 'package:securywallet/Api_Service/Apikey_Service.dart';
 
 List<Map<String, String>> mandatoryCoinList = [
-  {
-    "rpcURL": "",
-    "explorerURL": "https://live.blockcypher.com/btc/",
-    "coinSymbol": "BTC",
-    "coinName": "Bitcoin",
-    "imageUrl":
-        "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1696501400",
-    "balanceFetchAPI": "https://api.blockcypher.com/v1/btc/main/addrs/",
-    "sendAmountAPI": "https://api.blockcypher.com/v1/btc/main/txs/new",
-    "address": "",
-    "coinType": "3",
-    "tokenAddress": "",
-    "tokenDecimal": "",
-    "network": "Bitcoin",
-    "gasPriceSymbol": "BTC",
-  },
+
 
   {
     "rpcURL": "https://binance.llamarpc.com/",
@@ -49,6 +34,23 @@ List<Map<String, String>> mandatoryCoinList = [
     "tokenDecimal": "",
     "network": "Ethereum",
     "gasPriceSymbol": "ETH",
+  },
+  {
+    "rpcURL":
+    "https://polygon-mainnet.infura.io/v3/${apiKeyService.infuraKey}",
+    "explorerURL": "https://polygonscan.com/",
+    "coinSymbol": "POL",
+    "coinName": "Polygon",
+    "imageUrl":
+    "https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png",
+    "balanceFetchAPI": "",
+    "sendAmountAPI": "",
+    "address": "",
+    "coinType": "1",
+    "tokenAddress": "",
+    "tokenDecimal": "",
+    "network": "Polygon",
+    "gasPriceSymbol": "POL",
   },
   {
     "rpcURL":

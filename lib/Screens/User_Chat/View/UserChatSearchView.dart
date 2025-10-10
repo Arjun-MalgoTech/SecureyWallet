@@ -520,7 +520,10 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                       contentPadding: EdgeInsets.symmetric(
                           vertical: 10.0, horizontal: 20.0),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide.none, // No border
+                        borderSide: BorderSide(
+                          color: Theme.of(context).bottomAppBarTheme.color ??
+                              Color(0xFFD4D4D4),
+                        ), // No border
                         borderRadius: BorderRadius.circular(30),
                       ),
                       focusedBorder: OutlineInputBorder(
@@ -584,14 +587,14 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                                 }
                               },
                             ), // Shows clear icon only when there is text
-                      hintText: 'Search by EVM Address or Name  ...',
-                      hintStyle: TextStyle(color: Colors.grey),
+                      hintText: 'Enter Secury user name or address  ...',
+                      hintStyle: TextStyle(color: Colors.grey,fontSize: 14,fontWeight: FontWeight.w400,fontFamily: "BricolageGrotesque"),
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none, // No border
                         borderRadius: BorderRadius.circular(30),
                       ),
-                      fillColor: Theme.of(context).bottomAppBarTheme.color ??
-                          Color(0xFFD4D4D4),
+                      fillColor:
+                          Color(0xFF0a0b11),
                       filled: true, // Fill the TextField background with color
                     ),
                     style: TextStyle(
@@ -604,9 +607,7 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                   ),
                 ),
               ),
-              SizedBox(
-                height: SizeConfig.height(context, 2),
-              ),
+
               _searchController.text.isNotEmpty
                   ? SizedBox()
                   : SizedBox(
@@ -647,18 +648,28 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                                             grpSnapshot.data!, snap.data!);
 
                                         return recentChats.isEmpty
-                                            ? Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: SizeConfig.height(
-                                                        context, 20)),
-                                                child: AppText(
-                                                  "Start chatting with your friends and \nstay connected!",
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                  textAlign: TextAlign.center,
-                                                  color: Colors.grey.shade700,
-                                                ),
-                                              )
+                                            ? Column(
+                                              children: [
+                                                SizedBox(height:MediaQuery.of(context).size.height*0.06),
+                                                Image.asset("assets/Images/emptychat.png"),
+                                                AppText("Start Your First Crypto Chat!",
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 20,color: Colors.white,),
+                                                SizedBox(height: 10,),
+                                                AppText("Easily connect by searching a Secury",color: Color(0XFFB4B1B2),
+                                                fontSize: 13,fontWeight: FontWeight.w400,),
+                                                AppText("username or starting a chat with any wallet",color: Color(0XFFB4B1B2),
+                                                  fontSize: 13,fontWeight: FontWeight.w400,),
+                                                AppText("address, all in one place.",color: Color(0XFFB4B1B2),
+                                                  fontSize: 13,fontWeight: FontWeight.w400,),
+                                                SizedBox(height: 20,),
+                                                AppText("Scan QR Code",
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 17,color: Colors.white,),
+
+                                              ],
+
+                                            )
                                             : ListView.builder(
                                                 itemCount: recentChats.length,
                                                 padding: EdgeInsets.only(

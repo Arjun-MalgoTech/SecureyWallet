@@ -65,8 +65,8 @@ class AssetBalance {
           case "XRP":
             futures.add(assetBalanceFunction.xrpBalance(coin.address!));
             break;
-          case "tXRP":
-            futures.add(assetBalanceFunction.txrpBalance(coin.address!));
+          // case "tXRP":
+          //   futures.add(assetBalanceFunction.txrpBalance(coin.address!));
             break;
           case "tTRX":
             futures.add(assetBalanceFunction.trxTestnetBalance(coin.address!));

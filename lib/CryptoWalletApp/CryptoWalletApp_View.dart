@@ -92,25 +92,26 @@ class _CryptoWalletAppState extends State<CryptoWalletApp> {
   ThemeController themeChangeProvider = ThemeController();
 
   @override
+
   Widget build(BuildContext context) {
-    themeChangeProvider = context.watch<ThemeController>();
-
-    return Consumer<ThemeController>(
-      builder: (context, ThemeController, child) {
-        return GetMaterialApp(
-          title: 'SECURY WALLET',
-          debugShowCheckedModeBanner: false,
-          theme: themeChangeProvider.isDarkMode
-              ? Apptheme.darkThemeData
-              : Apptheme.lightThemeData,
-
-          themeMode: themeChangeProvider.isDarkMode
-              ? ThemeMode.dark
-              : ThemeMode.light,
-          // Use the theme provided by the provider
-          home: LaunchScreen(),
-        );
-      },
+    return ChangeNotifierProvider(
+      create: (_) => ThemeController(),
+      child: Consumer<ThemeController>(
+        builder: (context, themeController, child) {
+          return GetMaterialApp(
+            title: 'SECURY WALLET',
+            debugShowCheckedModeBanner: false,
+            theme: themeController.isDarkMode
+                ? Apptheme.darkThemeData
+                : Apptheme.lightThemeData,
+            themeMode: themeController.isDarkMode
+                ? ThemeMode.dark
+                : ThemeMode.light,
+            home: LaunchScreen(),
+          );
+        },
+      ),
     );
   }
+
 }

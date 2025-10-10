@@ -94,19 +94,19 @@ class TransactionProcessor {
             userWallet: userWallet,
           );
           break;
-        // case 'tTRX':
-        //   await TrxTransaction().sendTestnet(context,
-        //       coinData: coinData,
-        //       enterAmount: enterAmount,
-        //       toAddress: toAddress,
-        //       userWallet: userWallet);
-        //   break;
-        // case 'TRX':
-        //   await TrxTransaction().sendMainnet(context,
-        //       coinData: coinData,
-        //       enterAmount: enterAmount,
-        //       toAddress: toAddress,
-        //       userWallet: userWallet);
+        case 'tTRX':
+          await TrxTransaction().sendTestnet(context,
+              coinData: coinData,
+              enterAmount: enterAmount,
+              toAddress: toAddress,
+              userWallet: userWallet);
+          break;
+        case 'TRX':
+          await TrxTransaction().sendMainnet(context,
+              coinData: coinData,
+              enterAmount: enterAmount,
+              toAddress: toAddress,
+              userWallet: userWallet);
         //   break;
         // case 'tSOL':
         //   await SolTransaction().sendTestnet(context,
@@ -122,14 +122,14 @@ class TransactionProcessor {
         //       toAddress: toAddress,
         //       userWallet: userWallet);
         //   break;
-        case 'XRP' || 'tXRP':
-          await XrpTransaction().send(
-            context,
-            coinData: coinData,
-            enterAmount: enterAmount,
-            toAddress: toAddress,
-            userWallet: userWallet,
-          );
+        // case 'XRP' || 'tXRP':
+        //   await XrpTransaction().send(
+        //     context,
+        //     coinData: coinData,
+        //     enterAmount: enterAmount,
+        //     toAddress: toAddress,
+        //     userWallet: userWallet,
+        //   );
           break;
         default:
           await EvmTransaction().send(

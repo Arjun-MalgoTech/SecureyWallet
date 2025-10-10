@@ -767,7 +767,7 @@ class _NftsState extends State<Nfts> {
       'https://mainnet.infura.io/v3/${apiKeyService
       .infuraKey}'; // for sending tx
   List<NFT> nfts = [];
-  bool loading = true;
+  bool loading1 = true;
 
   late Web3Client web3client;
 
@@ -779,7 +779,7 @@ class _NftsState extends State<Nfts> {
   }
 
   Future<void> fetchNFTs() async {
-    setState(() => loading = true);
+    setState(() => loading1 = true);
     try {
       final url =
           'https://eth-mainnet.alchemyapi.io/v2/$alchemyApiKey/getNFTs?owner=$ownerAddress';
@@ -811,7 +811,7 @@ class _NftsState extends State<Nfts> {
     } catch (e) {
       print('Error fetching NFTs: $e');
     } finally {
-      setState(() => loading = false);
+      setState(() => loading1 = false);
     }
   }
 
@@ -842,7 +842,8 @@ class _NftsState extends State<Nfts> {
     required String contractAddress,
     required String toAddress,
     required BigInt tokenId,
-  }) async {
+  }) async
+  {
     final credentials = EthPrivateKey.fromHex(privateKey);
     final contract = DeployedContract(
       ContractAbi.fromJson('''
@@ -957,7 +958,7 @@ class _NftsState extends State<Nfts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: loading
+      body: loading1
           ? Align(
         alignment: Alignment.topCenter,
         child: Padding(
