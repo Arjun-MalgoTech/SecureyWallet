@@ -62,7 +62,6 @@ class AppDrawer extends StatelessWidget {
                     'Settings',
                     color: Theme.of(context).colorScheme.surfaceBright,
                     fontSize: 16,
-                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.w500,
                   ),
                 ],

@@ -68,7 +68,7 @@ class _AddMemberToGroupState extends State<AddMemberToGroup> {
         centerTitle: true,
         title: AppText(
           "Add Member",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),

@@ -41,7 +41,6 @@ class CustomIconWidget extends StatelessWidget {
                 ),
                 AppText(
                   text,
-                  fontFamily: 'LexendDeca',
                   fontWeight: FontWeight.w400,
                   color: Theme.of(context).colorScheme.surfaceBright,
                   fontSize: fontSize ?? 16,

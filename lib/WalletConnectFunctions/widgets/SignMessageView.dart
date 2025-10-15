@@ -45,7 +45,7 @@ class _SignMessageViewState extends State<SignMessageView> {
       appBar: AppBar(
         title: AppText(
           widget.title,
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),

@@ -247,7 +247,7 @@ class _PreHomeState extends State<PreHome> {
                         SizedBox(height: SizeConfig.height(context, 0.5)),
                         AppText(
                           "Send",
-                          fontFamily: 'LexendDeca',
+
                           fontWeight: FontWeight.w400,
                           color: Theme.of(context).colorScheme.surfaceBright,
                           fontSize: 14,
@@ -263,7 +263,7 @@ class _PreHomeState extends State<PreHome> {
                           SizedBox(height: SizeConfig.height(context, 0.5)),
                           AppText(
                             "Receive",
-                            fontFamily: 'LexendDeca',
+
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.surfaceBright,
                             fontSize: 14,
@@ -279,7 +279,7 @@ class _PreHomeState extends State<PreHome> {
                           SizedBox(height: SizeConfig.height(context, 0.5)),
                           AppText(
                             "Fund",
-                            fontFamily: 'LexendDeca',
+
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.surfaceBright,
                             fontSize: 14,
@@ -295,7 +295,7 @@ class _PreHomeState extends State<PreHome> {
                           SizedBox(height: SizeConfig.height(context, 0.5)),
                           AppText(
                             "Sell",
-                            fontFamily: 'LexendDeca',
+
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).colorScheme.surfaceBright,
                             fontSize: 14,

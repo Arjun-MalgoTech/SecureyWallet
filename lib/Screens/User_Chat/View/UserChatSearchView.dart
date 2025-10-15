@@ -334,7 +334,7 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
         automaticallyImplyLeading: false,
         title: AppText(
           "Chat",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),
@@ -795,8 +795,7 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                                                                             .toString()
                                                                             .characters
                                                                             .first,
-                                                                        fontFamily:
-                                                                            'LexendDeca',
+
                                                                         fontWeight:
                                                                             FontWeight.w600,
                                                                         fontSize:
@@ -828,8 +827,7 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                                                               title: AppText(
                                                                 item[
                                                                     'userName'],
-                                                                fontFamily:
-                                                                    'LexendDeca',
+
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w300,
@@ -839,8 +837,7 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                                                               AppText(
                                                                 item[
                                                                     'walletAddress']!,
-                                                                fontFamily:
-                                                                    'LexendDeca',
+
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w300,
@@ -873,8 +870,7 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                                                                           myProfile == null || myProfile!['unreadCount'] == null
                                                                               ? ""
                                                                               : (myProfile!['unreadCount'][item['walletAddress']!] ?? item['userName'].toString().characters.first).toString(),
-                                                                          fontFamily:
-                                                                              'LexendDeca',
+
                                                                           fontWeight:
                                                                               FontWeight.bold,
                                                                           color:
@@ -942,26 +938,26 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
                                         .toString()
                                         .characters
                                         .first,
-                                    fontFamily: 'LexendDeca',
+
                                     fontWeight: FontWeight.w600,
                                     fontSize: 15,
                                   ),
                                 ),
                                 title: AppText(
                                   item['userName'],
-                                  fontFamily: 'LexendDeca',
+
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
                                 ),
                                 subtitle: AppText(
                                   item['walletAddress']!,
-                                  fontFamily: 'LexendDeca',
+
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
                                 ), // Using "name" for subtitle
                                 trailing: AppText(
                                   item['userName'].toString().characters.first,
-                                  fontFamily: 'LexendDeca',
+
                                   fontWeight: FontWeight.w300,
                                   fontSize: 15,
                                 ), // Using "name" for trailing
@@ -1036,13 +1032,13 @@ class _UserChatState extends State<UserChat> with WidgetsBindingObserver {
           ),
           title: AppText(
             item['groupName'],
-            fontFamily: 'LexendDeca',
+
             fontWeight: FontWeight.w300,
             fontSize: 15,
           ),
           subtitle: AppText(
             "Group Chat",
-            fontFamily: 'LexendDeca',
+
             fontWeight: FontWeight.w300,
             fontSize: 15,
           ),

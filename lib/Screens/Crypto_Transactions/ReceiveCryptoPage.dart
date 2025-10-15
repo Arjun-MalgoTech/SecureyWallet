@@ -95,7 +95,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                   ),
                   title: AppText(
                     "Receive",
-                    fontFamily: 'LexendDeca',
+
                     fontWeight: FontWeight.w600,
                     fontSize: 18,
                   ),
@@ -125,7 +125,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                     ),
                     AppText(
                       "${widget.coinData.coinSymbol}",
-                      fontFamily: 'LexendDeca',
+
                       fontWeight: FontWeight.w500,
                       color: Theme.of(context).colorScheme.surfaceBright,
                       fontSize: 14,
@@ -166,7 +166,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                                 child: AppText(
                                   "Only Send On ${widget.coinData.coinSymbol} Network Assets "
                                   "to this \naddress. Other assets will be lost forever",
-                                  fontFamily: 'LexendDeca',
+
                                   fontWeight: FontWeight.bold,
                                   color: const Color(0xFFFCB500),
                                   fontSize: 10,
@@ -243,7 +243,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                                                   .activeWalletData!
                                                   .walletAddress
                                               : widget.coinData.address!,
-                                  fontFamily: 'LexendDeca',
+
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context)
                                       .colorScheme
@@ -268,7 +268,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                                 children: [
                                   AppText(
                                     "Set Amount is $_qrText ${widget.coinData.coinSymbol}",
-                                    fontFamily: 'LexendDeca',
+
                                     fontWeight: FontWeight.w500,
                                     color: Theme.of(context)
                                         .colorScheme
@@ -331,7 +331,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                               ),
                               AppText(
                                 "Copy",
-                                fontFamily: 'LexendDeca',
+
                                 fontWeight: FontWeight.w500,
                                 color:
                                     Theme.of(context).colorScheme.surfaceBright,
@@ -442,7 +442,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                               ),
                               AppText(
                                 "Set Amount",
-                                fontFamily: 'LexendDeca',
+
                                 fontWeight: FontWeight.w500,
                                 color:
                                     Theme.of(context).colorScheme.surfaceBright,
@@ -478,7 +478,7 @@ class _ReceiveCryptoState extends State<ReceiveCrypto> {
                               ),
                               AppText(
                                 "Share",
-                                fontFamily: 'LexendDeca',
+
                                 fontWeight: FontWeight.w500,
                                 color:
                                     Theme.of(context).colorScheme.surfaceBright,

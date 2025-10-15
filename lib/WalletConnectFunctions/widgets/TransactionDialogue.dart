@@ -63,7 +63,7 @@ class _TransactionDialogState extends State<TransactionDialog> {
         appBar: AppBar(
           title: AppText(
             widget.title,
-            fontFamily: 'LexendDeca',
+
             fontWeight: FontWeight.w600,
             fontSize: 18,
           ),

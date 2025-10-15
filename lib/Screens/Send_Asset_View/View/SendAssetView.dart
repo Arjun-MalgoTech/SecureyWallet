@@ -120,7 +120,7 @@ class _SendAssetsPageState extends State<SendAssetsPage> {
         ),
         title: AppText(
           "Send",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),

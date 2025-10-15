@@ -246,7 +246,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                 children: [
                   AppText(
                     widget.item['groupName'],
-                    fontFamily: 'LexendDeca',
+
                     fontWeight: FontWeight.w800,
                     fontSize: 15,
                   ),
@@ -254,7 +254,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                     width: 150,
                     child: AppText(
                       "Group Chat",
-                      fontFamily: 'LexendDeca',
+
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
                       overflow: TextOverflow.ellipsis,
@@ -420,8 +420,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                                                         AppText(
                                                           "Messages is end-to-end encrypted. No one outside of this chat, not even NV WALLET,"
                                                           " can read or listen to them.",
-                                                          fontFamily:
-                                                              'LexendDeca',
+
                                                           overflow:
                                                               TextOverflow.clip,
                                                           textAlign:

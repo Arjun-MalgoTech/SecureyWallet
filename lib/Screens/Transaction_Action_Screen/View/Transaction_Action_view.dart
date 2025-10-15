@@ -766,7 +766,7 @@ class _TransactionActionState extends State<TransactionAction> {
             SizedBox(height: SizeConfig.height(context, 0.5)),
             AppText(
               "Send",
-              fontFamily: 'LexendDeca',
+
               fontWeight: FontWeight.w400,
               color: Theme.of(context).colorScheme.surfaceBright,
               fontSize: 14,
@@ -792,7 +792,7 @@ class _TransactionActionState extends State<TransactionAction> {
               SizedBox(height: SizeConfig.height(context, 0.5)),
               AppText(
                 "Receive",
-                fontFamily: 'LexendDeca',
+
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.surfaceBright,
                 fontSize: 14,
@@ -812,7 +812,7 @@ class _TransactionActionState extends State<TransactionAction> {
               SizedBox(height: SizeConfig.height(context, 0.5)),
               AppText(
                 "Swap",
-                fontFamily: 'LexendDeca',
+
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.surfaceBright,
                 fontSize: 14,
@@ -831,7 +831,7 @@ class _TransactionActionState extends State<TransactionAction> {
               SizedBox(height: SizeConfig.height(context, 0.5)),
               AppText(
                 "Buy",
-                fontFamily: 'LexendDeca',
+
                 fontWeight: FontWeight.w400,
                 color: Theme.of(context).colorScheme.surfaceBright,
                 fontSize: 14,

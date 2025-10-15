@@ -146,7 +146,7 @@ class _ConfirmTransactionPageState extends State<ConfirmTransactionPage> {
         centerTitle: true,
         title: AppText(
           "Confirm Send",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),

@@ -55,7 +55,7 @@ class _RemoveMemberToGroupState extends State<RemoveMemberToGroup> {
         centerTitle: true,
         title: AppText(
           "Remove Member",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),

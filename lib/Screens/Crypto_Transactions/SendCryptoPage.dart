@@ -309,7 +309,7 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
         centerTitle: true,
         title: AppText(
           "Send ${widget.assetData.coinSymbol}",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),
@@ -383,7 +383,7 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
                                   child: AppText(
                                     "Paste",
                                     fontSize: 14,
-                                    fontFamily: 'LexendDeca',
+
                                     color: const Color(0xFFaf77f8),
                                   ),
                                 ),
@@ -866,7 +866,7 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
                               child: AppText(
                                 "Max",
                                 fontSize: 14,
-                                fontFamily: 'LexendDeca',
+
                                 color: Color(0xFFB982FF),
                               ),
                             ),
@@ -895,7 +895,7 @@ class _SendCryptoPageState extends State<SendCryptoPage> {
                         ),
                       ),
                       style: TextStyle(
-                        fontFamily: 'LexendDeca',
+
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context).colorScheme.surfaceBright,
                         fontSize: 18,

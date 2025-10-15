@@ -512,13 +512,13 @@ class _ImportAssetTabState extends State<ImportAssetTab>
                             children: [
                               AppText(
                                 "Only use custom networks you trust to protect your",
-                                fontFamily: 'LexendDeca',
+
                                 color: Color(0xFFFCB500),
                                 fontSize: 11,
                               ),
                               AppText(
                                 "data and prevent manipulation of blockchain info.",
-                                fontFamily: 'LexendDeca',
+
                                 color: Color(0xFFFCB500),
                                 fontSize: 11,
                               ),
@@ -1135,7 +1135,7 @@ class _ImportAssetTabState extends State<ImportAssetTab>
                                     child: AppText(
                                       "Paste",
                                       fontSize: 14,
-                                      fontFamily: 'LexendDeca',
+
                                       color: const Color(0xFFB982FF),
                                     ),
                                   ),

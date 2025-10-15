@@ -243,7 +243,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                 children: [
                   AppText(
                     widget.item['userName'],
-                    fontFamily: 'LexendDeca',
+
                     fontWeight: FontWeight.w800,
                     fontSize: 15,
                   ),
@@ -252,7 +252,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                     child: AppText(
                       CommonCalculationFunctions.maskWalletAddress(
                           widget.item['walletAddress']),
-                      fontFamily: 'LexendDeca',
+
                       fontWeight: FontWeight.w800,
                       fontSize: 15,
                       overflow: TextOverflow.ellipsis,
@@ -502,8 +502,7 @@ class _ChatScreenViewState extends State<ChatScreenView> {
                                                         AppText(
                                                           "Messages is end-to-end encrypted. No one outside of this chat, not even NVXO WALLET,"
                                                           " can read or listen to them.",
-                                                          fontFamily:
-                                                              'LexendDeca',
+
                                                           overflow:
                                                               TextOverflow.clip,
                                                           textAlign:

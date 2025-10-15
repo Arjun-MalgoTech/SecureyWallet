@@ -45,7 +45,7 @@ class _CreateGroupPageState extends State<CreateGroupPage> {
         centerTitle: true,
         title: AppText(
           "Create Group",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),

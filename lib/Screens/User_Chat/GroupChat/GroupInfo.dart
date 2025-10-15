@@ -48,7 +48,7 @@ class _GroupInfoState extends State<GroupInfo> {
         centerTitle: true,
         title: AppText(
           "Group Info",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),

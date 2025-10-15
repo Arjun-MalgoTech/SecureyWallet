@@ -55,7 +55,7 @@ class _SessionRequestViewState extends State<SessionRequestView> {
           centerTitle: true,
           title: AppText(
             "Connect DApp",
-            fontFamily: 'LexendDeca',
+
             fontWeight: FontWeight.w600,
             fontSize: 18,
           ),

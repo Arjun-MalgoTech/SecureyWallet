@@ -76,7 +76,7 @@ class _ReceiveAssetPageState extends State<ReceiveAssetPage> {
         ),
         title: AppText(
           "Receive",
-          fontFamily: 'LexendDeca',
+
           fontWeight: FontWeight.w600,
           fontSize: 18,
         ),
