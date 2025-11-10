@@ -23,11 +23,11 @@ class _OnboardState extends State<Onboard> {
         children: [
           /// Background image
           Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.bottomRight,
             child: Image.asset(
               "assets/Images/back.png",
               fit: BoxFit.cover,
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width*0.8,
             ),
           ),
 
@@ -36,13 +36,14 @@ class _OnboardState extends State<Onboard> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                SizedBox(height: SizeConfig.height(context, 13)),
-                Row(children: [Image.asset("assets/Images/secury.png")]),
+                SizedBox(height: SizeConfig.height(context, 12)),
+                Row(children: [Image.asset("assets/Images/securylogo1.png",)]),
 
-                SizedBox(height: SizeConfig.height(context, 3)),
+
 
                 Row(
                   children: [
+                    SizedBox(width: 25,),
                     AppText(
                       "Welcome to \nSecury Wallet!",
                       fontWeight: FontWeight.w600,
@@ -53,7 +54,7 @@ class _OnboardState extends State<Onboard> {
 
                 SizedBox(height: SizeConfig.height(context, 2)),
 
-                Row(
+                Row(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppText(
                       "By Tapping “Get Started” You Agree And Consent To Our",
@@ -63,7 +64,7 @@ class _OnboardState extends State<Onboard> {
                   ],
                 ),
                 SizedBox(height: SizeConfig.height(context, 0.2)),
-                Row(
+                Row(mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     GestureDetector(
                       onTap: () {},
@@ -87,7 +88,7 @@ class _OnboardState extends State<Onboard> {
                   ],
                 ),
 
-                Expanded(child: Spacer()),
+                Spacer(),
 
                 Column(
                   children: [

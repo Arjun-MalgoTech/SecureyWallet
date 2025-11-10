@@ -65,40 +65,51 @@ class _ConnectExistingWalletState extends State<ConnectExistingWallet> {
                     width: 0.5,
                   ),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Row( mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Image.asset(
-                      "assets/Images/secury.png",
-                      height: MediaQuery.of(context).size.height * 0.06,
-                    ),
-                    AppText(
-                      "Multi-coin wallet",
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(
-                          colors: [Color(0XFF8b38f5), Color(0XFF6b9dff)],
+                    Row(
+
+                      children: [
+                        Image.asset(
+                          "assets/Images/secury.png",
+                          height: MediaQuery.of(context).size.height * 0.06,
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: AppText(
-                          "Recommended",
-                          color: Colors.black,
-                          fontSize: 13,
-                          fontWeight: FontWeight.w500,
+                        SizedBox(width: 10,),
+                        AppText(
+                          "Multi-coin wallet",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                      ),
+
+                      ],
                     ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      color: Colors.white,
-                      size: 16,
-                    ),
+                    Row(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            gradient: LinearGradient(
+                              colors: [Color(0XFF8b38f5), Color(0XFF6b9dff)],
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: AppText(
+                              "Recommended",
+                              color: Colors.black,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),

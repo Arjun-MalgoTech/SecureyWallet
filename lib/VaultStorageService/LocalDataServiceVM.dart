@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:securywallet/Api_Service/Apikey_Service.dart';
 import 'package:securywallet/Asset_Functions/Asset_Balance/AssetBalance.dart';
 import 'package:securywallet/Crypto_Utils/AppToastMsg/AppToast.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
@@ -10,6 +11,8 @@ import 'package:securywallet/UserWalletData/UserWalletData.dart';
 import 'package:securywallet/VaultStorageService/Coin_List_Config.dart';
 import 'package:securywallet/VaultStorageService/StaticAssetList.dart';
 import 'package:securywallet/VaultStorageService/VaultStorageService.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class LocalStorageService with ChangeNotifier {
   dynamic userBalance = 0.0;
@@ -95,6 +98,7 @@ class LocalStorageService with ChangeNotifier {
       assetList = mandatoryAssets(coins);
       creatingNewWallet =
           false; // Reset the flag after ensuring mandatory coins
+
     } else {
       if (coins.isNotEmpty && coins[0].rpcURL == "https://nvxscan.com/") {
         coins.removeAt(0);
@@ -127,6 +131,59 @@ class LocalStorageService with ChangeNotifier {
   }
 
   List<String> assetBalance1 = [];
+
+
+
+  // Future<void> fetchAndStoreTrendingTokens(String network) async {
+  //   try {
+  //     final response = await http.get(
+  //       Uri.parse("https://api.coingecko.com/api/v3/search/trending"),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       final data = jsonDecode(response.body);
+  //       final List<dynamic> coins = data['coins'];
+  //
+  //       List<AssetModel> trendingAssets = coins.map((c) {
+  //         final token = c['item'];
+  //         // Map network selection if needed
+  //         final rpcURLs = {
+  //           "ETH": "https://mainnet.infura.io/v3/${apiKeyService.infuraKey}",
+  //           "BNB": "https://bsc-dataseed.binance.org",
+  //           "SOL": "https://api.mainnet-beta.solana.com",
+  //           "TRX": "https://api.trongrid.io",
+  //         };
+  //
+  //         return AssetModel(
+  //           coinName: token['name'] ?? '',
+  //           coinSymbol: token['symbol']?.toUpperCase() ?? '',
+  //           imageUrl: token['thumb'] ??
+  //               "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
+  //           tokenAddress: "",
+  //           network: network,
+  //           coinType: "2", // Treat as token type
+  //           rpcURL: rpcURLs[network] ?? rpcURLs["BNB"]!,
+  //           gasPriceSymbol: network,
+  //         );
+  //       }).toList();
+  //
+  //       // Merge trending tokens with existing assetList without duplicates
+  //       for (var asset in trendingAssets) {
+  //         if (!assetList.any(
+  //                 (e) => e.coinSymbol == asset.coinSymbol && e.network == asset.network)) {
+  //           assetList.add(asset);
+  //         }
+  //       }
+  //
+  //       // Save updated list to Hive
+  //       await storeAssetDataList(assetList.map((e) => e.toJson()).toList());
+  //       notifyListeners();
+  //     }
+  //   } catch (e) {
+  //     print("Error fetching trending tokens: $e");
+  //   }
+  // }
+
 
   Future<void> fetchCoinBalance() async {
     var data = await assetBalance.fetchBalances(assetList, activeWalletData!);

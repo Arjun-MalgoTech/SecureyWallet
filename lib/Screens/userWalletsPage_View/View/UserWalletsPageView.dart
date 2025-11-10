@@ -135,12 +135,9 @@ class _UserWalletPageState extends State<UserWalletPage> {
                                           alignment: Alignment.bottomRight,
                                           children: [
                                             CircleAvatar(
-                                              backgroundColor: Colors.white,
+                                              backgroundColor: Colors.black,
                                               radius: 20,
-                                              child: Icon(
-                                                Icons.account_balance_wallet,
-                                                color: Colors.deepPurple,
-                                              ),
+                                              child: Image.asset('assets/Images/secury.png'),
                                             ),
                                             localStorageService
                                                         .activeWalletData!
@@ -149,8 +146,8 @@ class _UserWalletPageState extends State<UserWalletPage> {
                                                         .walletListData[index]
                                                         .walletAddress
                                                 ? Container(
-                                                    height: 15,
-                                                    width: 15,
+                                                    height: 13,
+                                                    width: 13,
                                                     decoration:
                                                         const BoxDecoration(
                                                           color: Colors.green,

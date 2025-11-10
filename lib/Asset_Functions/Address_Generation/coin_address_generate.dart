@@ -28,12 +28,12 @@ class AssetAddressGenerate {
       case "DOGE":
         return generateMainnetAddressFromMnemonic(mnemonic);
 
-      // case 'SOL' || 'tSOL':
-      //   final solanaDefaultPath =
-      //       Bip44.fromSeed(seed, Bip44Coins.solana).deriveDefaultPath;
-      //   final solanaPrivateKey =
-      //       SolanaPrivateKey.fromSeed(solanaDefaultPath.privateKey.raw);
-      //   return solanaPrivateKey.publicKey().toAddress().address;
+      case 'SOL' || 'tSOL':
+        final solanaDefaultPath =
+            Bip44.fromSeed(seed, Bip44Coins.solana).deriveDefaultPath;
+        final solanaPrivateKey =
+            SolanaPrivateKey.fromSeed(solanaDefaultPath.privateKey.raw);
+        return solanaPrivateKey.publicKey().toAddress().address;
       // // case 'tVET' || 'VET':
       // //   return generateVeChainAddressFromMnemonic([mnemonic]);
       case 'TRX' || 'tTRX':

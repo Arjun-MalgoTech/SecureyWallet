@@ -33,23 +33,32 @@ class _SecureBackup2State extends State<SecureBackup2> {
           const SizedBox(height: 2),
           _buildTitleSection(),
           const SizedBox(height: 12),
-          _buildCheckbox(
-            value: checkbox1,
-            onChanged: (val) => setState(() => checkbox1 = val),
-            text: "Secury WALLET never keeps a copy of your\nsecret phrase.",
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _buildCheckbox(
+              value: checkbox1,
+              onChanged: (val) => setState(() => checkbox1 = val),
+              text: "Secury WALLET never keeps a copy of your\nsecret phrase.",
+            ),
           ),
           gradientDivider(),
-          _buildCheckbox(
-            value: checkbox2,
-            onChanged: (val) => setState(() => checkbox2 = val),
-            text:
-                "For security reasons, do not save your secret\nphrase in plain text, such as in screenshots, \ntext files, or emails.",
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _buildCheckbox(
+              value: checkbox2,
+              onChanged: (val) => setState(() => checkbox2 = val),
+              text:
+                  "For security reasons, do not save your secret\nphrase in plain text, such as in screenshots, \ntext files, or emails.",
+            ),
           ),
           gradientDivider(),
-          _buildCheckbox(
-            value: checkbox3,
-            onChanged: (val) => setState(() => checkbox3 = val),
-            text: "Note down your secret phrase and store it\nsafely offline!",
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: _buildCheckbox(
+              value: checkbox3,
+              onChanged: (val) => setState(() => checkbox3 = val),
+              text: "Note down your secret phrase and store it\nsafely offline!",
+            ),
           ),
           Spacer(),
           _buildContinueButton(context),

@@ -1,137 +1,147 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:securywallet/Api_Service/Apikey_Service.dart';
-import 'package:securywallet/Api_Service/AssetTransactionApi.dart';
 import 'package:securywallet/Asset_Functions/Address_Generation/coin_address_generate.dart';
+import 'package:securywallet/Asset_Functions/Asset_Balance/AssetBalanceFunction.dart';
 import 'package:securywallet/Reusable_Widgets/AppText_Theme/AppText_Theme.dart';
 import 'package:securywallet/Screens/Transaction_Action_Screen/View/Transaction_Action_view.dart';
 import 'package:securywallet/VaultStorageService/LocalDataServiceVM.dart';
-import 'package:securywallet/Reusable_Widgets/Gradient_App_Text/Gradient_AppText.dart';
-import 'package:securywallet/Crypto_Utils/Media_query/MediaQuery.dart';
 import 'package:securywallet/Screens/Previous_Home_Screen/Model/Asset_Model/Asset_Model.dart';
 
 class TrendingTokens extends StatefulWidget {
+  const TrendingTokens({super.key});
+
   @override
   _TrendingTokensState createState() => _TrendingTokensState();
 }
 
 class _TrendingTokensState extends State<TrendingTokens> {
-  late Future<List<Map<String, dynamic>>> trendingTokens;
-  final String apiKey = '9b4cc00e-85f2-412f-8669-5b6b4ef12f0e';
-
-  @override
-  void initState() {
-    super.initState();
-    trendingTokens = fetchTrendingTokens();
-  }
-
+  String selectedNetwork = "BNB";
   LocalStorageService localStorageService = LocalStorageService();
 
-  // Convert trending token Map to AssetModel
-  AssetModel trendingToAssetModel(Map<String, dynamic> token) {
-    final rpcURLs = {
-      "Ethereum": "https://mainnet.infura.io/v3/${apiKeyService.infuraKey}",
-      "BNB Smart Chain": "https://bsc-dataseed.binance.org",
-      "Polygon": "https://polygon-rpc.com",
-      "Avalanche": "https://api.avax.network/ext/bc/C/rpc",
-      "Tron": "https://api.trongrid.io",
-      "Solana": "https://api.mainnet-beta.solana.com",
-      "Terra Classic": "https://terra-classic-lcd.publicnode.com",
-    };
+  /// 🔹 Static Testnet Tokens
+  final Map<String, List<Map<String, dynamic>>> testnetTokens = {
+    "BNB": [
+      {
+        "name": "BNB Testnet",
+        "symbol": "BNB",
+        "tokenAddress": "",
+        "network": "BNB Smart Chain",
+        "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        "image":
+        "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970",
+      },
+      {
+        "name": "BUSD Testnet",
+        "symbol": "BUSD",
+        "tokenAddress": "0xed24fc36d5ee211ea25a80239fb8c4cfd80f12ee",
+        "network": "BNB Smart Chain",
+        "rpcURL": "https://data-seed-prebsc-1-s1.binance.org:8545/",
+        "image":
+        "https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png",
+      },
+    ],
+    "ETH": [
+      {
+        "name": "Ethereum Goerli",
+        "symbol": "ETH",
+        "tokenAddress": "",
+        "network": "Ethereum",
+        "rpcURL": "https://rpc.ankr.com/eth_goerli",
+        "image":
+        "https://assets.coingecko.com/coins/images/279/large/ethereum.png",
+      },
+      {
+        "name": "USDT Goerli",
+        "symbol": "USDT",
+        "tokenAddress": "0x509ee0d083ddf8ac028f2a56731412edd63223b9",
+        "network": "Ethereum",
+        "rpcURL": "https://rpc.ankr.com/eth_goerli",
+        "image":
+        "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
+      },
+    ],
+    "TRX": [
+      {
+        "name": "Tron Shasta",
+        "symbol": "TRX",
+        "tokenAddress": "",
+        "network": "Tron",
+        "rpcURL": "https://api.shasta.trongrid.io",
+        "image":
+        "https://s2.coinmarketcap.com/static/img/coins/64x64/1958.png",
+      },
+    ],
+    "SOL": [
+      {
+        "name": "Solana Devnet",
+        "symbol": "SOL",
+        "tokenAddress": "",
+        "network": "Solana",
+        "rpcURL": "https://api.devnet.solana.com",
+        "image":
+        "https://assets.coingecko.com/coins/images/4128/large/solana.png",
+      },
+    ],
+  };
 
+  final networkOptions = [
+    {
+      "name": "BNB",
+      "icon":
+      "https://assets.coingecko.com/coins/images/825/large/bnb-icon2_2x.png?1696501970"
+    },
+    {
+      "name": "ETH",
+      "icon":
+      "https://assets.coingecko.com/coins/images/279/large/ethereum.png"
+    },
+    {
+      "name": "TRX",
+      "icon": "https://s2.coinmarketcap.com/static/img/coins/128x128/1958.png"
+    },
+    {
+      "name": "SOL",
+      "icon":
+      "https://assets.coingecko.com/coins/images/4128/large/solana.png"
+    },
+  ];
+
+  String getNetworkIcon(String networkName) {
+    return networkOptions
+        .firstWhere((n) => n['name'] == networkName, orElse: () => networkOptions[0])["icon"] ??
+        "";
+  }
+
+  AssetModel trendingToAssetModel(Map<String, dynamic> token) {
     return AssetModel(
       coinName: token['name'] ?? '',
       coinSymbol: token['symbol'] ?? '',
-      imageUrl: token['logo'] ?? '',
+      imageUrl: token['image'] ?? '',
       tokenAddress: token['tokenAddress'] ?? '',
-      network: token['network'] ?? 'Binance',
+      network: token['network'] ?? selectedNetwork,
       coinType: "2",
-      gasPriceSymbol : "BNB",
-      address: "",
+      gasPriceSymbol: selectedNetwork,
+      address: (selectedNetwork == "ETH" || selectedNetwork == "BNB")
+          ? ""
+          : assetAddressGenerate.generateAddress(
+        selectedNetwork,
+        localStorageService.activeWalletData!.mnemonic,
+      ),
       tokenDecimal: "18",
-      // default balance
-      rpcURL: rpcURLs[token['network']] ?? 'https://bsc-dataseed.binance.org',
+      rpcURL: token['rpcURL'] ?? '',
     );
-  }
-
-  Future<List<Map<String, dynamic>>> fetchTrendingTokens() async {
-    // 1️⃣ Fetch listings
-    final listingsUrl =
-        'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?limit=50';
-    final listingsResp = await http.get(
-      Uri.parse(listingsUrl),
-      headers: {'X-CMC_PRO_API_KEY': apiKey},
-    );
-
-    if (listingsResp.statusCode != 200) {
-      throw Exception('Failed to fetch trending tokens');
-    }
-
-    final listingsData = jsonDecode(listingsResp.body)['data'] as List;
-
-    // Filter out SOL, TRX, LTC
-    final filteredData = listingsData.where((token) {
-      final symbol = token['symbol'] ?? '';
-      return symbol != 'SOL' && symbol != 'TRX' && symbol != 'LTC';
-    }).toList();
-
-    // Sort by 24h % change
-    filteredData.sort((a, b) {
-      final changeA = a['quote']['USD']['percent_change_24h'] ?? 0.0;
-      final changeB = b['quote']['USD']['percent_change_24h'] ?? 0.0;
-      return changeB.compareTo(changeA);
-    });
-
-    final topTokens = filteredData.take(15).toList();
-
-    // 2️⃣ Fetch token info (to get platform/contract address)
-    final ids = topTokens.map((e) => e['id']).join(',');
-    final infoUrl =
-        'https://pro-api.coinmarketcap.com/v1/cryptocurrency/info?id=$ids';
-    final infoResp = await http.get(
-      Uri.parse(infoUrl),
-      headers: {'X-CMC_PRO_API_KEY': apiKey},
-    );
-
-    if (infoResp.statusCode != 200) {
-      throw Exception('Failed to fetch token info');
-    }
-
-    final infoData = jsonDecode(infoResp.body)['data'] as Map<String, dynamic>;
-
-    // Merge listings + info
-    List<Map<String, dynamic>> tokens = [];
-    for (var token in topTokens) {
-      final info = infoData[token['id'].toString()];
-      final platform = info['platform'];
-
-      tokens.add({
-        "id": token['id'],
-        "name": token['name'],
-        "symbol": token['symbol'],
-        "price": token['quote']['USD']['price'],
-        "volume_24h": token['quote']['USD']['volume_24h'],
-        "percent_change_24h": token['quote']['USD']['percent_change_24h'],
-        "network": platform?['name'] ?? "Native",
-        "tokenAddress": platform?['token_address'] ?? "",
-        "logo":
-        "https://s2.coinmarketcap.com/static/img/coins/64x64/${token['id']}.png",
-      });
-    }
-
-    return tokens;
   }
 
   @override
   Widget build(BuildContext context) {
     localStorageService = context.watch<LocalStorageService>();
 
+    final tokens = testnetTokens[selectedNetwork] ?? [];
+
     return Scaffold(
       appBar: AppBar(
         title: AppText(
-          "Trending Tokens",
+          "Testnet Tokens",
           fontSize: 17,
           fontWeight: FontWeight.w600,
           color: Colors.white,
@@ -140,176 +150,98 @@ class _TrendingTokensState extends State<TrendingTokens> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 16.0),
+            padding: const EdgeInsets.all(12.0),
             child: Row(
-
               children: [
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: const Color(0xFF27282B),
-                  ),
-                  child:  Padding(
-                    padding: EdgeInsets.only(top: 6.0, bottom: 6, left: 12, right: 8),
-                    child: Row(
-                      children: [
-                        AppText(
-                          "24h",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white,
-                        ),
-                        Icon(Icons.keyboard_arrow_down, color: Colors.white),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // 🔹 Vertical Divider
-                Container(
-                  height: 28,
-                  width: 1,
-                  color: Colors.grey.withOpacity(0.4), // adjust opacity if needed
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                ),
-
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    color: const Color(0xFF27282B),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 6.0, bottom: 6, left: 12, right: 8),
-                    child: Row(
-                      children: [
-                        AppText(
-                          "All",
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: const Color(0xFFAF77F8),
-                        ),
-                        const Icon(Icons.keyboard_arrow_down, color: Color(0xFFAF77F8)),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                     border: Border.all(color: Color(0xFF27282B),)
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 6.0, bottom: 6, left: 12, right: 8),
+                AppText("Select Network:",
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+                const SizedBox(width: 10),
+                DropdownButton<String>(
+                  dropdownColor: const Color(0xFF27282B),
+                  value: selectedNetwork,
+                  iconEnabledColor: Colors.white,
+                  underline: const SizedBox(),
+                  items: networkOptions.map((network) {
+                    return DropdownMenuItem<String>(
+                      value: network["name"],
                       child: Row(
                         children: [
-                          Image.asset("assets/Images/bnb.png"),
-                          AppText(
-                            "BNB Smart Chain",
-                            fontSize: 14,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                          Image.network(network["icon"]!, width: 20, height: 20),
+                          const SizedBox(width: 10),
+                          Text(
+                            network["name"]!,
+                            style: const TextStyle(color: Colors.white),
                           ),
-
                         ],
                       ),
-                    ),
-                  ),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() => selectedNetwork = value);
+                    }
+                  },
                 ),
               ],
             ),
           ),
-SizedBox(height: 10,),
-          FutureBuilder<List<Map<String, dynamic>>>(
-            future: trendingTokens,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const Center(child: Text('No trending tokens found.'));
-              }
+          const Divider(color: Colors.white24),
+          Expanded(
+            child: ListView.builder(
+              itemCount: tokens.length,
+              itemBuilder: (context, index) {
+                final token = tokens[index];
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage: NetworkImage(token['image']),
+                    backgroundColor: Colors.transparent,
+                  ),
+                  title: AppText(token['name'],
+                      color: Colors.white, fontWeight: FontWeight.w600),
+                  subtitle: AppText(token['network'],
+                      color: Colors.white70, fontSize: 14),
+                  trailing: AppText(token['symbol'],
+                      color: Colors.orangeAccent, fontSize: 16),
+                  onTap: () async {
+                    final asset = trendingToAssetModel(token);
+                    String liveBalance = "0.0";
 
-              final tokens = snapshot.data!;
+                    print("🧩 Selected Asset: ${asset.toJson()}");
 
-              return Expanded(
-                child: ListView.builder(
-                  itemCount: tokens.length,
-                  itemBuilder: (context, index) {
-                    final token = tokens[index];
-
-                    return ListTile(
-                      leading:
-                      Stack(
-                        alignment: Alignment.bottomRight,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.transparent,
-                            backgroundImage: NetworkImage(token['logo']),
-                            child: AppText(
-                              token['symbol'][0],
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                          Image.asset("assets/Images/bnb.png")
-                        ],
-                      ),
-              
-                      title: AppText('${token['name']} ',
-                          color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
-                      subtitle: AppText(
-                        '\$${_formatVolume(token['volume_24h'])}',
-                        color: Colors.white70,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      trailing: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          AppText('\$${token['price'].toStringAsFixed(2)}',
-                              color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
-                          AppText(
-                            '${token['percent_change_24h'].toStringAsFixed(2)}%',
-                            color: token['percent_change_24h'] > 0 ? Colors.green : Colors.red,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                          ),
-                        ],
-                      ),
-                      onTap: () async {
-                        // Convert Map -> AssetModel
-                        final asset = trendingToAssetModel(token);
-
-                        // Navigate to TransactionAction with AssetModel
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TransactionAction(
-                              coinData: asset,
-                              balance: "0.0",
-                              userWallet: localStorageService.activeWalletData!,
-                              usdPrice: 0.0,
-                            ),
-                          ),
+                    // Fetch balance if RPC and token are set
+                    if (asset.rpcURL != null && asset.rpcURL!.isNotEmpty) {
+                      try {
+                        liveBalance = await assetBalanceFunction.evmTokenBalance(
+                          asset,
+                          localStorageService.activeWalletData!.privateKey,
                         );
-                      },
+                      } catch (e) {
+                        print("⚠️ Error fetching balance: $e");
+                      }
+                    }
+
+                    // Navigate to transaction screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TransactionAction(
+                          coinData: asset,
+                          balance: liveBalance,
+                          userWallet: localStorageService.activeWalletData!,
+                          usdPrice: 0.0,
+                        ),
+                      ),
                     );
                   },
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
       ),
+      backgroundColor: const Color(0xFF1E1E1E),
     );
-  }
-
-  String _formatVolume(double volume) {
-    if (volume >= 1e9) return '${(volume / 1e9).toStringAsFixed(2)}B';
-    if (volume >= 1e6) return '${(volume / 1e6).toStringAsFixed(2)}M';
-    if (volume >= 1e3) return '${(volume / 1e3).toStringAsFixed(2)}K';
-    return volume.toStringAsFixed(2);
   }
 }

@@ -638,12 +638,15 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                 // Background Image Centered
                                 Align(
                                   alignment: Alignment.center,
-                                  child: Image.asset(
-                                    "assets/Images/1.png",
-                                    fit: BoxFit.contain,
-                                    width: screenWidth,
+                                  child: FractionallySizedBox(
+                                    widthFactor: screenWidth > 600 ? 0.9 : 1, // ✅ 50% on tablet, full on phone
+                                    child: Image.asset(
+                                      "assets/Images/1.png",
+                                      fit: BoxFit.contain,
+                                    ),
                                   ),
                                 ),
+
 
                                 // Foreground Content
                                 Column(
@@ -737,12 +740,14 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
                       SizedBox(
                         height:
-                            70, // Adjust height based on your container content
+                            SizeConfig.height(context, 7), // Adjust height based on your container content
                         child:    FutureBuilder<List<Map<String, dynamic>>>(
                           future: trendingTokens,
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const Center(child: CircularProgressIndicator());
+                              return  Center(child: CircularProgressIndicator(
+                                color: Colors.purpleAccent[100],
+                              ));
                             } else if (snapshot.hasError) {
                               return Center(child: Text('Error: ${snapshot.error}'));
                             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -751,76 +756,84 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
 
                             final tokens = snapshot.data!;
 
-                            return Expanded(
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: tokens.length,
-                                itemBuilder: (context, index) {
-                                  final token = tokens[index];
+                            return ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: tokens.length,
+                              itemBuilder: (context, index) {
+                                final token = tokens[index];
 
 
 
 
-                                  return Padding(
-                                    padding: const EdgeInsets.only(left: 16.0,top: 8),
-                                    child: Container(
-                                        decoration: BoxDecoration(
-                                        border: GradientBoxBorder(
-                                        gradient: LinearGradient(
-                                        colors: [
-                                        Colors.white.withOpacity(0.3),
-                                    Colors.white.withOpacity(0.05),
-                                    ],
-                                    begin: Alignment.topLeft,
-                                    end: Alignment.bottomRight,
-                                    ),
-                                    width: 0.5,
-                                    ),
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Color(0XFF0f131a),
-                                    ),
-                                    width: MediaQuery.of(context).size.width * 0.7,
+                                return Padding(
+                                  padding: const EdgeInsets.only(left: 16.0,),
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                      border: GradientBoxBorder(
+                                      gradient: LinearGradient(
+                                      colors: [
+                                      Colors.white.withOpacity(0.3),
+                                  Colors.white.withOpacity(0.05),
+                                  ],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                  ),
+                                  width: 0.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(15),
+                                  color: Color(0XFF0f131a),
+                                  ),
+                                  width: MediaQuery.of(context).size.width * 0.7,
 
-                                    child:ListTile(
-                                      leading:
-                                      Padding(
-                                        padding: const EdgeInsets.only(bottom: 16.0),
-                                        child: Stack(
-                                          alignment: Alignment.bottomRight,
-                                          children: [
-                                            CircleAvatar(
-                                              radius: 18,
-                                              backgroundColor: Colors.transparent,
-                                              backgroundImage: NetworkImage(token['logo']),
-                                              child: AppText(
-                                                token['symbol'][0],
-                                                style: const TextStyle(color: Colors.white),
-                                              ),
-                                            ),
-                                            Image.asset("assets/Images/bnb.png")
-                                          ],
-                                        ),
-                                      ),
-
-                                      title: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          AppText('${token['name']} ',
-                                              color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
-                                          AppText(
-                                            '\$${_formatVolume(token['volume_24h'])}',
-                                            color: Colors.white70,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
+                                  child:ListTile(
+                                    dense: true,
+                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                                    minVerticalPadding: 0,
+                                    leading:
+                                    Stack(
+                                      alignment: Alignment.bottomRight,
+                                      children: [
+                                        CircleAvatar(
+                                          radius: 18,
+                                          backgroundColor: Colors.transparent,
+                                          backgroundImage: NetworkImage(token['logo']),
+                                          child: AppText(
+                                            token['symbol'][0],
+                                            style: const TextStyle(color: Colors.white),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Image.asset("assets/Images/bnb.png")
+                                      ],
+                                    ),
 
-                                      trailing: Column(
+                                    title: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        AppText('${token['name']} ',
+                                            color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
+                                        AppText(
+                                          '\$${_formatVolume(token['volume_24h'])}',
+                                          color: Colors.white70,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      ],
+                                    ),
+
+                                    trailing: FittedBox(
+                                      fit: BoxFit.scaleDown,
+                                      alignment: Alignment.centerRight,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.end,
                                         children: [
-                                          AppText('\$${token['price'].toStringAsFixed(2)}',
-                                              color: Colors.white, fontSize: 17, fontWeight: FontWeight.w600),
+                                          AppText(
+                                            '\$${token['price'].toStringAsFixed(2)}',
+                                            color: Colors.white,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
                                           AppText(
                                             '${token['percent_change_24h'].toStringAsFixed(2)}%',
                                             color: token['percent_change_24h'] > 0 ? Colors.green : Colors.red,
@@ -829,27 +842,28 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                                           ),
                                         ],
                                       ),
-                                      onTap: () async {
-                                        // Convert Map -> AssetModel
-                                        final asset = trendingToAssetModel(token);
+                                    ),
 
-                                        // Navigate to TransactionAction with AssetModel
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => TransactionAction(
-                                              coinData: asset,
-                                              balance: "0.0",
-                                              userWallet: localStorageService.activeWalletData!,
-                                              usdPrice: 0.0,
-                                            ),
+                                    onTap: () async {
+                                      // Convert Map -> AssetModel
+                                      final asset = trendingToAssetModel(token);
+
+                                      // Navigate to TransactionAction with AssetModel
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => TransactionAction(
+                                            coinData: asset,
+                                            balance: "0.0",
+                                            userWallet: localStorageService.activeWalletData!,
+                                            usdPrice: 0.0,
                                           ),
-                                        );
-                                      },
-                                    )),
-                                  );
-                                },
-                              ),
+                                        ),
+                                      );
+                                    },
+                                  )),
+                                );
+                              },
                             );
                           },
                         ),
@@ -2113,7 +2127,9 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                         labelText: 'Your private key',
                       ),
                     ),
-                    if (sending) const CircularProgressIndicator(),
+                    if (sending)  CircularProgressIndicator(
+                 color: Colors.purpleAccent[100],
+                    ),
                     if (txHash != null)
                       SelectableText(
                         'Tx hash: $txHash',
@@ -2229,8 +2245,10 @@ class _HomeViewState extends State<HomeView> with TickerProviderStateMixin {
                             : 'https://via.placeholder.com/300',
                         fit: BoxFit.cover,
                         placeholder: (_, __) =>
-                        const Center(
-                          child: CircularProgressIndicator(),
+                         Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.purpleAccent[100],
+                          ),
                         ),
                         errorWidget: (_, __, ___) =>
                         const Center(

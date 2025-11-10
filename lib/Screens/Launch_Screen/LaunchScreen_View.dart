@@ -30,7 +30,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
     super.initState();
 
     // initialize video controller
-    _controller = VideoPlayerController.asset("assets/GIF/secury.mp4")
+    _controller = VideoPlayerController.asset("assets/GIF/secury6.mp4")
       ..initialize().then((_) {
         setState(() {});
         _controller.setLooping(false); // play once

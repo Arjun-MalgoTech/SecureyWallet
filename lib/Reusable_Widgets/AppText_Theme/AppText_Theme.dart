@@ -32,7 +32,7 @@ class _AppTextState extends State<AppText> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final scaleFactor = (screenWidth / 375).clamp(1.0, 2.0);
+    final scaleFactor = (screenWidth / 375).clamp(1.0, 1.3);
     final adjustedFontSize = (widget.fontSize ?? 16) * scaleFactor;
 
     return Text(
